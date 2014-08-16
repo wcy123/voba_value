@@ -1,0 +1,5 @@
+*.o
+*.so
+test/test_*.out
+test/test_i8
+
