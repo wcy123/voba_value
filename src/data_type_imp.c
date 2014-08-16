@@ -1,120 +1,120 @@
-INLINE vtype_t from_pointer(void* p, int type)
+INLINE voba_value_t voba_from_pointer(void* p, int type)
 {
-  // it is good to apply &(~V_TYPE_MASK), so that link time
+  // it is good to apply &(~VOBA_TYPE_MASK), so that link time
   // optimizator is able to figure out the type automatically.  it
   // is safe to assume any pointer is 8 bytes aligned.
-  assert((((int64_t)p)&V_TYPE_MASK) == 0);
-  return (((vtype_t)p) & (~V_TYPE_MASK)) | type;
+  assert((((int64_t)p)&VOBA_TYPE_MASK) == 0);
+  return (((voba_value_t)p) & (~VOBA_TYPE_MASK)) | type;
 }
-INLINE int eq(vtype_t a,vtype_t b) 
+INLINE int voba_eq(voba_value_t a,voba_value_t b) 
 {
   return a == b;
 }
-INLINE int is_nil(vtype_t p) 
+INLINE int voba_is_nil(voba_value_t p) 
 { 
-  return eq(p,NIL);
+  return voba_eq(p,VOBA_NIL);
 }
 // ------------- string -----------------
-INLINE vtype_t make_string(voba_str_t* s)
+INLINE voba_value_t voba_make_string(voba_str_t* s)
 {
-    if(s == NULL) return NIL;
-    return from_pointer(s,V_STRING);
+    if(s == NULL) return VOBA_NIL;
+    return voba_from_pointer(s,VOBA_TYPE_STRING);
 }
-INLINE vtype_t make_cstr(const char * s)
+INLINE voba_value_t voba_make_cstr(const char * s)
 {
-  return make_string(voba_str_from_cstr(s));
+  return voba_make_string(voba_str_from_cstr(s));
 }
-INLINE int      is_string(vtype_t v)
+INLINE int      voba_is_string(voba_value_t v)
 {
-    return get_type1(v) == V_STRING;
+    return voba_get_type1(v) == VOBA_TYPE_STRING;
 }
-INLINE voba_str_t* vtype_to_str(vtype_t s)
+INLINE voba_str_t* voba_value_to_str(voba_value_t s)
 {
-    return to_pointer(voba_str_t*,s);
+    return voba_to_pointer(voba_str_t*,s);
 }
 // ------------ funcp ----------------------  
-INLINE  vtype_t make_func(vfunc_t p)
+INLINE  voba_value_t voba_make_func(voba_func_t p)
 {
-  return from_pointer((void*)((intptr_t)p),V_FUNC);
+  return voba_from_pointer((void*)((intptr_t)p),VOBA_TYPE_FUNC);
 }
-INLINE  vfunc_t vtype_to_func(vtype_t v)
+INLINE  voba_func_t voba_value_to_func(voba_value_t v)
 {
-  return to_pointer(vfunc_t,v);
+  return voba_to_pointer(voba_func_t,v);
 }
 // ------------- array ---------------------
-INLINE vtype_t make_array(vtype_t* p)
+INLINE voba_value_t voba_make_array(voba_value_t* p)
 {
-  return from_pointer(p,V_ARRAY);
+  return voba_from_pointer(p,VOBA_TYPE_ARRAY);
 }
-INLINE vtype_t make_var_array(vtype_t *v)
+INLINE voba_value_t voba_make_var_array(voba_value_t *v)
 {
-  vtype_t * p = (vtype_t*)GC_MALLOC(sizeof(vtype_t) * 2);
+  voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * 2);
   assert(p);
   p[0] = -1;
   // we don't need to attach type info here, so don't call
-  // from_pointer
+  // voba_from_pointer
   p[1] = (int64_t)(v);
-  return from_pointer(p,V_ARRAY);
+  return voba_from_pointer(p,VOBA_TYPE_ARRAY);
 }
-INLINE vtype_t make_array_nv(int64_t n,va_list ap)
+INLINE voba_value_t voba_make_array_nv(int64_t n,va_list ap)
 {
-  vtype_t * p = (vtype_t*)GC_MALLOC(sizeof(vtype_t) * (n + 1));
+  voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * (n + 1));
   p[0] = (n<<32) + n;
   assert(p);
   for(int i = 0 ; i < n; ++i){
-    p[i+1] = va_arg(ap,vtype_t);
+    p[i+1] = va_arg(ap,voba_value_t);
   }
-  return make_var_array(p);
+  return voba_make_var_array(p);
 }
-INLINE vtype_t make_array_n(int64_t n,...) 
+INLINE voba_value_t voba_make_array_n(int64_t n,...) 
 {
-  vtype_t ret = NIL;
+  voba_value_t ret = VOBA_NIL;
   va_list ap;
   va_start(ap,n);
-  ret = make_array_nv(n,ap);
+  ret = voba_make_array_nv(n,ap);
   va_end(ap);
   return ret;
 }
-INLINE vtype_t * vtype_to_c_array(vtype_t v)
+INLINE voba_value_t * voba_value_to_c_array(voba_value_t v)
 {
-  return is_fixed_size_array(v)?
-    to_pointer(vtype_t*, v)
+  return voba_is_fixed_size_array(v)?
+    voba_to_pointer(voba_value_t*, v)
     :
-    to_pointer(vtype_t*, (to_pointer(vtype_t*, v)[1]))
+    voba_to_pointer(voba_value_t*, (voba_to_pointer(voba_value_t*, v)[1]))
     ;
 }
-INLINE int64_t array_capacity(vtype_t v)
+INLINE int64_t voba_array_capacity(voba_value_t v)
 {
   // for fixed size array, it not meaningful and return 0xFFFFFFFF
-  return (vtype_to_c_array(v)[0] >> 32);
+  return (voba_value_to_c_array(v)[0] >> 32);
 }
-INLINE int64_t array_len(vtype_t v)
+INLINE int64_t voba_array_len(voba_value_t v)
 {
-  return is_fixed_size_array(v)?
-    (vtype_to_c_array(v)[0])
+  return voba_is_fixed_size_array(v)?
+    (voba_value_to_c_array(v)[0])
     :
-    ((vtype_to_c_array(v)[0]) & 0xFFFFFFFF)
+    ((voba_value_to_c_array(v)[0]) & 0xFFFFFFFF)
     ;
 }
-INLINE vtype_t* array_base(vtype_t v)
+INLINE voba_value_t* voba_array_base(voba_value_t v)
 {
-  return vtype_to_c_array(v) + 1;
+  return voba_value_to_c_array(v) + 1;
 }
-INLINE vtype_t array_at(vtype_t v,int64_t i)
+INLINE voba_value_t voba_array_at(voba_value_t v,int64_t i)
 {
-  return array_base(v)[i];
+  return voba_array_base(v)[i];
 }
-INLINE vtype_t  array_set(vtype_t a,int64_t i,vtype_t v)
+INLINE voba_value_t  voba_array_set(voba_value_t a,int64_t i,voba_value_t v)
 {
-  return array_base(a)[i] = v;
+  return voba_array_base(a)[i] = v;
 }
-INLINE int is_array(vtype_t v)
+INLINE int voba_is_array(voba_value_t v)
 {
-  return get_type1(v) == V_ARRAY;
+  return voba_get_type1(v) == VOBA_TYPE_ARRAY;
 }
-INLINE int is_fixed_size_array(vtype_t v)
+INLINE int voba_is_fixed_size_array(voba_value_t v)
 {
-  return is_array(v) && to_pointer(vtype_t*,v)[0] != -1;
+  return voba_is_array(v) && voba_to_pointer(voba_value_t*,v)[0] != -1;
 }
 INLINE int64_t  v__find_next_capacity(int64_t c)
 {
@@ -126,30 +126,30 @@ INLINE int64_t  v__find_next_capacity(int64_t c)
   assert(0 && "never reach here");
   return 0;
 }
-INLINE vtype_t  array_copy(vtype_t v)
+INLINE voba_value_t  voba_array_copy(voba_value_t v)
 {
-  int64_t c1 = (is_fixed_size_array(v)?
-                (array_len(v)+1):
-                (array_capacity(v)));
+  int64_t c1 = (voba_is_fixed_size_array(v)?
+                (voba_array_len(v)+1):
+                (voba_array_capacity(v)));
   int64_t capacity = v__find_next_capacity(c1);
-  vtype_t * p = (vtype_t*)GC_MALLOC(sizeof(vtype_t) * capacity);
+  voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * capacity);
   assert(p);
-  memcpy((void*)p,vtype_to_c_array(v),(size_t)(c1*sizeof(vtype_t)));
-  p[0] = (capacity << 32) + array_len(v);
-  return make_var_array(p);
+  memcpy((void*)p,voba_value_to_c_array(v),(size_t)(c1*sizeof(voba_value_t)));
+  p[0] = (capacity << 32) + voba_array_len(v);
+  return voba_make_var_array(p);
 }
-INLINE void array__enlarge(vtype_t a, int64_t inc)
+INLINE void voba_array__enlarge(voba_value_t a, int64_t inc)
 {
-  if(is_fixed_size_array(a)){
+  if(voba_is_fixed_size_array(a)){
     //throw_exception(a);
     assert(0 && "cannot push to a fixed size array.");
   }
-  int64_t len = array_len(a);
-  int64_t capacity = array_capacity(a);
-  vtype_t * p = vtype_to_c_array(a);
+  int64_t len = voba_array_len(a);
+  int64_t capacity = voba_array_capacity(a);
+  voba_value_t * p = voba_value_to_c_array(a);
   if(len + inc + 1 > capacity){ // one more room for `capacity+size`
     capacity = capacity * 2;
-    p = (vtype_t*) GC_REALLOC((void*)p, capacity*sizeof(vtype_t));
+    p = (voba_value_t*) GC_REALLOC((void*)p, capacity*sizeof(voba_value_t));
     assert(p);
     p[0] = (capacity<<32) + len;
     /*
@@ -160,257 +160,257 @@ INLINE void array__enlarge(vtype_t a, int64_t inc)
                  \___ 4 ___/
 
      */
-    bzero(&p[len+1], sizeof(vtype_t)*(capacity - len - 1));
-    to_pointer(vtype_t *, a)[1] = (vtype_t)p; // update the pointer
+    bzero(&p[len+1], sizeof(voba_value_t)*(capacity - len - 1));
+    voba_to_pointer(voba_value_t *, a)[1] = (voba_value_t)p; // update the pointer
   }
   return;
 }
-INLINE vtype_t array_push(vtype_t a,vtype_t v)
+INLINE voba_value_t voba_array_push(voba_value_t a,voba_value_t v)
 {
-  array__enlarge(a,1);
-  vtype_t * p = vtype_to_c_array(a);
-  int64_t len = array_len(a);
+  voba_array__enlarge(a,1);
+  voba_value_t * p = voba_value_to_c_array(a);
+  int64_t len = voba_array_len(a);
   p[len+1] = v;
   assert(len < UINT32_MAX);
   p[0] = p[0] + 1; // capacity won't be updated. hope so.
   return a;
 }
-INLINE vtype_t array_shift(vtype_t a,vtype_t v)
+INLINE voba_value_t voba_array_shift(voba_value_t a,voba_value_t v)
 {
-  array__enlarge(a,1);
-  vtype_t * p = vtype_to_c_array(a);
-  int64_t len = array_len(a);
-  memmove(&p[2], &p[1], len * sizeof(vtype_t));
+  voba_array__enlarge(a,1);
+  voba_value_t * p = voba_value_to_c_array(a);
+  int64_t len = voba_array_len(a);
+  memmove(&p[2], &p[1], len * sizeof(voba_value_t));
   p[1] = v;
   assert(len < UINT32_MAX);
   p[0] = p[0] + 1; // capacity won't be updated. hope so.
   return a;
 }
-INLINE vtype_t array_pop(vtype_t a)
+INLINE voba_value_t voba_array_pop(voba_value_t a)
 {
-  int64_t len = array_len(a);
+  int64_t len = voba_array_len(a);
   if(len == 0){
     //throw_exception(a);
     assert(0 && "cannot pop empty array.");
   }
-  vtype_t * p = vtype_to_c_array(a);
-  vtype_t ret = p[len];
+  voba_value_t * p = voba_value_to_c_array(a);
+  voba_value_t ret = p[len];
   p[0] = p[0] - 1; // capacity won't be changed.
-  p[len] = NIL ; // clear it, for gc
+  p[len] = VOBA_NIL ; // clear it, for gc
   return ret;
 }
-INLINE vtype_t array_unshift(vtype_t a)
+INLINE voba_value_t voba_array_unshift(voba_value_t a)
 {
-  int64_t len = array_len(a);
+  int64_t len = voba_array_len(a);
   if(len == 0){
     //throw_exception(a);
     assert(0 && "cannot pop empty array.");
   }
-  vtype_t * p = vtype_to_c_array(a);
-  vtype_t ret = p[1];
+  voba_value_t * p = voba_value_to_c_array(a);
+  voba_value_t ret = p[1];
   p[0] = p[0] - 1; // capacity won't be changed.
-  memmove(&p[1], &p[2], len * sizeof(vtype_t));
+  memmove(&p[1], &p[2], len * sizeof(voba_value_t));
   return ret;
 }
 // -- closure
-INLINE vtype_t  make_closure(vtype_t * p)
+INLINE voba_value_t  voba_make_closure(voba_value_t * p)
 {
-  return from_pointer((void*)p,V_CLOSURE);
+  return voba_from_pointer((void*)p,VOBA_TYPE_CLOSURE);
 }
-INLINE vtype_t  make_closure_f_a(vfunc_t f, vtype_t array)
+INLINE voba_value_t  voba_make_closure_f_a(voba_func_t f, voba_value_t array)
 {
-  vtype_t * p = (vtype_t*)GC_MALLOC(sizeof(vtype_t)*(array_len(array)+2));
+  voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t)*(voba_array_len(array)+2));
   assert(p);
-  p[0] = make_func(f);
-  memcpy((void*)&p[1], (void*)vtype_to_c_array(array), sizeof(vtype_t)*(array_len(array)+1));
+  p[0] = voba_make_func(f);
+  memcpy((void*)&p[1], (void*)voba_value_to_c_array(array), sizeof(voba_value_t)*(voba_array_len(array)+1));
   p[1] = p[1] & 0xFFFFFFFF; // remove capacity if any.
-  return from_pointer((void*)p,V_CLOSURE);
+  return voba_from_pointer((void*)p,VOBA_TYPE_CLOSURE);
 }
-INLINE vtype_t closure_array(vtype_t c)
+INLINE voba_value_t voba_closure_array(voba_value_t c)
 {
-  return make_array(&(to_pointer(vtype_t*, c)[1]));
+  return voba_make_array(&(voba_to_pointer(voba_value_t*, c)[1]));
 }
-INLINE vfunc_t closure_func(vtype_t c)
+INLINE voba_func_t voba_closure_func(voba_value_t c)
 {
-  return (vfunc_t)to_pointer(vtype_t*,c)[0];
+  return (voba_func_t)voba_to_pointer(voba_value_t*,c)[0];
 }
 // ---------- pair -----------------------
-INLINE vtype_t  voba_make_pair(vtype_t h,vtype_t t)
+INLINE voba_value_t  voba_make_pair(voba_value_t h,voba_value_t t)
 {
-  vtype_t * p = (vtype_t*)GC_MALLOC(sizeof(vtype_t) * 2);
+  voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * 2);
   assert(p);
   p[0] = h;
   p[1] = t;
-  return from_pointer(p,V_PAIR);
+  return voba_from_pointer(p,VOBA_TYPE_PAIR);
 }
-INLINE vtype_t  is_pair(vtype_t p)
+INLINE voba_value_t  voba_is_pair(voba_value_t p)
 {
-  return get_type1(p) == V_PAIR;
+  return voba_get_type1(p) == VOBA_TYPE_PAIR;
 }
-INLINE vtype_t  head(vtype_t p)
+INLINE voba_value_t  voba_head(voba_value_t p)
 {
-  return to_pointer(vtype_t*,p)[0];
+  return voba_to_pointer(voba_value_t*,p)[0];
 }
-INLINE vtype_t  tail(vtype_t p)
+INLINE voba_value_t  voba_tail(voba_value_t p)
 {
-  return to_pointer(vtype_t*,p)[1];
+  return voba_to_pointer(voba_value_t*,p)[1];
 }
-INLINE void set_head(vtype_t p,vtype_t v)
+INLINE void voba_set_head(voba_value_t p,voba_value_t v)
 {
-    to_pointer(vtype_t*,p)[0] = v;
+    voba_to_pointer(voba_value_t*,p)[0] = v;
 }
-INLINE void set_tail(vtype_t p,vtype_t v)
+INLINE void voba_set_tail(voba_value_t p,voba_value_t v)
 {
-    to_pointer(vtype_t*,p)[1] = v;
+    voba_to_pointer(voba_value_t*,p)[1] = v;
 }
-INLINE vtype_t make_class(vclass_t * vclass)
+INLINE voba_value_t voba_make_class(voba_class_t * vclass)
 {
-    vtype_t ret = make_user_data(NIL,sizeof(vclass_t*));
-    *(USER_DATA_AS(vclass_t**,ret)) = vclass;
+    voba_value_t ret = voba_make_user_data(VOBA_NIL,sizeof(voba_class_t*));
+    *(VOBA_USER_DATA_AS(voba_class_t**,ret)) = vclass;
     return ret;
 }
-INLINE vtype_t make_user_data(vtype_t cls, size_t size)
+INLINE voba_value_t voba_make_user_data(voba_value_t cls, size_t size)
 {
   // size doesn't include the cls function, so allocate a room for it.
-  size = (size+sizeof(vtype_t));
+  size = (size+sizeof(voba_value_t));
   if(size % 16 !=0){
     // size must be 16 bytes alignment.
     size = (size/16 + 1) * 16;
   }
-  vtype_t * p = (vtype_t*)GC_MALLOC(size);
+  voba_value_t * p = (voba_value_t*)GC_MALLOC(size);
   assert(p);
   p[0] = cls;
-  return from_pointer(p,V_USER);
+  return voba_from_pointer(p,VOBA_TYPE_USER);
 }
-INLINE vtype_t user_data_class(vtype_t v)
+INLINE voba_value_t voba_user_data_class(voba_value_t v)
 {
-  return (to_pointer(vtype_t*, v)[0]);
+  return (voba_to_pointer(voba_value_t*, v)[0]);
 }
-INLINE void*  user_data_base(vtype_t v)
+INLINE void*  voba_user_data_base(voba_value_t v)
 {
-  return (void*)(&(to_pointer(vtype_t*, v)[1]));
+  return (void*)(&(voba_to_pointer(voba_value_t*, v)[1]));
 }
-INLINE vtype_t make_symbol_table()
+INLINE voba_value_t voba_make_symbol_table()
 {
-    return make_symbol_table_cpp();
+    return voba_make_symbol_table_cpp();
 }
-INLINE vtype_t make_symbol_internal(vtype_t symbol_name, vtype_t symbol_value)
+INLINE voba_value_t voba_make_symbol_internal(voba_value_t symbol_name, voba_value_t symbol_value)
 {
-    vtype_t * p = (vtype_t*)GC_MALLOC(sizeof(vtype_t) * 2);
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * 2);
     assert(p);
     p[0] = symbol_name;
     p[1] = symbol_value;
-    return from_pointer(p,V_SYMBOL);
+    return voba_from_pointer(p,VOBA_TYPE_SYMBOL);
 }
-INLINE vtype_t is_symbol(vtype_t v)
+INLINE voba_value_t voba_is_symbol(voba_value_t v)
 {
-  return get_type1(v) == V_SYMBOL;
+  return voba_get_type1(v) == VOBA_TYPE_SYMBOL;
 }
-INLINE vtype_t make_symbol(voba_str_t * symbol_name, vtype_t symbol_table)
+INLINE voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table)
 {
-    return make_symbol_cpp(symbol_name,symbol_table);
+    return voba_make_symbol_cpp(symbol_name,symbol_table);
 }
-INLINE vtype_t make_symbol_cstr(const char * symbol_name, vtype_t symbol_table)
+INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table)
 {
-    vtype_t ret =  make_symbol_cpp(voba_str_from_cstr(symbol_name),symbol_table);
+    voba_value_t ret =  voba_make_symbol_cpp(voba_str_from_cstr(symbol_name),symbol_table);
     fprintf(stderr,__FILE__ ":%d:[%s] symbol %s 0x%lx table = 0x%lx(%p)\n", __LINE__, __FUNCTION__,
-            symbol_name, ret, symbol_table, user_data_base(symbol_table));
+            symbol_name, ret, symbol_table, voba_user_data_base(symbol_table));
     return ret;
 }
-INLINE vtype_t symbol_name(vtype_t v)
+INLINE voba_value_t voba_symbol_name(voba_value_t v)
 {
-    return head(v);
+    return voba_head(v);
 }
-INLINE vtype_t symbol_value(vtype_t v)
+INLINE voba_value_t voba_symbol_value(voba_value_t v)
 {
-    return tail(v);
+    return voba_tail(v);
 }
-INLINE vtype_t* symbol_value_ptr(vtype_t v)
+INLINE voba_value_t* voba_symbol_value_ptr(voba_value_t v)
 {
-    return &(to_pointer(vtype_t*,v)[0]);
+    return &(voba_to_pointer(voba_value_t*,v)[0]);
 }
-INLINE vtype_t symbol_set_value(vtype_t s,vtype_t v)
+INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v)
 {
-    set_tail(s,v);
+    voba_set_tail(s,v);
     return v;
 }
-INLINE vtype_t make_generic_function()
+INLINE voba_value_t voba_make_generic_function()
 {
-    vtype_t ret = make_user_data(voba_cls_generic_function,sizeof(vtype_t));
-    *(USER_DATA_AS(vtype_t*,ret)) = make_hash();
+    voba_value_t ret = voba_make_user_data(voba_cls_generic_function,sizeof(voba_value_t));
+    *(VOBA_USER_DATA_AS(voba_value_t*,ret)) = voba_make_hash();
     return ret;
 }
-INLINE vtype_t gf_hash_table(vtype_t gf)
+INLINE voba_value_t voba_gf_hash_table(voba_value_t gf)
 {
-    return *(USER_DATA_AS(vtype_t*,gf));
+    return *(VOBA_USER_DATA_AS(voba_value_t*,gf));
 }
-INLINE vtype_t gf_add_class(vtype_t gf, vtype_t cls, vtype_t func)
+INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
 {
-    return hash_insert(gf_hash_table(gf),cls,func);
+    return voba_hash_insert(voba_gf_hash_table(gf),cls,func);
 }
-INLINE vtype_t gf_lookup(vtype_t gf, vtype_t cls)
+INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 {
-    vtype_t ret = hash_find(gf_hash_table(gf),cls);
-    if(!is_nil(ret)){
-        ret = tail(ret);
+    voba_value_t ret = voba_hash_find(voba_gf_hash_table(gf),cls);
+    if(!voba_is_nil(ret)){
+        ret = voba_tail(ret);
     }
     return ret;
 }
-INLINE vtype_t apply(vtype_t f, vtype_t a1)
+INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
 {
-    switch(get_type1(f)){
-    case V_FUNC:
-        return vtype_to_func(f)(f,a1);
-    case V_CLOSURE:
-        return closure_func(f)(closure_array(f),a1);
-    case V_USER:
-        if(user_data_class(f) == voba_cls_generic_function && array_len(a1) >= 1){
-            vtype_t vf = gf_lookup(f,get_class_internal(array_at(a1,0)));
-            if(get_type1(vf) == V_FUNC){
-                return vtype_to_func(vf)(f,a1);
+    switch(voba_get_type1(f)){
+    case VOBA_TYPE_FUNC:
+        return voba_value_to_func(f)(f,a1);
+    case VOBA_TYPE_CLOSURE:
+        return voba_closure_func(f)(voba_closure_array(f),a1);
+    case VOBA_TYPE_USER:
+        if(voba_user_data_class(f) == voba_cls_generic_function && voba_array_len(a1) >= 1){
+            voba_value_t vf = voba_gf_lookup(f,voba_get_class_internal(voba_array_at(a1,0)));
+            if(voba_get_type1(vf) == VOBA_TYPE_FUNC){
+                return voba_value_to_func(vf)(f,a1);
             }else{
-                throw_exception(make_string(voba_str_from_cstr("vfunc is not found")));
+                voba_throw_exception(voba_make_string(voba_str_from_cstr("vfunc is not found")));
             }
         }
     }
-    vtype_t vf = gf_lookup(gf_apply,get_class_internal(f));
-    switch(get_type1(vf)){
-    case V_FUNC:
-        return vtype_to_func(vf)(f,a1);
+    voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class_internal(f));
+    switch(voba_get_type1(vf)){
+    case VOBA_TYPE_FUNC:
+        return voba_value_to_func(vf)(f,a1);
     }
-    throw_exception(make_string(voba_str_from_cstr("cannot apply")));
-    return NIL;
+    voba_throw_exception(voba_make_string(voba_str_from_cstr("cannot apply")));
+    return VOBA_NIL;
 }
 // get_class
-INLINE vtype_t get_class_internal(vtype_t v)
+INLINE voba_value_t voba_get_class_internal(voba_value_t v)
 {
-    switch(get_type1(v)){
-    case V_SMALL:
-        switch(get_type2(v)){
-        case V_I8:   return voba_cls_i8;
-        case V_I16:  return voba_cls_i16;
-        case V_I32:    return voba_cls_i32;
-        case V_FLOAT:  return voba_cls_float;
-        case V_BOOLEAN: return voba_cls_bool;
-        case V_SHORT_SYMBOL: return voba_cls_short_symbol;
+    switch(voba_get_type1(v)){
+    case VOBA_TYPE_SMALL:
+        switch(voba_get_type2(v)){
+        case VOBA_TYPE_I8:   return voba_cls_i8;
+        case VOBA_TYPE_I16:  return voba_cls_i16;
+        case VOBA_TYPE_I32:    return voba_cls_i32;
+        case VOBA_TYPE_FLOAT:  return voba_cls_float;
+        case VOBA_TYPE_BOOL: return voba_cls_bool;
+        case VOBA_TYPE_SHORT_SYMBOL: return voba_cls_short_symbol;
         default:
             assert(0); // not implemented.
         }
-    case V_SYMBOL:
+    case VOBA_TYPE_SYMBOL:
         return voba_cls_symbol;
-    case V_FUNC:
+    case VOBA_TYPE_FUNC:
         return voba_cls_func;
-    case V_ARRAY:
+    case VOBA_TYPE_ARRAY:
         return voba_cls_array;
-    case V_CLOSURE:
+    case VOBA_TYPE_CLOSURE:
         return voba_cls_closure;
-    case V_PAIR:
+    case VOBA_TYPE_PAIR:
         return voba_cls_pair;
-    case V_USER:
-        return user_data_class(v)?user_data_class(v):voba_cls_user;
-    case V_STRING:
+    case VOBA_TYPE_USER:
+        return voba_user_data_class(v)?voba_user_data_class(v):voba_cls_user;
+    case VOBA_TYPE_STRING:
         return voba_cls_str;
-    case V_NIL:
+    case VOBA_TYPE_NIL:
         return voba_cls_nil;
     default:
         assert(0);
@@ -419,40 +419,40 @@ INLINE vtype_t get_class_internal(vtype_t v)
 }
 // small type
 // ----------- boolean ------------------
-INLINE int is_true(vtype_t v)
+INLINE int voba_is_true(voba_value_t v)
 {
-  return v == TRUE;
+  return v == VOBA_TRUE;
 }
-INLINE int is_false(vtype_t v)
+INLINE int voba_is_false(voba_value_t v)
 {
-  return v == FALSE;
+  return v == VOBA_FALSE;
 }
 
 // ------------- get type and get class ----
-INLINE int64_t get_type1(vtype_t v)
+INLINE int64_t voba_get_type1(voba_value_t v)
 {
-  return is_nil(v)?V_NIL:(v&V_TYPE_MASK);
+    return voba_is_nil(v)?VOBA_NIL:(v&VOBA_TYPE_MASK);
 }
-INLINE int64_t get_type2(vtype_t v)
+INLINE int64_t voba_get_type2(voba_value_t v)
 {
   return (v&0xff)>>3;
 }
 
 #define DEFINE_SMALL_TYPE(tag,name,type)        \
-INLINE vtype_t make_##name (type v)             \
+INLINE voba_value_t voba_make_##name (type v)             \
 {                                               \
     union {                                     \
-        vtype_t v1;                             \
+        voba_value_t v1;                        \
         type v2;                                \
     } r;                                        \
     r.v1 = 0;                                   \
     r.v2 = v;                                   \
-    return (V_SMALL + tag * 8 + r.v1 * 256);    \
+    return (VOBA_TYPE_SMALL + tag * 8 + r.v1 * 256);    \
 }                                               \
-INLINE type vtype_to_##name (vtype_t v)         \
+INLINE type voba_value_to_##name (voba_value_t v)         \
 {                                               \
     union {                                     \
-        vtype_t v1;                             \
+        voba_value_t v1;                        \
         type v2;                                \
     } r;                                        \
     r.v1 = v;                                   \
@@ -461,5 +461,6 @@ INLINE type vtype_to_##name (vtype_t v)         \
 }
 
 VOBA_SMALL_TYPES(DEFINE_SMALL_TYPE)
+
 
 

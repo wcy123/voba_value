@@ -11,12 +11,12 @@ extern "C" {
 #include "inline.h"
 #include "voba_str.h"
 #include "data_type_imp.h"
-vtype_t make_hash();
-vtype_t hash_insert(vtype_t h, vtype_t k, vtype_t v);
-vtype_t hash_find(vtype_t h, vtype_t k);
-vtype_t make_symbol_cpp(voba_str_t * symbol_name, vtype_t symbol_table);
-vtype_t make_symbol_table_cpp();
-void    throw_exception(vtype_t v);
+voba_value_t voba_make_hash();
+voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v);
+voba_value_t voba_hash_find(voba_value_t h, voba_value_t k);
+voba_value_t voba_make_symbol_cpp(voba_str_t * symbol_name, voba_value_t symbol_table);
+voba_value_t voba_make_symbol_table_cpp();
+void    voba_throw_exception(voba_value_t v);
 
 
 #include "data_type_imp.c"
