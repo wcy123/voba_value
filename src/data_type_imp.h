@@ -242,7 +242,6 @@ INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t
 INLINE voba_value_t voba_is_symbol(voba_value_t v);
 INLINE voba_value_t voba_symbol_name(voba_value_t v);
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
-INLINE voba_value_t*voba_symbol_value_ptr(voba_value_t v);
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
 
 /* generic function */
