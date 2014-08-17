@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <gc.h>
+#include "voba_for_each.h"
 // pointer to a function pointer can be casted voba_value_t directly
 // macro definitions for type1
 #define    VOBA_TYPE_FUNC    0
@@ -147,6 +148,7 @@ following structure.
 
 */
 INLINE voba_value_t  voba_make_array(voba_value_t* p);
+
 INLINE voba_value_t  voba_make_array_n(int64_t n,...);
 INLINE voba_value_t  voba_make_array_nv(int64_t n,va_list s);
 INLINE voba_value_t* voba_value_to_c_array(voba_value_t v);
@@ -276,6 +278,13 @@ VOBA_SMALL_TYPES(DECLARE_SMALL_TYPE)
 INLINE int voba_is_true(voba_value_t v);
 INLINE int voba_is_false(voba_value_t v);
 
+#define COMMA  ,
+#define SEMI_COMMA ;
+#define SPACE
+#define arg(n) voba_value_t a##n
+#define DECLARE_VOBA_MAKE_ARRAY_N(n)                                    \
+    INLINE voba_value_t voba_make_array_##n (VOBA_FOR_EACH_N(n)(arg, COMMA))
+VOBA_FOR_EACH(DECLARE_VOBA_MAKE_ARRAY_N,SEMI_COMMA);
 
 /* Local Variables: */
 /* mode:c */

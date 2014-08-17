@@ -3,3 +3,6 @@
 test/test_*.out
 test/test_i8
 
+.cproject
+.project
+a.*

@@ -464,3 +464,37 @@ VOBA_SMALL_TYPES(DEFINE_SMALL_TYPE)
 
 
 
+
+
+static inline voba_value_t clz_long(uint32_t s) 
+{
+    int a = 0;
+#if ((__GNUC__ >= 4) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 4)))
+    a = __builtin_clz(s);
+#else
+#error("TODO implement clzl")
+#endif
+    return (1l<<(32 - a));
+}
+
+// I really hate to write these macros, but I hate more duplicate
+// code. I used to use python or M4 generate the following code, but
+// it isn't more readable and it is not so good to depend on tools
+// other than standard compilers.
+
+#define DEFINE_VOBA_MAKE_ARRAY_N(n)                                     \
+    INLINE voba_value_t                                                 \
+    voba_make_array_##n (VOBA_FOR_EACH_N(n)(arg, COMMA)) {              \
+        voba_value_t * p = (voba_value_t*)                              \
+            GC_MALLOC(sizeof(voba_value_t) * clz_long(n+1));            \
+        p[0] = (clz_long(n+1)<<32) + (n);                               \
+        VOBA_FOR_EACH_N(n)(DEFINE_VOBA_MAKE_ARRAY_ASSIGN,SEMI_COMMA);   \
+        return voba_make_var_array(p);                                  \
+    }
+#define DEFINE_VOBA_MAKE_ARRAY_ASSIGN(n) p[n + 1] = a##n
+
+
+VOBA_FOR_EACH(DEFINE_VOBA_MAKE_ARRAY_N,SPACE)
+
+
+
