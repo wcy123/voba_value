@@ -19,10 +19,17 @@ voba_value_t voba_make_symbol_table_cpp();
 void    voba_throw_exception(voba_value_t v);
 
 
+
 #include "data_type_imp.c"
 #ifdef __cplusplus
 }
 #endif
+
+
+
+// some useful macros
+#define VOBA_FUNC __attribute__((align(16)))
+
 
 /* Local Variables: */
 /* mode:c */

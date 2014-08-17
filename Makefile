@@ -4,12 +4,12 @@ INCLUDE += -I ../../exec_once
 INCLUDE += -I ../../voba_str
 INCLUDE += -I ../../../vhash
 INCLUDE += -I ~/d/other-working/GC/bdwgc/include
-LIBS += -L ~/d/other-working/GC/bdwgc/mybuild
-
+GC_PATH := /home/chunywan/d/other-working/GC/bdwgc/mybuild
+LIBS += -L $(GC_PATH)
 CFLAGS   += $(INCLUDE)
 CXXFLAGS += $(INCLUDE)
 LDFLAGS  += $(LIBS)
-
+LDFLAGS  += -Wl,-rpath,$(GC_PATH) -lgcmt-dll
 FLAGS += -Wall -Werror
 
 

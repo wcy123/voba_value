@@ -2,19 +2,19 @@
 #include "voba_value.h"
 #include "exec_once.h"
 
-#define DEFINE_CLS(xsize,xname)                                           \
-    voba_value_t voba_cls_##xname             = VOBA_NIL;                          \
-    static void voba_cls_##xname##_init()                                \
+#define DEFINE_CLS(xsize,xname)                                         \
+    voba_value_t voba_cls_##xname             = VOBA_NIL;               \
+    static void voba_cls_##xname##_init()                               \
     {                                                                   \
-        static voba_class_t cls = { xsize, #xname  };                         \
-        voba_cls_##xname = voba_make_symbol(voba_str_from_cstr(#xname),VOBA_NIL);   \
-        voba_symbol_set_value(voba_cls_##xname, voba_make_class(&cls));            \
-        fprintf(stderr,__FILE__ ":%d:[%s] %p,%s(%ld)\n", __LINE__, __FUNCTION__, \
-                &cls,cls.name, cls.size);                               \
+        static voba_class_t cls = { xsize, #xname  };                   \
+        voba_cls_##xname =                                              \
+            voba_make_symbol(voba_str_from_cstr(#xname),VOBA_NIL);      \
+        voba_symbol_set_value(voba_cls_##xname,                         \
+                              voba_make_class(&cls));                   \
                                                                         \
         return;                                                         \
     }                                                                   \
-    EXEC_ONCE(voba_cls_##xname##_init)                                   \
+    EXEC_ONCE(voba_cls_##xname##_init)
 
 
 

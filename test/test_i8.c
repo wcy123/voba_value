@@ -8,17 +8,17 @@
 #endif
 
 #define TEST(type)                                                      \
-int test_##type(type x1)                                                \
-{                                                                       \
-    vtype_t y = make_i8(x1);                                            \
-    if(VERBOSE)fprintf(stderr,__FILE__ ":%d:[%s] i8 %ld\n", __LINE__, __FUNCTION__, \
-        y);                                                             \
-    type x2 = vtype_to_i8(y);                                           \
-    if(VERBOSE)fprintf(stderr,__FILE__ ":%d:[%s] i8 %d\n", __LINE__, __FUNCTION__, \
-        x2);                                                            \
-    assert(x1 == x2);                                                   \
-    return 0;                                                           \
-}
+    int test_##type(type x1)                                            \
+    {                                                                   \
+        voba_value_t y = voba_make_i8(x1);                              \
+        if(VERBOSE)fprintf(stderr,__FILE__ ":%d:[%s] i8 %ld\n", __LINE__, __FUNCTION__, \
+                           y);                                          \
+        type x2 = voba_value_to_i8(y);                                  \
+        if(VERBOSE)fprintf(stderr,__FILE__ ":%d:[%s] i8 %d\n", __LINE__, __FUNCTION__, \
+                           x2);                                         \
+        assert(x1 == x2);                                               \
+        return 0;                                                       \
+    }
 #define TESTS(XX)                                \
     XX(int8_t)                                   \
     XX(uint8_t)                                  \

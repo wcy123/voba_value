@@ -42,18 +42,18 @@ struct my_allocator : public std::allocator< T >{
 };
 typedef voba::unordered_map<voba_value_t, voba_value_t, vtype_hasher, vtype_equal, my_allocator<pair<const voba_value_t, voba_value_t> > > hash_table_c;
 #define HASH(r)  (VOBA_USER_DATA_AS(hash_table_c*,(r)))
-voba_value_t make_hash()
+voba_value_t voba_make_hash()
 {
     voba_value_t r = voba_make_user_data(VOBA_NIL, sizeof(hash_table_c));
     ::new(HASH(r)) hash_table_c();
     return r;
 }
-voba_value_t hash_insert(voba_value_t h, voba_value_t k, voba_value_t v)
+voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v)
 {
     hash_table_c::value_type* pair = HASH(h)->insert(make_pair(k,v));
     return voba_from_pointer(pair,VOBA_TYPE_PAIR);
 }
-voba_value_t hash_find(voba_value_t h, voba_value_t k)
+voba_value_t voba_hash_find(voba_value_t h, voba_value_t k)
 {
     hash_table_c::iterator it = HASH(h)->find(k);
     if(it == HASH(h)->end()){
@@ -91,13 +91,13 @@ struct symbol_table_equal {
 };
 typedef voba::set<voba_value_t, symbol_table_hasher, symbol_table_equal, my_allocator<voba_value_t> > voba_symbol_table_c;
 #define VOBA_SET(r)  (VOBA_USER_DATA_AS(voba_symbol_table_c*,(r)))
-extern "C" voba_value_t make_symbol_table_cpp()
+extern "C" voba_value_t voba_make_symbol_table_cpp()
 {
     voba_value_t r = voba_make_user_data(VOBA_NIL, sizeof(voba_symbol_table_c));
     ::new(VOBA_SET(r)) voba_symbol_table_c();
     return r;
 }
-extern "C" voba_value_t make_symbol_cpp(voba_str_t * name, voba_value_t h)
+extern "C" voba_value_t voba_make_symbol_cpp(voba_str_t * name, voba_value_t h)
 {
     // create an un-interned symbol, with a symbol value NIL
     voba_value_t v = voba_make_symbol_internal(voba_make_string(voba_strdup(name)),VOBA_NIL);
@@ -128,7 +128,7 @@ namespace voba {
   }
 }
 extern "C" 
-void throw_exception(voba_value_t v)
+void voba_throw_exception(voba_value_t v)
 {
   throw voba::exception(v);
 }

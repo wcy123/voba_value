@@ -313,8 +313,8 @@ INLINE voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symb
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table)
 {
     voba_value_t ret =  voba_make_symbol_cpp(voba_str_from_cstr(symbol_name),symbol_table);
-    fprintf(stderr,__FILE__ ":%d:[%s] symbol %s 0x%lx table = 0x%lx(%p)\n", __LINE__, __FUNCTION__,
-            symbol_name, ret, symbol_table, voba_user_data_base(symbol_table));
+    if(0) fprintf(stderr,__FILE__ ":%d:[%s] symbol %s 0x%lx table = 0x%lx(%p)\n", __LINE__, __FUNCTION__,
+                  symbol_name, ret, symbol_table, voba_user_data_base(symbol_table));
     return ret;
 }
 INLINE voba_value_t voba_symbol_name(voba_value_t v)
