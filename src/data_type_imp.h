@@ -239,14 +239,15 @@ is always un-interned.
 TODO: voba_make_symbol_with_value, voba_make_symbol_cstr_with_value
 */
 extern voba_value_t voba_cls_symbol;
-INLINE voba_value_t voba_make_symbol_table();
-INLINE voba_value_t voba_make_symbol_internal(voba_value_t symbol_name, voba_value_t symbol_value);
-INLINE voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table);
+voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
+voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table); // implemented in voba_value.cc
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table);
 INLINE voba_value_t voba_is_symbol(voba_value_t v);
 INLINE voba_value_t voba_symbol_name(voba_value_t v);
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
+
+
 
 /* array
    =====
@@ -433,6 +434,60 @@ INLINE voba_value_t voba_make_user_data(voba_value_t vclass, size_t size);
 INLINE voba_value_t voba_user_data_class(voba_value_t v);
 INLINE void*   voba_user_data_base(voba_value_t v);
 #define VOBA_USER_DATA_AS(type,v) ((type)(voba_user_data_base(v)))
+
+/* hashtable
+   =========
+
+A hashtable is a user define class.
+
++------------------------------------------------+-------+
+| data                                           | type1 |
++------------------------------------------------+-------+
+| .    value (61 bits)                           |  101  |
++-|----------------------------------------------+-------+
+  |
+  |     +------------------------------+--------------------+
+  `->   |           voba_cls_hashtable                      |
+        +------------------------------+--------------------+
+        |           hash_table_c ...                        |
+        +------------------------------+--------------------+
+
+voba_hash_insert returns a pair if succesfull, NIL otherwise.
+
+voba_hash_find returns a pair if successful, NIL otherwise.
+
+head is the key and tail is the value. 
+
+
+ */
+extern voba_value_t voba_cls_hashtable;
+voba_value_t voba_make_hash();
+voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v);
+voba_value_t voba_hash_find(voba_value_t h, voba_value_t k);
+/*  symbol table
+    ============
+
+A symbol table is a user define class.
+
++------------------------------------------------+-------+
+| data                                           | type1 |
++------------------------------------------------+-------+
+| .    value (61 bits)                           |  101  |
++-|----------------------------------------------+-------+
+  |
+  |     +------------------------------+--------------------+
+  `->   |           voba_cls_hashtable                      |
+        +------------------------------+--------------------+
+        |           symbol_table_c ...                      |
+        +------------------------------+--------------------+
+
+ */
+
+extern voba_value_t voba_cls_hashtable;
+
+/*
+ */
+extern voba_value_t voba_cls_symbol_table;
 
 /* apply
    =====

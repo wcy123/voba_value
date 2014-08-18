@@ -286,11 +286,7 @@ INLINE void*  voba_user_data_base(voba_value_t v)
 {
   return (void*)(&(voba_to_pointer(voba_value_t*, v)[1]));
 }
-INLINE voba_value_t voba_make_symbol_table()
-{
-    return voba_make_symbol_table_cpp();
-}
-INLINE voba_value_t voba_make_symbol_internal(voba_value_t symbol_name, voba_value_t symbol_value)
+INLINE voba_value_t voba__make_symbol_lowlevel(voba_value_t symbol_name, voba_value_t symbol_value)
 {
     voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * 2);
     assert(p);
@@ -302,19 +298,13 @@ INLINE voba_value_t voba_is_symbol(voba_value_t v)
 {
   return voba_get_type1(v) == VOBA_TYPE_SYMBOL;
 }
-INLINE voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table)
-{
-    return voba_make_symbol_cpp(symbol_name,symbol_table);
-}
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table)
 {
     voba_str_t tmp;
     tmp.data = (char*)symbol_name;
     tmp.capacity = 0;
     tmp.len = strlen(symbol_name);
-    voba_value_t ret =  voba_make_symbol_cpp(&tmp,symbol_table);
-    if(0) fprintf(stderr,__FILE__ ":%d:[%s] symbol %s 0x%lx table = 0x%lx(%p)\n", __LINE__, __FUNCTION__,
-                  symbol_name, ret, symbol_table, voba_user_data_base(symbol_table));
+    voba_value_t ret = voba_make_symbol(&tmp,symbol_table);
     return ret;
 }
 INLINE voba_value_t voba_symbol_name(voba_value_t v)
@@ -366,7 +356,7 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
             }
         }
     }
-    if(ret != NULL){
+    if(ret == NULL){
         voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class_internal(f));
         switch(voba_get_type1(vf)){
         case VOBA_TYPE_FUNC:
@@ -393,7 +383,8 @@ INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
     if(func != NULL){
         return func(f,a1);
     }else{
-        voba_throw_exception(voba_make_string(voba_str_from_cstr("cannot apply")));
+        voba_throw_exception(
+            voba_make_string(voba_str_from_cstr("cannot apply")));
     }
     return VOBA_NIL;
 }

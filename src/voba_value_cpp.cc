@@ -61,7 +61,10 @@ voba_value_t voba_hash_find(voba_value_t h, voba_value_t k)
     }
     return voba_from_pointer(&(*it),VOBA_TYPE_PAIR);
 }
-
+extern "C" size_t voba_hashtable_size()
+{
+    return sizeof(hash_table_c);
+}
 struct symbol_table_hasher {
     size_t operator() (const voba_value_t k1)
         {
@@ -91,16 +94,16 @@ struct symbol_table_equal {
 };
 typedef voba::set<voba_value_t, symbol_table_hasher, symbol_table_equal, my_allocator<voba_value_t> > voba_symbol_table_c;
 #define VOBA_SET(r)  (VOBA_USER_DATA_AS(voba_symbol_table_c*,(r)))
-extern "C" voba_value_t voba_make_symbol_table_cpp()
+extern "C" voba_value_t voba_make_symbol_table()
 {
     voba_value_t r = voba_make_user_data(VOBA_NIL, sizeof(voba_symbol_table_c));
     ::new(VOBA_SET(r)) voba_symbol_table_c();
     return r;
 }
-extern "C" voba_value_t voba_make_symbol_cpp(voba_str_t * name, voba_value_t h)
+extern "C" voba_value_t voba_make_symbol(voba_str_t * name, voba_value_t h)
 {
     // create an un-interned symbol, with a symbol value NIL
-    voba_value_t v = voba_make_symbol_internal(voba_make_string(voba_strdup(name)),VOBA_NIL);
+    voba_value_t v = voba__make_symbol_lowlevel(voba_make_string(voba_strdup(name)),VOBA_NIL);
     if(!voba_is_nil(h)){
         voba_symbol_table_c::iterator it = VOBA_SET(h)->find(v);
         if(it != VOBA_SET(h)->end()){
@@ -112,7 +115,10 @@ extern "C" voba_value_t voba_make_symbol_cpp(voba_str_t * name, voba_value_t h)
     // a symbol is a pair, but with different type tag.
     return v;
 }
-
+extern "C" size_t voba_symbol_table_size()
+{
+    return sizeof(voba_symbol_table_c);
+}
 namespace voba {
   class exception : std::exception{
   public:
