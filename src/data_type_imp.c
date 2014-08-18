@@ -213,10 +213,6 @@ INLINE voba_value_t voba_array_unshift(voba_value_t a)
   return ret;
 }
 // -- closure
-INLINE voba_value_t  voba_make_closure(voba_value_t * p)
-{
-  return voba_from_pointer((void*)p,VOBA_TYPE_CLOSURE);
-}
 INLINE voba_value_t  voba_make_closure_f_a(voba_func_t f, voba_value_t array)
 {
   voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t)*(voba_array_len(array)+2));
@@ -356,6 +352,35 @@ INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
     }
     return ret;
 }
+INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
+{
+    voba_func_t ret = NULL;
+    switch(voba_get_type1(f)){
+    case VOBA_TYPE_USER:
+        if(voba_user_data_class(f) == voba_cls_generic_function && voba_array_len(a1) >= 1){
+            voba_value_t vf = voba_gf_lookup(f,voba_get_class_internal(voba_array_at(a1,0)));
+            if(voba_get_type1(vf) == VOBA_TYPE_FUNC){
+                ret = voba_value_to_func(vf);
+            }else{
+                voba_throw_exception(voba_make_string(voba_str_from_cstr("vfunc is not found")));
+            }
+        }
+    }
+    if(ret != NULL){
+        voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class_internal(f));
+        switch(voba_get_type1(vf)){
+        case VOBA_TYPE_FUNC:
+            ret = voba_value_to_func(vf);
+            break;
+        case VOBA_TYPE_CLOSURE:
+            voba_throw_exception(voba_make_string(voba_str_from_cstr("closure is not allowed")));
+            ret = NULL;
+        default:
+            ret = voba__apply_find_func(voba_gf_apply,vf);
+        }
+    }
+    return ret;
+}
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
 {
     switch(voba_get_type1(f)){
@@ -363,22 +388,13 @@ INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
         return voba_value_to_func(f)(f,a1);
     case VOBA_TYPE_CLOSURE:
         return voba_closure_func(f)(voba_closure_array(f),a1);
-    case VOBA_TYPE_USER:
-        if(voba_user_data_class(f) == voba_cls_generic_function && voba_array_len(a1) >= 1){
-            voba_value_t vf = voba_gf_lookup(f,voba_get_class_internal(voba_array_at(a1,0)));
-            if(voba_get_type1(vf) == VOBA_TYPE_FUNC){
-                return voba_value_to_func(vf)(f,a1);
-            }else{
-                voba_throw_exception(voba_make_string(voba_str_from_cstr("vfunc is not found")));
-            }
-        }
     }
-    voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class_internal(f));
-    switch(voba_get_type1(vf)){
-    case VOBA_TYPE_FUNC:
-        return voba_value_to_func(vf)(f,a1);
+    voba_func_t func = voba__apply_find_func(f,a1);
+    if(func != NULL){
+        return func(f,a1);
+    }else{
+        voba_throw_exception(voba_make_string(voba_str_from_cstr("cannot apply")));
     }
-    voba_throw_exception(voba_make_string(voba_str_from_cstr("cannot apply")));
     return VOBA_NIL;
 }
 // get_class
