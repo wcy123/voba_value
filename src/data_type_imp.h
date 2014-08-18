@@ -239,7 +239,6 @@ is always un-interned.
 TODO: voba_make_symbol_with_value, voba_make_symbol_cstr_with_value
 */
 extern voba_value_t voba_cls_symbol;
-voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
 voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table); // implemented in voba_value.cc
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table);
 INLINE voba_value_t voba_is_symbol(voba_value_t v);
@@ -482,12 +481,8 @@ A symbol table is a user define class.
         +------------------------------+--------------------+
 
  */
-
-extern voba_value_t voba_cls_hashtable;
-
-/*
- */
 extern voba_value_t voba_cls_symbol_table;
+voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
 
 /* apply
    =====
