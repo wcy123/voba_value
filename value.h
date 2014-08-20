@@ -8,7 +8,10 @@ extern "C" {
 #include <string.h>
 #include <strings.h>
 #include <gc.h>
-#include "inline.h"
+#ifndef INLINE
+#define INLINE static inline 
+#endif
+
 #include "voba_str.h"
 #include "data_type_imp.h"
 void    voba_throw_exception(voba_value_t v);
