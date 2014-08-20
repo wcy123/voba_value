@@ -42,6 +42,20 @@ if(!type(name)){                                                        \
                voba_str_fmt_uint64_t(name,10));                         \
 }
 
+#define DEFINE_CLS(xsize,xname)                                         \
+    voba_value_t voba_cls_##xname             = VOBA_NIL;               \
+    static void voba_cls_##xname##_init()                               \
+    {                                                                   \
+        static voba_class_t cls = { 0, #xname  };                       \
+        cls.size = xsize;                                               \
+        voba_cls_##xname =                                              \
+            voba_make_symbol(voba_str_from_cstr(#xname),VOBA_NIL);      \
+        voba_symbol_set_value(voba_cls_##xname,                         \
+                              voba_make_class(&cls));                   \
+                                                                        \
+        return;                                                         \
+    }                                                                   \
+    EXEC_ONCE(voba_cls_##xname##_init)
 
 /* Local Variables: */
 /* mode:c */

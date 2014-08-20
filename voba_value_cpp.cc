@@ -50,7 +50,18 @@ voba_value_t voba_make_hash()
 }
 voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v)
 {
+    assert(h);
     hash_table_c::value_type* pair = HASH(h)->insert(make_pair(k,v));
+    cerr <<  __FILE__ << ":" << __LINE__ << ": [" << __FUNCTION__<< "] "
+         << hex
+         << "h "  << h << " "
+         << "k "  << k << " "
+         << "v "  << v << " "
+         << "pair "  << pair << " "
+         << "pair->first "  << pair->first << " "
+         << "pair->second "  << pair->second << " "
+         << dec
+         << endl;
     return voba_from_pointer(pair,VOBA_TYPE_PAIR);
 }
 voba_value_t voba_hash_find(voba_value_t h, voba_value_t k)
