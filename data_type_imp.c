@@ -438,7 +438,7 @@ INLINE int voba_is_false(voba_value_t v)
 // ------------- get type and get class ----
 INLINE int64_t voba_get_type1(voba_value_t v)
 {
-    return voba_is_nil(v)?VOBA_NIL:(v&VOBA_TYPE_MASK);
+    return voba_is_nil(v)?VOBA_TYPE_NIL:(v&VOBA_TYPE_MASK);
 }
 INLINE int64_t voba_get_type2(voba_value_t v)
 {
