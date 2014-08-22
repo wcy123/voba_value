@@ -52,7 +52,7 @@ voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v)
 {
     assert(h);
     hash_table_c::value_type* pair = HASH(h)->insert(make_pair(k,v));
-    cerr <<  __FILE__ << ":" << __LINE__ << ": [" << __FUNCTION__<< "] "
+    if(0) cerr <<  __FILE__ << ":" << __LINE__ << ": [" << __FUNCTION__<< "] "
          << hex
          << "h "  << h << " "
          << "k "  << k << " "
