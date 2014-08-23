@@ -241,6 +241,8 @@ TODO: voba_make_symbol_with_value, voba_make_symbol_cstr_with_value
 extern voba_value_t voba_cls_symbol;
 voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table); // implemented in voba_value.cc
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table);
+INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_value_t symbol_table);
+#define VOBA_SYMBOL(s,table) voba_make_symbol_data(#s,sizeof(#s) -1 , table)
 INLINE voba_value_t voba_is_symbol(voba_value_t v);
 INLINE voba_value_t voba_symbol_name(voba_value_t v);
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
@@ -493,14 +495,14 @@ voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
  `f` is any type which is callable.
 
  1. voba_cls_func: call it directly
- 2. voba_cls_generic_function: use `voba_gf_lookup(f, voba_get_class_internal(a1))` to find the actual voba_cls_func.
- 3. otherwise, use `voba_gf_lookup(voba_gf_apply, voba_get_class_internal(f))` to find the actual 
+ 2. voba_cls_generic_function: use `voba_gf_lookup(f, voba_get_class(a1))` to find the actual voba_cls_func.
+ 3. otherwise, use `voba_gf_lookup(voba_gf_apply, voba_get_class(f))` to find the actual 
 
 */
 
 extern voba_value_t voba_gf_apply;
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a);
-INLINE voba_value_t voba_get_class_internal(voba_value_t v);
+INLINE voba_value_t voba_get_class(voba_value_t v);
 // small type
 #define VOBA_SMALL_TYPES(XX)                                   \
     XX(VOBA_TYPE_I8,i8,int8_t)                                         \

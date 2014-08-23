@@ -42,6 +42,9 @@ if(!type(name)){                                                        \
                voba_str_fmt_uint64_t(name,10));                         \
 }
 
+#define VOBA_DEF_CVAR(name,self,n)                                      \
+    voba_value_t name = voba_array_at(self,n)
+
 #define DEFINE_CLS(xsize,xname)                                         \
     voba_value_t voba_cls_##xname             = VOBA_NIL;               \
     static void voba_cls_##xname##_init()                               \

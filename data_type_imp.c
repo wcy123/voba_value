@@ -300,10 +300,14 @@ INLINE voba_value_t voba_is_symbol(voba_value_t v)
 }
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table)
 {
+    return voba_make_symbol_data(symbol_name,(uint32_t)strlen(symbol_name), symbol_table);
+}
+INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_value_t symbol_table)
+{
     voba_str_t tmp;
-    tmp.data = (char*)symbol_name;
+    tmp.data = (char*)data;
     tmp.capacity = 0;
-    tmp.len = strlen(symbol_name);
+    tmp.len = len;
     voba_value_t ret = voba_make_symbol(&tmp,symbol_table);
     return ret;
 }
@@ -345,19 +349,17 @@ INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
 {
     voba_func_t ret = NULL;
-    switch(voba_get_type1(f)){
-    case VOBA_TYPE_USER:
-        if(voba_user_data_class(f) == voba_cls_generic_function && voba_array_len(a1) >= 1){
-            voba_value_t vf = voba_gf_lookup(f,voba_get_class_internal(voba_array_at(a1,0)));
+    if(voba_get_type1(f) == VOBA_TYPE_USER &&
+       voba_user_data_class(f) == voba_cls_generic_function &&
+       voba_array_len(a1) >= 1){
+            voba_value_t vf = voba_gf_lookup(f,voba_get_class(voba_array_at(a1,0)));
             if(voba_get_type1(vf) == VOBA_TYPE_FUNC){
                 ret = voba_value_to_func(vf);
             }else{
                 voba_throw_exception(voba_make_string(voba_str_from_cstr("vfunc is not found")));
             }
-        }
-    }
-    if(ret == NULL){
-        voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class_internal(f));
+    } else {
+        voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class(f));
         switch(voba_get_type1(vf)){
         case VOBA_TYPE_FUNC:
             ret = voba_value_to_func(vf);
@@ -389,17 +391,13 @@ INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
     return VOBA_NIL;
 }
 // get_class
-INLINE voba_value_t voba_get_class_internal(voba_value_t v)
+#define VOBA_GET_CLASS_SMALL(tag,name,type) case tag:   return voba_cls_##name;
+INLINE voba_value_t voba_get_class(voba_value_t v)
 {
     switch(voba_get_type1(v)){
     case VOBA_TYPE_SMALL:
         switch(voba_get_type2(v)){
-        case VOBA_TYPE_I8:   return voba_cls_i8;
-        case VOBA_TYPE_I16:  return voba_cls_i16;
-        case VOBA_TYPE_I32:    return voba_cls_i32;
-        case VOBA_TYPE_FLOAT:  return voba_cls_float;
-        case VOBA_TYPE_BOOL: return voba_cls_bool;
-        case VOBA_TYPE_SHORT_SYMBOL: return voba_cls_short_symbol;
+            VOBA_SMALL_TYPES(VOBA_GET_CLASS_SMALL)
         default:
             assert(0); // not implemented.
         }
