@@ -32,6 +32,7 @@ DEFINE_CLS(0,float)
 DEFINE_CLS(0,short_symbol)
 DEFINE_CLS(voba_hashtable_size(),hashtable)
 DEFINE_CLS(voba_hashtable_size(),symbol_table)
+DEFINE_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;
 EXEC_ONCE_DO(voba_gf_apply = voba_make_generic_function(););

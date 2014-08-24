@@ -519,11 +519,19 @@ for efficiency purpose, `la_cons`, and `la_cdr` modify `la` in-place,
 and returns `la`. to save `la`, use `la_copy`.
 
 */
+extern voba_value_t voba_cls_la;
+typedef struct voba_la_s {
+    uint32_t len;
+    uint32_t cur;
+    voba_value_t array;
+} voba_la_t;
+#define VOBA_LA(s) VOBA_USER_DATA_AS(voba_la_t *,s)
 INLINE voba_value_t voba_la_from_array(voba_value_t array, uint32_t start, uint32_t len);
 INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t a);
 INLINE voba_value_t voba_la_car(voba_value_t la);
 INLINE voba_value_t voba_la_cdr(voba_value_t la);
 INLINE voba_value_t voba_la_copy(voba_value_t la);
+INLINE int voba_is_la(voba_value_t la);
 /* apply
    =====
  It is the only core function of voba_value library.
@@ -541,6 +549,7 @@ INLINE voba_value_t voba_la_copy(voba_value_t la);
 extern voba_value_t voba_gf_apply;
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a);
 INLINE voba_value_t voba_get_class(voba_value_t v);
+INLINE const char * voba_get_class_name(voba_value_t v);
 // small type
 #define VOBA_SMALL_TYPES(XX)                                   \
     XX(VOBA_TYPE_I8,i8,int8_t)                                         \
