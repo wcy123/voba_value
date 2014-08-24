@@ -525,12 +525,18 @@ typedef struct voba_la_s {
     voba_value_t array;
 } voba_la_t;
 #define VOBA_LA(s) VOBA_USER_DATA_AS(voba_la_t *,s)
+INLINE voba_value_t voba_la_from_array0(voba_value_t array);
 INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur);
 INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_t len);
 INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t a);
 INLINE voba_value_t voba_la_car(voba_value_t la);
 INLINE voba_value_t voba_la_cdr(voba_value_t la);
+INLINE voba_value_t voba_la_nil();
+INLINE int voba_la_is_nil(voba_value_t la);
 INLINE voba_value_t voba_la_copy(voba_value_t la);
+// copy array under la1 and la2, create a new array, and return the la
+// associated with the new array
+INLINE voba_value_t voba_la_concat(voba_value_t la1,voba_value_t la2);
 INLINE int voba_is_la(voba_value_t la);
 INLINE uint32_t     voba_la_len(voba_value_t la);
 /* apply

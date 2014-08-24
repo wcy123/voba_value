@@ -355,10 +355,15 @@ INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
     VOBA_LA(r)->array = array;
     return r;
 }
+INLINE voba_value_t voba_la_from_array0(voba_value_t array)
+{
+    uint32_t a_len = ((uint32_t) voba_array_len(array));
+    return voba__make_la(0,a_len,array);
+}
 INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur)
 {
     uint64_t a_len = ((uint64_t) voba_array_len(array));
-    assert(cur <= a_len);
+    assert(cur < a_len);
     uint32_t end = (uint32_t)a_len;
     return voba__make_la(cur,end,array);
 }
@@ -371,23 +376,18 @@ INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_
 }
 INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t x)
 {
-    voba_value_t ret = VOBA_NIL;
-    if(voba_is_nil(la)){
-        ret = voba__make_la(0,1,voba_make_array_1(x));
+    assert(voba_is_la(la));
+    uint32_t end = VOBA_LA(la)->end;
+    voba_value_t a = VOBA_LA(la)->array;
+    uint32_t a_len = ( (uint32_t) voba_array_len(a));
+    end ++;
+    if(end < a_len){
+        voba_array_set(a, end, x);
     }else{
-        uint32_t end = VOBA_LA(la)->end;
-        voba_value_t a = VOBA_LA(la)->array;
-        uint32_t a_len = ( (uint32_t) voba_array_len(a));
-        end ++;
-        if(end < a_len){
-            voba_array_set(a, end, x);
-        }else{
-            voba_array_push(a,x);
-        }
-        VOBA_LA(la)->end = end;
-        ret = la;
+        voba_array_push(a,x);
     }
-    return ret;
+    VOBA_LA(la)->end = end;
+    return la;
 }
 INLINE voba_value_t voba_la_car(voba_value_t la)
 {
@@ -398,51 +398,63 @@ INLINE voba_value_t voba_la_car(voba_value_t la)
     uint32_t end = VOBA_LA(la)->end;
     uint32_t a_len = ( (uint32_t) voba_array_len(a));
 #endif
-    assert(cur < a_len && cur < end && end <= a_len);
+    assert(cur <= a_len && cur <= end && end <= a_len);
     return voba_array_at(a,(int64_t)cur);
 }
 INLINE voba_value_t voba_la_cdr(voba_value_t la)
 {
     assert(voba_is_la(la));
     uint32_t cur = VOBA_LA(la)->cur;
-    voba_value_t a = VOBA_LA(la)->array;
     uint32_t end = VOBA_LA(la)->end;
 #ifndef NDEBUG
+    voba_value_t a = VOBA_LA(la)->array;
     uint32_t a_len = ( (uint32_t) voba_array_len(a));
 #endif
-    assert(cur < a_len && cur < end);
-    voba_value_t ret = VOBA_NIL;
-    cur ++;
-    if(cur == end){
-        ret = VOBA_NIL;
-    }else{
-        VOBA_LA(la)->cur = cur;
-        ret = la;
+    assert(cur <= a_len && cur <= end && end <= a_len);
+    if(cur < end) {
+        cur ++;
     }
-    return ret;
+    VOBA_LA(la)->cur = cur;
+    return la;
+}
+INLINE voba_value_t voba_la_nil()
+{
+    return voba__make_la(0,0,voba_make_array_0());
 }
 INLINE voba_value_t voba_la_copy(voba_value_t la)
 {
-    if(voba_is_nil(la)) return la;
+    assert(voba_is_la(la));
     return voba__make_la(VOBA_LA(la)->cur,VOBA_LA(la)->end,VOBA_LA(la)->array);
 }
 INLINE uint32_t voba_la_len(voba_value_t la)
 {
-    uint32_t r = 0;
-    if(voba_is_nil(la)) {
-        r = 0;
-    }else{
-        assert(VOBA_LA(la)->end > VOBA_LA(la)->cur);
-        r = VOBA_LA(la)->end - VOBA_LA(la)->cur;
+    assert(voba_is_la(la));
+    assert(VOBA_LA(la)->end >= VOBA_LA(la)->cur);
+    return VOBA_LA(la)->end - VOBA_LA(la)->cur;
+}
+INLINE voba_value_t voba_la_concat(voba_value_t la1,voba_value_t la2)
+{
+    voba_value_t ret = voba_la_nil();
+    voba_value_t x = voba_la_copy(la1);
+    while(!voba_la_is_nil(x)){
+        ret = voba_la_cons(ret,voba_la_car(x));
+        x = voba_la_cdr(x);
     }
-    return r;
+    x = voba_la_copy(la2);
+    while(!voba_la_is_nil(x)){
+        ret = voba_la_cons(ret,voba_la_car(x));
+        x = voba_la_cdr(x);
+    }
+    return ret;
+}
+INLINE int voba_la_is_nil(voba_value_t la)
+{
+    assert(voba_is_la(la));
+    return voba_la_len(la) == 0;
 }
 INLINE int voba_is_la(voba_value_t la)
 {
-    int ret = 0;
-    if(voba_is_nil(la)) ret = 1;
-    else ret = (voba_cls_la == voba_get_class(la));
-    return ret;
+    return (voba_cls_la == voba_get_class(la));
 }
 INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
 {
