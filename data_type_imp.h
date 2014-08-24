@@ -491,9 +491,6 @@ voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
    is the optimization (pre-mature, sorry) for it. Using `array` to
    represent `list` is more space efficient.
 
-   `listarray` essentially is a pair, it does not have it own type,
-   for efficiency purpuse, so `is_pair(la)` returns true;
-
 interface:
 
     - VOBA_NIL is the empty `listarray`
@@ -507,13 +504,15 @@ internal implementation
     for non-empty `listarray`;
 
 +--------------------+------------------------+
-| .     61 bits value                   | 010 |
-+-|------------------+------------------------+
-  |      +----------------+----------------------+
-  `----> |  uint32_t cur  | uint32_t capacity    |
-         +----------------+----------------------+
-         |   storage: cls_array                  |
-         +---------------------------------------+
+| .     61 bits value                   | 100 |
++-|------------------+------------------------+          voba_cls_la
+  |    +----------------+------------+          +----------------+------------+
+  `->  |  voba_class_t  *        .---|--------> |       size_t size           |
+       +--------------+--------------+          +----------------+------------+
+       |uint32_t cur  | uint32_t end |          |  const char * name          |
+       +-----------------------------+          +-----------------------------+
+       | voba_value_t array          |           
+       +-----------------------------+  
 
 for efficiency purpose, `la_cons`, and `la_cdr` modify `la` in-place,
 and returns `la`. to save `la`, use `la_copy`.
@@ -521,17 +520,19 @@ and returns `la`. to save `la`, use `la_copy`.
 */
 extern voba_value_t voba_cls_la;
 typedef struct voba_la_s {
-    uint32_t len;
     uint32_t cur;
+    uint32_t end;
     voba_value_t array;
 } voba_la_t;
 #define VOBA_LA(s) VOBA_USER_DATA_AS(voba_la_t *,s)
-INLINE voba_value_t voba_la_from_array(voba_value_t array, uint32_t start, uint32_t len);
+INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur);
+INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_t len);
 INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t a);
 INLINE voba_value_t voba_la_car(voba_value_t la);
 INLINE voba_value_t voba_la_cdr(voba_value_t la);
 INLINE voba_value_t voba_la_copy(voba_value_t la);
 INLINE int voba_is_la(voba_value_t la);
+INLINE uint32_t     voba_la_len(voba_value_t la);
 /* apply
    =====
  It is the only core function of voba_value library.
