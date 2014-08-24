@@ -346,6 +346,50 @@ INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
     }
     return ret;
 }
+INLINE voba_value_t voba_la_from_array(voba_value_t array)
+{
+    return voba_make_pair(voba_make_u32(0),array);
+}
+INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t x)
+{
+    voba_value_t ret = VOBA_NIL;
+    if(voba_is_nil(la)){
+        ret = voba_make_pair(voba_make_u32(0),
+                              voba_make_array_1(x));
+    }else{
+        voba_value_t a = voba_tail(la);
+        voba_array_push(a,x);
+        ret = la;
+    }
+    return ret;
+}
+INLINE voba_value_t voba_la_car(voba_value_t la)
+{
+    assert(voba_is_pair(la));
+    voba_value_t cur = voba_head(la);
+    voba_value_t a = voba_tail(la);
+    uint32_t i = voba_value_to_u32(cur);
+    assert(i < ( (uint32_t) voba_array_len(a)));
+    return voba_array_at(a,(int64_t)i);
+}
+INLINE voba_value_t voba_la_cdr(voba_value_t la)
+{
+    assert(voba_is_pair(la));
+    voba_value_t cur = voba_head(la);
+    voba_value_t a = voba_tail(la);
+    uint32_t i = voba_value_to_u32(cur);
+    uint32_t len = ( (uint32_t) voba_array_len(a));
+    assert(i < len);
+    i ++ ;
+    voba_value_t ret = VOBA_NIL;
+    if(i == len){
+        ret = VOBA_NIL;
+    }else{
+        ret = voba_make_pair(voba_make_u32(i),a);
+    }
+    return ret;
+}
+
 INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
 {
     voba_func_t ret = NULL;

@@ -266,7 +266,7 @@ For fixed sized arrays, `voba_value_t` point to a below structure.
 +-|----------------------------------------------+-------+
   |
   |       +----------------+------------+
-  `---->  |         size(64bits)        |
+  `---->  |         size(64bits)        | when size = -1, it is a variable size array
           +----------------+------------+
           |         voba_value_t a1     |
           +-----------------------------+
@@ -276,10 +276,6 @@ For fixed sized arrays, `voba_value_t` point to a below structure.
           +-----------------------------+
 
 
-For variable size arrays, `size` is -1, it is variable size of array. voba_value_t point to
-the following structure.
-
-
 +------------------------------------------------+-------+
 | data                                           | type1 |
 +------------------------------------------------+-------+
@@ -287,7 +283,7 @@ the following structure.
 +-|----------------------------------------------+-------+
   |
   |       +----------------+------------+
-  `---->  |     0xFFFFFFFFFFFFFFFF      |
+  `---->  |     0xFFFFFFFFFFFFFFFF      | tag for variable size array
           +----------------+------------+
           |   .  voba_value_t *p        |
           +---|-------------------------+
@@ -304,10 +300,13 @@ the following structure.
                     |            ....             |
                     +-----------------------------+
 
+
 Why two level for variable size?
 
    when resizing, the array object's address might be changed, so all
    other reference could point to an invalid address.
+
+
 
 */
 extern voba_value_t voba_cls_array;
@@ -485,7 +484,43 @@ A symbol table is a user define class.
  */
 extern voba_value_t voba_cls_symbol_table;
 voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
+/* listarray
+   =========
 
+   In LISP, we often have the `push and reverse` idiom, `list array`
+   is the optimization (pre-mature, sorry) for it. Using `array` to
+   represent `list` is more space efficient.
+
+   `listarray` essentially is a pair, it does not have it own type,
+   for efficiency purpuse, so `is_pair(la)` returns true;
+
+interface:
+
+    - VOBA_NIL is the empty `listarray`
+    - `la_cons(LA, a)`: append a to the end of LA
+         this implements `push without reverse` because appending is fast for array.
+    - `la_car(LA)`
+    - `la_cdr(LA)`
+
+internal implementation
+
+    for non-empty `listarray`;
+
++--------------------+------------------------+
+| .     61 bits value                   | 000 |
++-|------------------+------------------------+
+  |      +----------------+------------+
+  `----> |   cursor: cls_u32           |
+         +----------------+------------+
+         |   storage: cls_array        |
+         +-----------------------------+
+
+*/
+INLINE voba_value_t voba_la_from_array(voba_value_t array);
+INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t a);
+INLINE voba_value_t voba_la_car(voba_value_t la);
+INLINE voba_value_t voba_la_cdr(voba_value_t la);
+INLINE voba_value_t voba_la_cdr(voba_value_t la);
 /* apply
    =====
  It is the only core function of voba_value library.
