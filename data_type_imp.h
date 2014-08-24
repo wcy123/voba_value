@@ -507,20 +507,23 @@ internal implementation
     for non-empty `listarray`;
 
 +--------------------+------------------------+
-| .     61 bits value                   | 000 |
+| .     61 bits value                   | 010 |
 +-|------------------+------------------------+
-  |      +----------------+------------+
-  `----> |   cursor: cls_u32           |
-         +----------------+------------+
-         |   storage: cls_array        |
-         +-----------------------------+
+  |      +----------------+----------------------+
+  `----> |  uint32_t cur  | uint32_t capacity    |
+         +----------------+----------------------+
+         |   storage: cls_array                  |
+         +---------------------------------------+
+
+for efficiency purpose, `la_cons`, and `la_cdr` modify `la` in-place,
+and returns `la`. to save `la`, use `la_copy`.
 
 */
-INLINE voba_value_t voba_la_from_array(voba_value_t array);
+INLINE voba_value_t voba_la_from_array(voba_value_t array, uint32_t start, uint32_t len);
 INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t a);
 INLINE voba_value_t voba_la_car(voba_value_t la);
 INLINE voba_value_t voba_la_cdr(voba_value_t la);
-INLINE voba_value_t voba_la_cdr(voba_value_t la);
+INLINE voba_value_t voba_la_copy(voba_value_t la);
 /* apply
    =====
  It is the only core function of voba_value library.
