@@ -363,7 +363,7 @@ INLINE voba_value_t voba_la_from_array0(voba_value_t array)
 INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur)
 {
     uint64_t a_len = ((uint64_t) voba_array_len(array));
-    assert(cur < a_len);
+    assert(cur <= a_len);
     uint32_t end = (uint32_t)a_len;
     return voba__make_la(cur,end,array);
 }

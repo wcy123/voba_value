@@ -324,6 +324,8 @@ INLINE voba_value_t  voba_array_push(voba_value_t a, voba_value_t v);
 INLINE voba_value_t  voba_array_pop(voba_value_t a);
 INLINE voba_value_t  voba_array_shift(voba_value_t a, voba_value_t v);
 INLINE voba_value_t  voba_array_unshift(voba_value_t a);
+// a and b are untouched, create a new variable array and copy a and b.
+voba_value_t voba_array_fixed_vconcat(voba_value_t a,...);
 INLINE int      voba_is_array(voba_value_t v);
 INLINE int      voba_is_fixed_size_array(voba_value_t v);
 
@@ -537,6 +539,7 @@ INLINE voba_value_t voba_la_copy(voba_value_t la);
 // copy array under la1 and la2, create a new array, and return the la
 // associated with the new array
 INLINE voba_value_t voba_la_concat(voba_value_t la1,voba_value_t la2);
+voba_value_t voba_la_vconcat(voba_value_t la1,...);
 INLINE int voba_is_la(voba_value_t la);
 INLINE uint32_t     voba_la_len(voba_value_t la);
 /* apply
