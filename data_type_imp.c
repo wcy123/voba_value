@@ -30,6 +30,7 @@ INLINE int      voba_is_string(voba_value_t v)
 }
 INLINE voba_str_t* voba_value_to_str(voba_value_t s)
 {
+    assert(voba_is_string(s));
     return voba_to_pointer(voba_str_t*,s);
 }
 // ------------ funcp ----------------------  
@@ -314,14 +315,17 @@ INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_
 }
 INLINE voba_value_t voba_symbol_name(voba_value_t v)
 {
+    assert(voba_is_symbol(v));
     return voba_head(v);
 }
 INLINE voba_value_t voba_symbol_value(voba_value_t v)
 {
+    assert(voba_is_symbol(v));
     return voba_tail(v);
 }
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v)
 {
+    assert(voba_is_symbol(s));
     voba_set_tail(s,v);
     return v;
 }
