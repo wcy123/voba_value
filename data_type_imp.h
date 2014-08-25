@@ -350,9 +350,17 @@ INLINE int      voba_is_fixed_size_array(voba_value_t v);
 
 */
 extern voba_value_t voba_cls_closure;
-INLINE voba_value_t  voba_make_closure_f_a(voba_func_t f, voba_value_t array);
-INLINE voba_value_t  voba_closure_array(voba_value_t c);
-INLINE voba_func_t   voba_closure_func(voba_value_t c);
+// this function is a little bit misleading, we might have thought a
+//closure is a func plus an array.
+
+//INLINE voba_value_t voba_make_closure_f_a(voba_func_t f, voba_value_t array);
+// see DEFINE_VOBA_MAKE_CLOSURE_N
+//INLINE voba_value_t voba_make_closure_N(voba_value_t f, voba_value_t a0,...);
+INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i);
+INLINE voba_func_t  voba_closure_func(voba_value_t c);
+INLINE voba_value_t voba_closure_array(voba_value_t c);
+INLINE voba_value_t voba_closure_len(voba_value_t c);
+INLINE int voba_is_closure(voba_value_t v);
 
 /* pair
    ====
@@ -582,10 +590,16 @@ VOBA_SMALL_TYPES(DECLARE_SMALL_TYPE)
 #define COMMA  ,
 #define SEMI_COMMA ;
 #define SPACE
-#define arg(n) voba_value_t a##n
+#define VOBA_MACRO_ARG(n) voba_value_t a##n
 #define DECLARE_VOBA_MAKE_ARRAY_N(n)                                    \
-    INLINE voba_value_t voba_make_array_##n (VOBA_FOR_EACH_N(n)(arg, COMMA))
+    INLINE voba_value_t voba_make_array_##n (VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG, COMMA))
 VOBA_FOR_EACH(DECLARE_VOBA_MAKE_ARRAY_N,SEMI_COMMA);
+
+#define VOBA_MACRO_ARG2(n) ,voba_value_t a##n
+#define DECLARE_VOBA_MAKE_CLOSURE_N(n)                                    \
+    INLINE voba_value_t voba_make_closure_##n                           \
+    (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))
+VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);
 
 /* Local Variables: */
 /* mode:c */
