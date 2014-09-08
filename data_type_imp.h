@@ -617,9 +617,6 @@ VOBA_FOR_EACH(DECLARE_VOBA_MAKE_ARRAY_N,SEMI_COMMA);
     (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))
 VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);
 
-extern voba_value_t voba_modules; // defined in voba_value.c
-extern voba_value_t voba_load_module(const char * filename,voba_value_t module); // defined in voba_value.c
-extern voba_value_t voba_module_path(); // defined in voba_value.c
 /* Local Variables: */
 /* mode:c */
 /* coding: utf-8-unix */

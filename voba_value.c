@@ -30,9 +30,6 @@ DEFINE_CLS(sizeof(voba_la_t),la)
 voba_value_t voba_gf_apply = VOBA_NIL;
 EXEC_ONCE_DO(voba_gf_apply = voba_make_generic_function(););
 
-voba_value_t voba_modules = VOBA_NIL;
-EXEC_ONCE_DO(voba_modules = voba_make_hash(););
-
 voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)
 {
     int n = 0;

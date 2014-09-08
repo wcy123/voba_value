@@ -14,6 +14,23 @@ extern "C" {
 
 #include "voba_str.h"
 #include "data_type_imp.h"
+
+#ifdef __cplusplus
+namespace voba {
+  class exception : std::exception{
+  public:
+    explicit exception(voba_value_t v):value(v){}
+    virtual const char* what() const throw();
+    voba_value_t value;
+  };
+  const char* exception::what() const throw()
+  {
+    static char buf[128];
+    snprintf(buf,128,"exception %ld(0x%lx)",value,value);
+    return buf;
+  }
+}
+#endif    
 void    voba_throw_exception(voba_value_t v);
 #include "data_type_imp.c"
 #ifdef __cplusplus
