@@ -15,6 +15,7 @@ FLAGS += -fPIC
 CFLAGS += -ggdb -O0
 CFLAGS += -std=c99
 CFLAGS += $(FLAGS)
+CFLAGS += -D_BSD_SOURCE # otherwise realpath is not defined.
 
 CXXFLAGS += -std=c++11
 CXXFLAGS += $(FLAGS)
@@ -29,6 +30,8 @@ install: libvoba_value.so
 	install voba_for_each.h $(PREFIX)/voba/include/
 	install data_type_imp.h $(PREFIX)/voba/include/
 	install data_type_imp.c $(PREFIX)/voba/include/
+	install module.h $(PREFIX)/voba/include/
+	install module_end.h $(PREFIX)/voba/include/
 
 libvoba_value.so: voba_value.o  voba_value_cpp.o
 	$(CXX) -shared -Wl,-soname,$@ -o $@ $^  $(LDFLAGS)

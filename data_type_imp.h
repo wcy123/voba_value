@@ -165,6 +165,7 @@ extern voba_value_t voba_cls_short_symbol;
 extern voba_value_t voba_cls_func;
 typedef voba_value_t (*voba_func_t)(voba_value_t self, voba_value_t args);
 INLINE voba_value_t  voba_make_func(voba_func_t);
+INLINE int voba_is_fun(voba_value_t f);
 INLINE voba_func_t  voba_value_to_func(voba_value_t v);
 
 /* class generic_function
@@ -324,10 +325,13 @@ INLINE voba_value_t  voba_array_push(voba_value_t a, voba_value_t v);
 INLINE voba_value_t  voba_array_pop(voba_value_t a);
 INLINE voba_value_t  voba_array_shift(voba_value_t a, voba_value_t v);
 INLINE voba_value_t  voba_array_unshift(voba_value_t a);
+// a is changed, b is not changed.
+INLINE voba_value_t  voba_array_concat(voba_value_t a, voba_value_t b);
 // a and b are untouched, create a new variable array and copy a and b.
 voba_value_t voba_array_fixed_vconcat(voba_value_t a,...);
 INLINE int      voba_is_array(voba_value_t v);
 INLINE int      voba_is_fixed_size_array(voba_value_t v);
+INLINE int      voba_is_var_size_array(voba_value_t v);
 
 /* closure
    =======
@@ -471,9 +475,12 @@ head is the key and tail is the value.
 
  */
 extern voba_value_t voba_cls_hashtable;
-voba_value_t voba_make_hash();
-voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v);
-voba_value_t voba_hash_find(voba_value_t h, voba_value_t k);
+voba_value_t voba_make_hash();// implemented in voba_value.cc
+voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v); // implemented in voba_value.cc
+voba_value_t voba_hash_find(voba_value_t h, voba_value_t k);// implemented in voba_value.cc
+size_t voba_sizeof_hashtable(); // implemented in voba_value.cc
+size_t voba_hashtable_size(voba_value_t h); // implemented in voba_value.cc
+INLINE int voba_is_hashtable(voba_value_t h);
 /*  symbol table
     ============
 
@@ -494,6 +501,13 @@ A symbol table is a user define class.
  */
 extern voba_value_t voba_cls_symbol_table;
 voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
+INLINE int voba_is_symbol_table(voba_value_t v);
+size_t voba_symbol_table_size(voba_value_t h); // implemented in voba_value.cc
+voba_value_t voba_intern_symbol(voba_value_t symbol, voba_value_t h); // implemented in voba_value.cc
+voba_value_t voba_unintern_symbol(voba_value_t symbol, voba_value_t h); // implemented in voba_value.cc
+voba_value_t voba_lookup_symbol(voba_value_t str, voba_value_t h); // implemented in voba_value.cc
+size_t voba_sizeof_symbol_table(); // implemented in voba_value.cc
+size_t voba_symbol_table_size(voba_value_t h); // implemented in voba_value.cc
 /* listarray
    =========
 
@@ -565,6 +579,8 @@ INLINE uint32_t     voba_la_len(voba_value_t la);
 */
 
 extern voba_value_t voba_gf_apply;
+INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args);
+voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in voba_value.c
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a);
 INLINE voba_value_t voba_get_class(voba_value_t v);
 INLINE const char * voba_get_class_name(voba_value_t v);
@@ -601,6 +617,9 @@ VOBA_FOR_EACH(DECLARE_VOBA_MAKE_ARRAY_N,SEMI_COMMA);
     (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))
 VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);
 
+extern voba_value_t voba_modules; // defined in voba_value.c
+extern voba_value_t voba_load_module(const char * filename,voba_value_t module); // defined in voba_value.c
+extern voba_value_t voba_module_path(); // defined in voba_value.c
 /* Local Variables: */
 /* mode:c */
 /* coding: utf-8-unix */

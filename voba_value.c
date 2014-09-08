@@ -2,14 +2,6 @@
 #include <stdarg.h>
 #include "value.h"
 #include "exec_once.h"
-#ifdef __cplusplus
-extern "C" {
-#endif
-size_t voba_hashtable_size();
-size_t voba_symbol_table_size();
-#ifdef __cplusplus
-}
-#endif
 
 
 
@@ -31,14 +23,15 @@ DEFINE_CLS(0,u32)
 DEFINE_CLS(0,i32)
 DEFINE_CLS(0,float)
 DEFINE_CLS(0,short_symbol)
-DEFINE_CLS(voba_hashtable_size(),hashtable)
-DEFINE_CLS(voba_hashtable_size(),symbol_table)
+DEFINE_CLS(voba_sizeof_hashtable(),hashtable)
+DEFINE_CLS(voba_sizeof_symbol_table(),symbol_table)
 DEFINE_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;
 EXEC_ONCE_DO(voba_gf_apply = voba_make_generic_function(););
 
-EXEC_ONCE_START
+voba_value_t voba_modules = VOBA_NIL;
+EXEC_ONCE_DO(voba_modules = voba_make_hash(););
 
 voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)
 {
@@ -75,6 +68,19 @@ voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)
     assert(p2 - p == (len + 1));
     return voba_make_array(p);
 }
+voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...)
+{
+    voba_value_t args[n] ; //= {(voba_value_t)n , 0 };
+    size_t i = 0;
+    args[i++] = (voba_value_t) n;
+    va_list ap;
+    va_start(ap, n);
+    for(; i < n + 1; ++i){
+        args[i] = va_arg(ap,voba_value_t);
+    }
+    va_end(ap);
+    return f(voba_make_func(f),voba_make_array(args));
+}
 /* voba_value_t voba_la_vconcat(voba_value_t la1,...) */
 /* { */
 /*     int n = 0; */
@@ -93,3 +99,7 @@ voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)
 /*     va_end(ap); */
  
 /* } */
+
+
+
+EXEC_ONCE_START

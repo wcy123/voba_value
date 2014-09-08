@@ -25,7 +25,14 @@ void    voba_throw_exception(voba_value_t v);
 // some useful macros
 #define VOBA_FUNC __attribute__((aligned(16)))
 
-#define VOBA_THROW(...) voba_throw_exception(voba_make_string(VOBA_STRCAT(__VA_ARGS__)))
+#define VOBA_THROW(...) voba_throw_exception(                           \
+        voba_make_string(                                               \
+            VOBA_STRCAT(                                                \
+                VOBA_CONST_CHAR(__FILE__),                              \
+                VOBA_CONST_CHAR(":"),                                   \
+                voba_str_fmt_uint32_t(__LINE__,10),                     \
+                VOBA_CONST_CHAR(" error: "),                            \
+                __VA_ARGS__)))
 
 #define VOBA_DEF_ARG(name,args,n,type)                                  \
 if(voba_array_len(args) <= n) {                                         \

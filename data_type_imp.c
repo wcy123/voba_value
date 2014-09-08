@@ -38,6 +38,10 @@ INLINE  voba_value_t voba_make_func(voba_func_t p)
 {
   return voba_from_pointer((void*)((intptr_t)p),VOBA_TYPE_FUNC);
 }
+INLINE int voba_is_fun(voba_value_t v)
+{
+    return voba_get_type1(v) == VOBA_TYPE_FUNC;
+}
 INLINE  voba_func_t voba_value_to_func(voba_value_t v)
 {
   return voba_to_pointer(voba_func_t,v);
@@ -116,7 +120,11 @@ INLINE int voba_is_array(voba_value_t v)
 }
 INLINE int voba_is_fixed_size_array(voba_value_t v)
 {
-  return voba_is_array(v) && voba_to_pointer(voba_value_t*,v)[0] != -1;
+    return voba_is_array(v) && voba_to_pointer(voba_value_t*,v)[0] != -1;
+}
+INLINE int voba_is_var_size_array(voba_value_t v)
+{
+    return voba_is_array(v) && voba_to_pointer(voba_value_t*,v)[0] == -1;    
 }
 INLINE int64_t  v__find_next_capacity(int64_t c)
 {
@@ -213,6 +221,17 @@ INLINE voba_value_t voba_array_unshift(voba_value_t a)
   p[0] = p[0] - 1; // capacity won't be changed.
   memmove(&p[1], &p[2], len * sizeof(voba_value_t));
   return ret;
+}
+INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
+{
+    assert(voba_is_var_size_array(a));
+    assert(voba_is_array(b));
+    // TODO, use memcpy
+    int64_t len = voba_array_len(b);
+    for(int64_t i = 0 ; i < len; ++i){
+        voba_array_push(a,voba_array_at(b,i));
+    }
+    return a;
 }
 // -- closure
 /* INLINE voba_value_t  voba_make_closure_f_a(voba_func_t f, voba_value_t array) */
@@ -347,6 +366,14 @@ INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v)
     assert(voba_is_symbol(s));
     voba_set_tail(s,v);
     return v;
+}
+INLINE int voba_is_hashtable(voba_value_t v)
+{
+    return voba_cls_hashtable == voba_get_class(v);
+}
+INLINE int voba_is_symbol_table(voba_value_t v)
+{
+    return voba_cls_symbol_table == voba_get_class(v);
 }
 INLINE voba_value_t voba_make_generic_function()
 {
@@ -506,11 +533,15 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
     }
     return ret;
 }
+INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args)
+{
+    return f(voba_make_func(f),args);
+}
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
 {
     switch(voba_get_type1(f)){
     case VOBA_TYPE_FUNC:
-        return voba_value_to_func(f)(f,a1);
+        return voba_direct_apply(voba_value_to_func(f),a1);
     case VOBA_TYPE_CLOSURE:
         return voba_closure_func(f)(voba_closure_array(f),a1);
     }
