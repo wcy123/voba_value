@@ -16,6 +16,7 @@ extern "C" {
 #include "data_type_imp.h"
 
 #ifdef __cplusplus
+#include <exception>
 namespace voba {
   class exception : std::exception{
   public:
