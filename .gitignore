@@ -6,3 +6,4 @@ test/test_i8
 .cproject
 .project
 a.*
+compile_voba_header.sh
