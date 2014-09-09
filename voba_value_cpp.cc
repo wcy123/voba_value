@@ -183,8 +183,7 @@ extern "C" size_t voba_symbol_table_size(voba_value_t h)
 extern "C" 
 void voba_throw_exception(voba_value_t v)
 {
-    cerr <<  __FILE__ << ":" << __LINE__ << ": [" << __FUNCTION__<< "] "
-         << static_cast<const char*>(voba_value_to_str(v)->data)
+    cerr << static_cast<const char*>(voba_value_to_str(v)->data)
          << endl;
     throw voba::exception(v);
 }

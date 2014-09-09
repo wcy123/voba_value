@@ -342,6 +342,12 @@ INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t
 {
     return voba_make_symbol_data(symbol_name,(uint32_t)strlen(symbol_name), symbol_table);
 }
+INLINE voba_value_t voba_make_symbol_cstr_with_value(const char * symbol_name, voba_value_t symbol_table, voba_value_t v)
+{
+    voba_value_t ret = voba_make_symbol_data(symbol_name,(uint32_t)strlen(symbol_name), symbol_table);
+    voba_symbol_set_value(ret,v);
+    return ret;
+}
 INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_value_t symbol_table)
 {
     voba_str_t tmp;

@@ -51,6 +51,7 @@ when it is VOBA_TYPE_SMALL,
 #define    VOBA_TYPE_U32          7
 #define    VOBA_TYPE_FLOAT        8
 #define    VOBA_TYPE_SHORT_SYMBOL 9
+#define    VOBA_TYPE_SPECIAL_VALUES 11   // internal used, which is not visible
 #define    VOBA_TYPE_SECRET       10   // internal used, which is not visible
 typedef int64_t voba_value_t;
 INLINE int64_t  voba_get_type1(voba_value_t v);
@@ -242,6 +243,7 @@ TODO: voba_make_symbol_with_value, voba_make_symbol_cstr_with_value
 extern voba_value_t voba_cls_symbol;
 voba_value_t voba_make_symbol(voba_str_t * symbol_name, voba_value_t symbol_table); // implemented in voba_value.cc
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table);
+INLINE voba_value_t voba_make_symbol_cstr_with_value(const char * symbol_name, voba_value_t symbol_table, voba_value_t v);
 INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_value_t symbol_table);
 #define VOBA_SYMBOL(s,table) voba_make_symbol_data(#s,sizeof(#s) -1 , table)
 INLINE voba_value_t voba_is_symbol(voba_value_t v);
@@ -601,8 +603,9 @@ VOBA_SMALL_TYPES(DECLARE_SMALL_TYPE)
 
 // constants
 // NIL don't have any class associated with it.
-#define VOBA_SECRET_VIRTUAL_TABLE (VOBA_TYPE_SMALL + VOBA_SECRET * 8 +  0 * 256)
-
+// #define VOBA_SECRET_VIRTUAL_TABLE (VOBA_TYPE_SMALL + VOBA_SECRET * 8 +  0 * 256)
+#define VOBA_UNDEF (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  1 * 256)
+INLINE int voba_is_undef(voba_value_t v) { return v == VOBA_UNDEF; }
 #define COMMA  ,
 #define SEMI_COMMA ;
 #define SPACE
