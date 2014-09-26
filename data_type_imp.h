@@ -440,6 +440,7 @@ is used. this function regards user data as a opaque data area.
        ((struct point*) user_data_base(v))->y = 100;
 
 */
+extern voba_value_t voba_cls_cls;
 extern voba_value_t voba_cls_user;
 typedef struct vclass_s {
     size_t size;

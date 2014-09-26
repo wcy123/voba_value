@@ -4,7 +4,7 @@
 #include "exec_once.h"
 
 
-
+DEFINE_CLS(0,cls) // it must be defined first
 DEFINE_CLS(0,func)
 DEFINE_CLS(sizeof(voba_value_t),generic_function)
 DEFINE_CLS(0,symbol)

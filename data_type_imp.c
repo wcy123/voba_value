@@ -301,7 +301,7 @@ INLINE void voba_set_tail(voba_value_t p,voba_value_t v)
 }
 INLINE voba_value_t voba_make_class(voba_class_t * vclass)
 {
-    voba_value_t ret = voba_make_user_data(VOBA_NIL,sizeof(voba_class_t*));
+    voba_value_t ret = voba_make_user_data(voba_cls_cls,sizeof(voba_class_t*));
     *(VOBA_USER_DATA_AS(voba_class_t**,ret)) = vclass;
     return ret;
 }

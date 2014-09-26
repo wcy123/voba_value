@@ -25,7 +25,13 @@ struct vtype_equal {
             if(!(voba_is_string(k1) && voba_is_string(k2))){
                 return false;
             }
-            return voba_strcmp(voba_value_to_str(k1),voba_value_to_str(k2)) == 0;
+            bool ret = voba_strcmp(voba_value_to_str(k1),voba_value_to_str(k2)) == 0;
+            if(0) cerr <<  __FILE__ << ":" << __LINE__ << ": [" << __FUNCTION__<< "] "
+                 << "ret "  << ret << " "
+                 << "voba_str_to_cstr(voba_value_to_str(k1)) "  << voba_str_to_cstr(voba_value_to_str(k1)) << " "
+                 << "voba_str_to_cstr(voba_value_to_str(k2)) "  << voba_str_to_cstr(voba_value_to_str(k2)) << " "
+                 << endl;
+            return ret;
         }
 };
 template<typename T>
@@ -64,6 +70,12 @@ voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v)
 voba_value_t voba_hash_find(voba_value_t h, voba_value_t k)
 {
     hash_table_c::iterator it = HASH(h)->find(k);
+    if(0) cerr <<  __FILE__ << ":" << __LINE__ << ": [" << __FUNCTION__<< "] "
+         << hex
+         << "h "  << h << " "
+         << "k "  << k << " "
+         << dec
+         << endl;
     if(it == HASH(h)->end()){
         return VOBA_NIL;
     }
@@ -163,9 +175,9 @@ extern "C" voba_value_t voba_unintern_symbol(voba_value_t symbol, voba_value_t h
 extern "C" voba_value_t voba_lookup_symbol(voba_value_t s, voba_value_t h)
 {
     assert(voba_is_symbol_table(h));
-    assert(voba_is_symbol(s));
+    assert(voba_is_string(s));
     voba_value_t ret = VOBA_NIL;
-    voba_symbol_table_c::iterator it = VOBA_SET(h)->find(s);
+    voba_symbol_table_c::iterator it = VOBA_SET(h)->find(voba_make_symbol(voba_value_to_str(s),VOBA_NIL));
     if(it != VOBA_SET(h)->end()){
         ret = *it;
     }
