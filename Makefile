@@ -2,7 +2,7 @@ PREFIX  = ../build
 INCLUDE += -I .
 INCLUDE += -I ../exec_once
 INCLUDE += -I ../voba_str
-INCLUDE += -I ../../vhash
+INCLUDE += -I ../vhash
 INCLUDE += -I ~/d/other-working/GC/bdwgc/include
 GC_PATH := /home/chunywan/d/other-working/GC/bdwgc/mybuild
 
