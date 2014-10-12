@@ -586,6 +586,7 @@ INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args);
 voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in voba_value.c
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a);
 INLINE voba_value_t voba_get_class(voba_value_t v);
+INLINE int voba_is_a(voba_value_t v, voba_value_t cls);
 INLINE const char * voba_get_class_name(voba_value_t v);
 // small type
 #define VOBA_SMALL_TYPES(XX)                                   \

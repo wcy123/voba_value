@@ -592,6 +592,10 @@ INLINE voba_value_t voba_get_class(voba_value_t v)
     }
     return 0;
 }
+INLINE int voba_is_a(voba_value_t v, voba_value_t cls)
+{
+    return voba_get_class(v) == cls;
+}
 INLINE  const char * voba_get_class_name(voba_value_t v1)
 {
     voba_value_t s  = voba_get_class(v1);
