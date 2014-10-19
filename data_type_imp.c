@@ -568,6 +568,15 @@ INLINE voba_value_t voba_get_class(voba_value_t v)
     case VOBA_TYPE_SMALL:
         switch(voba_get_type2(v)){
             VOBA_SMALL_TYPES(VOBA_GET_CLASS_SMALL)
+        case VOBA_TYPE_SPECIAL_VALUES:
+            switch(v){
+            case VOBA_UNDEF:
+                return voba_cls_undef;
+                break;
+            default:
+                assert(0);
+            }
+            break;
         default:
             assert(0); // not implemented.
         }

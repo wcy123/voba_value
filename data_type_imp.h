@@ -145,6 +145,7 @@ NOT IMPLEMENTED YET.
 
  */
 extern voba_value_t voba_cls_short_symbol;
+extern voba_value_t voba_cls_undef;
 
 /* class function
    ==============

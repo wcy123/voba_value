@@ -23,6 +23,7 @@ DEFINE_CLS(0,u32)
 DEFINE_CLS(0,i32)
 DEFINE_CLS(0,float)
 DEFINE_CLS(0,short_symbol)
+DEFINE_CLS(0,undef);
 DEFINE_CLS(voba_sizeof_hashtable(),hashtable)
 DEFINE_CLS(voba_sizeof_symbol_table(),symbol_table)
 DEFINE_CLS(sizeof(voba_la_t),la)
