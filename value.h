@@ -53,20 +53,23 @@ voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch);
                 VOBA_CONST_CHAR(": error: "),                           \
                 __VA_ARGS__)))
 
-#define VOBA_DEF_ARG(name,args,n,type)                                  \
+#define VOBA_DEF_ARG3(name,args,n)                                      \
 if(voba_array_len(args) <= n) {                                         \
     VOBA_THROW(VOBA_CONST_CHAR("unexpected number of argument: "),      \
-               voba_str_fmt_uint32_t(n+1,10),                             \
-               VOBA_CONST_CHAR(" expected, but given "),                 \
+               voba_str_fmt_uint32_t(n+1,10),                           \
+               VOBA_CONST_CHAR(" expected, but given "),                \
                voba_str_fmt_uint32_t(voba_array_len(args),10));         \
 }                                                                       \
-voba_value_t name = voba_array_at(args,n);                              \
-if(!type(name)){                                                        \
-    VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,            \
-               voba_str_fmt_uint32_t(n,10),                             \
-               VOBA_CONST_CHAR(": `" #type "` expected, but given value is 0x"), \
-               voba_str_fmt_uint64_t(name,10));                         \
-}
+voba_value_t name = voba_array_at(args,n);                              
+
+#define VOBA_DEF_ARG4(name,args,n,type)                                  \
+    VOBA_DEF_ARG3(name,args,n);                                         \
+    if(!type(name)){                                                    \
+        VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
+                   voba_str_fmt_uint32_t(n,10),                         \
+                   VOBA_CONST_CHAR(": `" #type "` expected, but given value is 0x"), \
+                   voba_str_fmt_uint64_t(name,10));                     \
+    }
 
 #define VOBA_DEF_CVAR(name,self,n)                                      \
     voba_value_t name = voba_array_at(self,n)
