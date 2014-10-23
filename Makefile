@@ -12,7 +12,14 @@ CXXFLAGS += $(INCLUDE)
 FLAGS += -Wall -Werror
 FLAGS += -fPIC
 
-CFLAGS += -ggdb -O0
+ifneq ($(CONFIG),release)
+	CFLAGS += -ggdb -O0
+	CXXFLAGS += -ggdb -O0
+else
+	CFLAGS += -O3 -DNDEBUG
+	CXXFLAGS += -O3 -DNDEBUG
+endif
+
 CFLAGS += -std=c99
 CFLAGS += $(FLAGS)
 CFLAGS += -D_BSD_SOURCE # otherwise realpath is not defined.
@@ -20,7 +27,8 @@ CFLAGS += -D_BSD_SOURCE # otherwise realpath is not defined.
 CXXFLAGS += -std=c++11
 CXXFLAGS += $(FLAGS)
 
-LDFLAGS  += -L $(GC_PATH) -Wl,-rpath,$(GC_PATH) -lgcmt-dll
+LDFLAGS  += -L $(GC_PATH)  -lgcmt-dll
+# -Wl,-rpath,$(GC_PATH)
 
 all: install
 

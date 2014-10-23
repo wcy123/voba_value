@@ -425,7 +425,9 @@ INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur)
 }
 INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_t len)
 {
+#ifndef NDEBUG
     uint64_t a_len = ((uint64_t) voba_array_len(array));
+#endif
     assert(cur + len <= a_len);
     uint32_t end = (uint32_t) (cur + len);
     return voba__make_la(cur,end,array);

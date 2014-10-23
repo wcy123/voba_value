@@ -158,7 +158,11 @@ extern "C" voba_value_t voba_intern_symbol(voba_value_t symbol, voba_value_t h)
                     voba_str_fmt_int64_t(h,16),
                     NULL)));
     }else{
+#ifndef NDEBUG
         voba_value_t v = *(VOBA_SET(h)->insert(symbol));
+#else
+        VOBA_SET(h)->insert(symbol);
+#endif
         assert(v == symbol);
         ret = symbol;
     }

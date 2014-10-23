@@ -73,7 +73,7 @@ if(!type(name)){                                                        \
 
 #define DEFINE_CLS(xsize,xname)                                         \
     voba_value_t voba_cls_##xname             = VOBA_NIL;               \
-    static void voba_cls_##xname##_init()                               \
+    EXEC_ONCE_PROGN                                                     \
     {                                                                   \
         static voba_class_t cls = { 0, #xname  };                       \
         cls.size = xsize;                                               \
@@ -83,8 +83,8 @@ if(!type(name)){                                                        \
                               voba_make_class(&cls));                   \
                                                                         \
         return;                                                         \
-    }                                                                   \
-    EXEC_ONCE(voba_cls_##xname##_init)
+    }                                                                   
+
 
 /* Local Variables: */
 /* mode:c */

@@ -1,6 +1,7 @@
 #define INLINE
 #include <stdarg.h>
 #include "value.h"
+#define EXEC_ONCE_TU_NAME "voba_value"
 #include "exec_once.h"
 
 
@@ -100,4 +101,4 @@ voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...)
 
 
 
-EXEC_ONCE_START
+
