@@ -47,7 +47,7 @@ typedef voba::unordered_map<voba_value_t, voba_value_t, vtype_hasher, vtype_equa
 #define HASH(r)  (VOBA_USER_DATA_AS(hash_table_c*,(r)))
 voba_value_t voba_make_hash()
 {
-    voba_value_t r = voba_make_user_data(voba_cls_hashtable, sizeof(hash_table_c));
+    voba_value_t r = voba_make_user_data(voba_cls_hashtable);
     ::new(HASH(r)) hash_table_c();
     return r;
 }
@@ -121,7 +121,7 @@ typedef voba::set<voba_value_t, symbol_table_hasher, symbol_table_equal, my_allo
 #define VOBA_SET(r)  (VOBA_USER_DATA_AS(voba_symbol_table_c*,(r)))
 extern "C" voba_value_t voba_make_symbol_table()
 {
-    voba_value_t r = voba_make_user_data(voba_cls_symbol_table, sizeof(voba_symbol_table_c));
+    voba_value_t r = voba_make_user_data(voba_cls_symbol_table);
     ::new(VOBA_SET(r)) voba_symbol_table_c();
     return r;
 }

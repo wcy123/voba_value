@@ -299,24 +299,31 @@ INLINE void voba_set_tail(voba_value_t p,voba_value_t v)
 {
     voba_to_pointer(voba_value_t*,p)[1] = v;
 }
-INLINE voba_value_t voba_make_class(voba_class_t * vclass)
+INLINE voba_value_t voba_make_cls(size_t size, const char * name)
 {
-    voba_value_t ret = voba_make_user_data(voba_cls_cls,sizeof(voba_class_t*));
-    *(VOBA_USER_DATA_AS(voba_class_t**,ret)) = vclass;
+    voba_value_t ret = voba_make_user_data(voba_cls_cls);
+    VOBA_CLS(ret)->name = name;
+    VOBA_CLS(ret)->size = size;
     return ret;
 }
-INLINE voba_value_t voba_make_user_data(voba_value_t cls, size_t size)
+INLINE voba_value_t* voba_allocate_user_data(size_t s)
 {
-  // size doesn't include the cls function, so allocate a room for it.
-  size = (size+sizeof(voba_value_t));
-  if(size % 16 !=0){
-    // size must be 16 bytes alignment.
-    size = (size/16 + 1) * 16;
-  }
-  voba_value_t * p = (voba_value_t*)GC_MALLOC(size);
-  assert(p);
-  p[0] = cls;
-  return voba_from_pointer(p,VOBA_TYPE_USER);
+    size_t size = (s+sizeof(voba_value_t));
+    if(size % 16 !=0){
+        // size must be 16 bytes alignment.
+        size = (size/16 + 1) * 16;
+    }
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(size);
+    assert(p);
+    return p;
+}
+INLINE voba_value_t voba_make_user_data(voba_value_t cls)
+{
+    // size doesn't include the cls function, so allocate a room for it.
+    assert(VOBA_CLS(cls)->size > 0);
+    voba_value_t * p = voba_allocate_user_data(VOBA_CLS(cls)->size);
+    p[0] = cls;
+    return voba_from_pointer(p,VOBA_TYPE_USER);
 }
 INLINE voba_value_t voba_user_data_class(voba_value_t v)
 {
@@ -383,7 +390,7 @@ INLINE int voba_is_symbol_table(voba_value_t v)
 }
 INLINE voba_value_t voba_make_generic_function()
 {
-    voba_value_t ret = voba_make_user_data(voba_cls_generic_function,sizeof(voba_value_t));
+    voba_value_t ret = voba_make_user_data(voba_cls_generic_function);
     *(VOBA_USER_DATA_AS(voba_value_t*,ret)) = voba_make_hash();
     return ret;
 }
@@ -397,6 +404,7 @@ INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_va
 }
 INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 {
+    assert(voba_is_a(gf,voba_cls_generic_function));
     voba_value_t ret = voba_hash_find(voba_gf_hash_table(gf),cls);
     if(!voba_is_nil(ret)){
         ret = voba_tail(ret);
@@ -405,7 +413,7 @@ INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 }
 INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
 {
-    voba_value_t r = voba_make_user_data(voba_cls_la,sizeof(voba_la_t));
+    voba_value_t r = voba_make_user_data(voba_cls_la);
     VOBA_LA(r)->cur = cur;
     VOBA_LA(r)->end = end;
     VOBA_LA(r)->array = array;
@@ -593,7 +601,7 @@ INLINE voba_value_t voba_get_class(voba_value_t v)
     case VOBA_TYPE_PAIR:
         return voba_cls_pair;
     case VOBA_TYPE_USER:
-        return voba_user_data_class(v)?voba_user_data_class(v):voba_cls_user;
+        return voba_user_data_class(v);
     case VOBA_TYPE_STRING:
         return voba_cls_str;
     case VOBA_TYPE_NIL:
@@ -610,9 +618,8 @@ INLINE int voba_is_a(voba_value_t v, voba_value_t cls)
 INLINE  const char * voba_get_class_name(voba_value_t v1)
 {
     voba_value_t s  = voba_get_class(v1);
-    voba_value_t v = voba_symbol_value(s);
-    voba_class_t ** x = VOBA_USER_DATA_AS(voba_class_t**, v);
-    return (*x)->name;
+    voba_cls_t * p = VOBA_CLS(s);
+    return p->name;
 }
 // small type
 // ----------- boolean ------------------

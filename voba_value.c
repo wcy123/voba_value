@@ -4,15 +4,13 @@
 #define EXEC_ONCE_TU_NAME "voba_value"
 #include "exec_once.h"
 
-
-DEFINE_CLS(0,cls) // it must be defined first
+// it is defined in a special way, to avoid chicken-egg problem
+voba_value_t voba_cls_cls = VOBA_UNDEF;
 DEFINE_CLS(0,func)
-DEFINE_CLS(sizeof(voba_value_t),generic_function)
 DEFINE_CLS(0,symbol)
 DEFINE_CLS(0,array)
 DEFINE_CLS(0,closure)
 DEFINE_CLS(0,pair)
-DEFINE_CLS(sizeof(voba_class_t),user)
 DEFINE_CLS(0,str)
 DEFINE_CLS(0,nil)
 DEFINE_CLS(0,bool)
@@ -27,6 +25,7 @@ DEFINE_CLS(0,short_symbol)
 DEFINE_CLS(0,undef);
 DEFINE_CLS(voba_sizeof_hashtable(),hashtable)
 DEFINE_CLS(voba_sizeof_symbol_table(),symbol_table)
+DEFINE_CLS(sizeof(voba_value_t),generic_function)
 DEFINE_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;

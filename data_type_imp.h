@@ -418,7 +418,7 @@ INLINE voba_str_t* voba_value_to_str(voba_value_t s);
 | .     61 bits value                   | 100 |
 +-|------------------+------------------------+
   |    +----------------+------------+          +----------------+------------+
-  `->  |  voba_class_t  *        .---|--------> |    .      size_t size       |
+  `->  |  voba_value_t  *        .---|--------> |    .      size_t size       |
        +----------------+------------+          +----------------+------------+
        |       data ...  unknow size | \        |  const char * name          |
        +-----------------------------+  |       +-----------------------------+
@@ -442,13 +442,14 @@ is used. this function regards user data as a opaque data area.
 
 */
 extern voba_value_t voba_cls_cls;
-extern voba_value_t voba_cls_user;
-typedef struct vclass_s {
+typedef struct voba_cls_s voba_cls_t;
+struct voba_cls_s {
     size_t size;
     const char * name;
-} voba_class_t;
-INLINE voba_value_t voba_make_class(voba_class_t * vclass); // class is a unique symbol, typically un-interned.
-INLINE voba_value_t voba_make_user_data(voba_value_t vclass, size_t size);
+};
+#define VOBA_CLS(s)  VOBA_USER_DATA_AS(voba_cls_t *,s)
+INLINE voba_value_t voba_make_cls(size_t size, const char * name);
+INLINE voba_value_t voba_make_user_data(voba_value_t cls);
 INLINE voba_value_t voba_user_data_class(voba_value_t v);
 INLINE void*   voba_user_data_base(voba_value_t v);
 #define VOBA_USER_DATA_AS(type,v) ((type)(voba_user_data_base(v)))
