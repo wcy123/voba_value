@@ -42,7 +42,7 @@ voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)
     for(n = 1, s = va_arg(ap,voba_value_t);
         n < 100 && !voba_is_nil(s);
         n++, s = va_arg(ap,voba_value_t)){
-        assert(voba_is_array(s));
+        assert(voba_is_a(s,voba_cls_array));
         args[n] = s;
     }
     assert(n!=100);

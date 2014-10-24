@@ -167,7 +167,6 @@ extern voba_value_t voba_cls_undef;
 extern voba_value_t voba_cls_func;
 typedef voba_value_t (*voba_func_t)(voba_value_t self, voba_value_t args);
 INLINE voba_value_t  voba_make_func(voba_func_t);
-INLINE int voba_is_fun(voba_value_t f);
 INLINE voba_func_t  voba_value_to_func(voba_value_t v);
 
 /* class generic_function
@@ -247,7 +246,6 @@ INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t
 INLINE voba_value_t voba_make_symbol_cstr_with_value(const char * symbol_name, voba_value_t symbol_table, voba_value_t v);
 INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_value_t symbol_table);
 #define VOBA_SYMBOL(s,table) voba_make_symbol_data(#s,sizeof(#s) -1 , table)
-INLINE voba_value_t voba_is_symbol(voba_value_t v);
 INLINE voba_value_t voba_symbol_name(voba_value_t v);
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
@@ -332,7 +330,6 @@ INLINE voba_value_t  voba_array_unshift(voba_value_t a);
 INLINE voba_value_t  voba_array_concat(voba_value_t a, voba_value_t b);
 // a and b are untouched, create a new variable array and copy a and b.
 voba_value_t voba_array_fixed_vconcat(voba_value_t a,...);
-INLINE int      voba_is_array(voba_value_t v);
 INLINE int      voba_is_fixed_size_array(voba_value_t v);
 INLINE int      voba_is_var_size_array(voba_value_t v);
 
@@ -367,7 +364,7 @@ INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i);
 INLINE voba_func_t  voba_closure_func(voba_value_t c);
 INLINE voba_value_t voba_closure_array(voba_value_t c);
 INLINE voba_value_t voba_closure_len(voba_value_t c);
-INLINE int voba_is_closure(voba_value_t v);
+
 
 /* pair
    ====
@@ -388,7 +385,7 @@ extern voba_value_t voba_cls_pair;
 #define voba_setcar voba_set_head
 #define voba_setcdr voba_setcdr
 INLINE voba_value_t  voba_make_pair(voba_value_t h,voba_value_t t);
-INLINE voba_value_t  voba_is_pair(voba_value_t p);
+
 INLINE voba_value_t  voba_head(voba_value_t p);
 INLINE voba_value_t  voba_tail(voba_value_t p);
 INLINE void voba_set_head(voba_value_t p,voba_value_t v);
@@ -410,7 +407,6 @@ INLINE void voba_set_tail(voba_value_t p,voba_value_t v);
 extern voba_value_t voba_cls_str;
 INLINE voba_value_t  voba_make_string(voba_str_t* s);
 INLINE voba_value_t  voba_make_cstr(const char * s);
-INLINE int      voba_is_string(voba_value_t s);
 INLINE voba_str_t* voba_value_to_str(voba_value_t s);
 /* user data */
 /*
@@ -485,7 +481,6 @@ voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v); /
 voba_value_t voba_hash_find(voba_value_t h, voba_value_t k);// implemented in voba_value.cc
 size_t voba_sizeof_hashtable(); // implemented in voba_value.cc
 size_t voba_hashtable_size(voba_value_t h); // implemented in voba_value.cc
-INLINE int voba_is_hashtable(voba_value_t h);
 /*  symbol table
     ============
 
@@ -506,7 +501,6 @@ A symbol table is a user define class.
  */
 extern voba_value_t voba_cls_symbol_table;
 voba_value_t voba_make_symbol_table();  // implemented in voba_value.cc
-INLINE int voba_is_symbol_table(voba_value_t v);
 size_t voba_symbol_table_size(voba_value_t h); // implemented in voba_value.cc
 voba_value_t voba_intern_symbol(voba_value_t symbol, voba_value_t h); // implemented in voba_value.cc
 voba_value_t voba_unintern_symbol(voba_value_t symbol, voba_value_t h); // implemented in voba_value.cc
@@ -567,7 +561,6 @@ INLINE voba_value_t voba_la_copy(voba_value_t la);
 // associated with the new array
 INLINE voba_value_t voba_la_concat(voba_value_t la1,voba_value_t la2);
 voba_value_t voba_la_vconcat(voba_value_t la1,...);
-INLINE int voba_is_la(voba_value_t la);
 INLINE uint32_t     voba_la_len(voba_value_t la);
 /* apply
    =====

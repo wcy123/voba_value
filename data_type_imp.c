@@ -24,23 +24,15 @@ INLINE voba_value_t voba_make_cstr(const char * s)
 {
   return voba_make_string(voba_str_from_cstr(s));
 }
-INLINE int      voba_is_string(voba_value_t v)
-{
-    return voba_get_type1(v) == VOBA_TYPE_STRING;
-}
 INLINE voba_str_t* voba_value_to_str(voba_value_t s)
 {
-    assert(voba_is_string(s));
+    assert(voba_is_a(s,voba_cls_str));
     return voba_to_pointer(voba_str_t*,s);
 }
 // ------------ funcp ----------------------  
 INLINE  voba_value_t voba_make_func(voba_func_t p)
 {
   return voba_from_pointer((void*)((intptr_t)p),VOBA_TYPE_FUNC);
-}
-INLINE int voba_is_fun(voba_value_t v)
-{
-    return voba_get_type1(v) == VOBA_TYPE_FUNC;
 }
 INLINE  voba_func_t voba_value_to_func(voba_value_t v)
 {
@@ -95,7 +87,7 @@ INLINE int64_t voba_array_capacity(voba_value_t v)
 }
 INLINE int64_t voba_array_len(voba_value_t v)
 {
-    assert(voba_is_array(v));
+    assert(voba_is_a(v,voba_cls_array));
   return voba_is_fixed_size_array(v)?
     (voba_value_to_c_array(v)[0])
     :
@@ -114,17 +106,13 @@ INLINE voba_value_t  voba_array_set(voba_value_t a,int64_t i,voba_value_t v)
 {
   return voba_array_base(a)[i] = v;
 }
-INLINE int voba_is_array(voba_value_t v)
-{
-  return voba_get_type1(v) == VOBA_TYPE_ARRAY;
-}
 INLINE int voba_is_fixed_size_array(voba_value_t v)
 {
-    return voba_is_array(v) && voba_to_pointer(voba_value_t*,v)[0] != -1;
+    return voba_is_a(v,voba_cls_array) && voba_to_pointer(voba_value_t*,v)[0] != -1;
 }
 INLINE int voba_is_var_size_array(voba_value_t v)
 {
-    return voba_is_array(v) && voba_to_pointer(voba_value_t*,v)[0] == -1;    
+    return voba_is_a(v,voba_cls_array) && voba_to_pointer(voba_value_t*,v)[0] == -1;    
 }
 INLINE int64_t  v__find_next_capacity(int64_t c)
 {
@@ -225,7 +213,7 @@ INLINE voba_value_t voba_array_unshift(voba_value_t a)
 INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
 {
     assert(voba_is_var_size_array(a));
-    assert(voba_is_array(b));
+    assert(voba_is_a(b,voba_cls_array));
     // TODO, use memcpy
     int64_t len = voba_array_len(b);
     for(int64_t i = 0 ; i < len; ++i){
@@ -243,31 +231,27 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
 /*   p[1] = p[1] & 0xFFFFFFFF; // remove capacity if any. */
 /*   return voba_from_pointer((void*)p,VOBA_TYPE_CLOSURE); */
 /* } */
-INLINE int voba_is_closure(voba_value_t v)
-{
-    return voba_get_type1(v) == VOBA_TYPE_CLOSURE;
-}
 // return int64_t because voba_value_t is int64_t
 INLINE int64_t voba_closure_len(voba_value_t c)
 {
-    assert(voba_is_closure(c));
+    assert(voba_is_a(c,voba_cls_closure));
     return voba_to_pointer(voba_value_t*, c)[1];
  
 }
 INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i)
 {
-    assert(voba_is_closure(c));
+    assert(voba_is_a(c,voba_cls_closure));
     assert(((int64_t)i) < voba_closure_len(c));
     return voba_to_pointer(voba_value_t*, c)[i + 2]; // +2, skip func and size.
 }
 INLINE voba_value_t voba_closure_array(voba_value_t c)
 {
-    assert(voba_is_closure(c));
+    assert(voba_is_a(c,voba_cls_closure));
     return voba_make_array(&(voba_to_pointer(voba_value_t*, c)[1])); // +1, only skip func
 }
 INLINE voba_func_t voba_closure_func(voba_value_t c)
 {
-    assert(voba_is_closure(c));
+    assert(voba_is_a(c,voba_cls_closure));
     return (voba_func_t)voba_to_pointer(voba_value_t*,c)[0];
 }
 // ---------- pair -----------------------
@@ -278,10 +262,6 @@ INLINE voba_value_t  voba_make_pair(voba_value_t h,voba_value_t t)
   p[0] = h;
   p[1] = t;
   return voba_from_pointer(p,VOBA_TYPE_PAIR);
-}
-INLINE voba_value_t  voba_is_pair(voba_value_t p)
-{
-  return voba_get_type1(p) == VOBA_TYPE_PAIR;
 }
 INLINE voba_value_t  voba_head(voba_value_t p)
 {
@@ -341,10 +321,6 @@ INLINE voba_value_t voba__make_symbol_lowlevel(voba_value_t symbol_name, voba_va
     p[1] = symbol_value;
     return voba_from_pointer(p,VOBA_TYPE_SYMBOL);
 }
-INLINE voba_value_t voba_is_symbol(voba_value_t v)
-{
-  return voba_get_type1(v) == VOBA_TYPE_SYMBOL;
-}
 INLINE voba_value_t voba_make_symbol_cstr(const char * symbol_name, voba_value_t symbol_table)
 {
     return voba_make_symbol_data(symbol_name,(uint32_t)strlen(symbol_name), symbol_table);
@@ -366,23 +342,19 @@ INLINE voba_value_t voba_make_symbol_data(const char * data, uint32_t len, voba_
 }
 INLINE voba_value_t voba_symbol_name(voba_value_t v)
 {
-    assert(voba_is_symbol(v));
+    assert(voba_is_a(v,voba_cls_symbol));
     return voba_head(v);
 }
 INLINE voba_value_t voba_symbol_value(voba_value_t v)
 {
-    assert(voba_is_symbol(v));
+    assert(voba_is_a(v,voba_cls_symbol));
     return voba_tail(v);
 }
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v)
 {
-    assert(voba_is_symbol(s));
+    assert(voba_is_a(s,voba_cls_symbol));
     voba_set_tail(s,v);
     return v;
-}
-INLINE int voba_is_hashtable(voba_value_t v)
-{
-    return voba_cls_hashtable == voba_get_class(v);
 }
 INLINE int voba_is_symbol_table(voba_value_t v)
 {
@@ -442,7 +414,7 @@ INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_
 }
 INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t x)
 {
-    assert(voba_is_la(la));
+    assert(voba_is_a(la,voba_cls_la));
     uint32_t end = VOBA_LA(la)->end;
     voba_value_t a = VOBA_LA(la)->array;
     uint32_t a_len = ( (uint32_t) voba_array_len(a));
@@ -457,7 +429,7 @@ INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t x)
 }
 INLINE voba_value_t voba_la_car(voba_value_t la)
 {
-    assert(voba_is_la(la));
+    assert(voba_is_a(la,voba_cls_la));
     uint32_t cur = VOBA_LA(la)->cur;
     voba_value_t a = VOBA_LA(la)->array;
 #ifndef NDEBUG
@@ -469,7 +441,7 @@ INLINE voba_value_t voba_la_car(voba_value_t la)
 }
 INLINE voba_value_t voba_la_cdr(voba_value_t la)
 {
-    assert(voba_is_la(la));
+    assert(voba_is_a(la,voba_cls_la));
     uint32_t cur = VOBA_LA(la)->cur;
     uint32_t end = VOBA_LA(la)->end;
 #ifndef NDEBUG
@@ -489,12 +461,12 @@ INLINE voba_value_t voba_la_nil()
 }
 INLINE voba_value_t voba_la_copy(voba_value_t la)
 {
-    assert(voba_is_la(la));
+    assert(voba_is_a(la,voba_cls_la));
     return voba__make_la(VOBA_LA(la)->cur,VOBA_LA(la)->end,VOBA_LA(la)->array);
 }
 INLINE uint32_t voba_la_len(voba_value_t la)
 {
-    assert(voba_is_la(la));
+    assert(voba_is_a(la,voba_cls_la));
     assert(VOBA_LA(la)->end >= VOBA_LA(la)->cur);
     return VOBA_LA(la)->end - VOBA_LA(la)->cur;
 }
@@ -515,12 +487,8 @@ INLINE voba_value_t voba_la_concat(voba_value_t la1,voba_value_t la2)
 }
 INLINE int voba_la_is_nil(voba_value_t la)
 {
-    assert(voba_is_la(la));
+    assert(voba_is_a(la,voba_cls_la));
     return voba_la_len(la) == 0;
-}
-INLINE int voba_is_la(voba_value_t la)
-{
-    return (voba_cls_la == voba_get_class(la));
 }
 INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
 {

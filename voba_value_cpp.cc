@@ -8,7 +8,7 @@ static uint32_t SuperFastHash (const char * data, int len);
 struct vtype_hasher {
     size_t operator() (const voba_value_t key)
         {
-            if(!voba_is_string(key)){
+            if(!voba_is_a(key,voba_cls_str)){
                 return (key>>3);
             }else{
                 voba_str_t * s = voba_value_to_str(key);
@@ -22,7 +22,7 @@ struct vtype_equal {
             if(k1 == k2){
                 return true;
             }
-            if(!(voba_is_string(k1) && voba_is_string(k2))){
+            if(!(voba_is_a(k1,voba_cls_str) && voba_is_a(k2,voba_cls_str))){
                 return false;
             }
             bool ret = voba_strcmp(voba_value_to_str(k1),voba_value_to_str(k2)) == 0;
@@ -87,13 +87,13 @@ extern "C" size_t voba_sizeof_hashtable()
 }
 extern "C" size_t voba_hashtable_size(voba_value_t h)
 {
-    assert(voba_is_hashtable(h));
+    assert(voba_is_a(h,voba_cls_hashtable));
     return HASH(h)->size();
 }
 struct symbol_table_hasher {
     size_t operator() (const voba_value_t k1)
         {
-            assert(voba_is_symbol(k1));
+            assert(voba_is_a(k1,voba_cls_symbol));
             return SuperFastHash(voba_value_to_str(voba_symbol_name(k1))->data,
                                  voba_value_to_str(voba_symbol_name(k1))->len);
         }
@@ -101,8 +101,8 @@ struct symbol_table_hasher {
 struct symbol_table_equal {
     bool operator() (const voba_value_t k1, const voba_value_t k2) const
         {
-            assert(k1==0 || k1 == 1 || voba_is_symbol(k1));
-            assert(k2==0 || k2 == 1 || voba_is_symbol(k2));
+            assert(k1==0 || k1 == 1 || voba_is_a(k1,voba_cls_symbol));
+            assert(k2==0 || k2 == 1 || voba_is_a(k2,voba_cls_symbol));
             if(k1 == k2){
                 return true;
             }
@@ -127,7 +127,7 @@ extern "C" voba_value_t voba_make_symbol_table()
 }
 extern "C" voba_value_t voba_make_symbol(voba_str_t * name, voba_value_t h)
 {
-    assert(voba_is_nil(h) || voba_is_symbol_table(h));
+    assert(voba_is_nil(h) || voba_is_a(h,voba_cls_symbol_table));
     // create an un-interned symbol, with a symbol value NIL
     voba_value_t v = voba__make_symbol_lowlevel(voba_make_string(voba_strdup(name)),VOBA_NIL);
     if(!voba_is_nil(h)){
@@ -145,7 +145,7 @@ extern "C" voba_value_t voba_make_symbol(voba_str_t * name, voba_value_t h)
 }
 extern "C" voba_value_t voba_intern_symbol(voba_value_t symbol, voba_value_t h)
 {
-    assert(voba_is_symbol_table(h));
+    assert(voba_is_a(h,voba_cls_symbol_table));
     voba_value_t ret = VOBA_NIL;
     voba_symbol_table_c::iterator it = VOBA_SET(h)->find(symbol);
     if(it != VOBA_SET(h)->end()){
@@ -170,16 +170,16 @@ extern "C" voba_value_t voba_intern_symbol(voba_value_t symbol, voba_value_t h)
 }
 extern "C" voba_value_t voba_unintern_symbol(voba_value_t symbol, voba_value_t h)
 {
-    assert(voba_is_symbol_table(h));
-    assert(voba_is_symbol(symbol));
+    assert(voba_is_a(h,voba_cls_symbol_table));
+    assert(voba_is_a(symbol,voba_cls_symbol));
     voba_value_t ret = VOBA_NIL;
     VOBA_SET(h)->erase(symbol);
     return ret;
 }
 extern "C" voba_value_t voba_lookup_symbol(voba_value_t s, voba_value_t h)
 {
-    assert(voba_is_symbol_table(h));
-    assert(voba_is_string(s));
+    assert(voba_is_a(h,voba_cls_symbol_table));
+    assert(voba_is_a(s,voba_cls_str));
     voba_value_t ret = VOBA_NIL;
     voba_symbol_table_c::iterator it = VOBA_SET(h)->find(voba_make_symbol(voba_value_to_str(s),VOBA_NIL));
     if(it != VOBA_SET(h)->end()){
@@ -193,7 +193,7 @@ extern "C" size_t voba_sizeof_symbol_table()
 }
 extern "C" size_t voba_symbol_table_size(voba_value_t h)
 {
-    assert(voba_is_symbol_table(h));
+    assert(voba_is_a(h,voba_cls_symbol_table));
     return VOBA_SET(h)->size();
 }
 extern "C" 
