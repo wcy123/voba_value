@@ -10,6 +10,33 @@ INLINE int voba_eq(voba_value_t a,voba_value_t b)
 {
   return a == b;
 }
+INLINE int voba_eql(voba_value_t a,voba_value_t b)
+{
+    voba_value_t ret = 0;
+    if(voba_eq(a,b)){
+        ret = 1;
+    }else{
+        voba_value_t cls1 = voba_get_class(a);
+        voba_value_t cls2 = voba_get_class(b);
+        if(voba_is_int(a) && voba_is_int(b)){
+            int64_t a1 = voba_int_value_to_i64(a);
+            int64_t b1 = voba_int_value_to_i64(b);
+            if(a1 == b1){
+                ret = 1;
+            }
+        }else if(voba_eq(cls1,cls2)){
+            if(voba_eq(cls1, voba_cls_str)){
+                ret = voba_strcmp(voba_value_to_str(a),
+                                  voba_value_to_str(b)) == 0;
+            }else{
+                ret = 0;
+            }
+        }else{
+            ret = 0;
+        }
+    }
+    return ret;
+}
 INLINE int voba_is_nil(voba_value_t p) 
 { 
   return voba_eq(p,VOBA_NIL);
@@ -360,11 +387,12 @@ INLINE int voba_is_symbol_table(voba_value_t v)
 {
     return voba_cls_symbol_table == voba_get_class(v);
 }
-INLINE voba_value_t voba_make_generic_function()
+INLINE voba_value_t voba_make_generic_function(const char * name)
 {
     voba_value_t ret = voba_make_user_data(voba_cls_generic_function);
     VOBA_GF(ret)->hash = voba_make_hash();
     VOBA_GF(ret)->fun = (voba_func_t)0;
+    VOBA_GF(ret)->name = name;
     return ret;
 }
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
@@ -496,11 +524,20 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
     voba_func_t ret = NULL;
     if(voba_is_a(f,voba_cls_generic_function) &&
        voba_array_len(a1) >= 1){
-        voba_value_t vf = voba_gf_lookup(f,voba_get_class(voba_array_at(a1,0)));
+        voba_value_t cls = voba_get_class(voba_array_at(a1,0));
+        voba_value_t vf = voba_gf_lookup(f,cls);
         if(voba_get_type1(vf) == VOBA_TYPE_FUNC){
             ret = voba_value_to_func(vf);
         }else{
-            voba_throw_exception(voba_make_string(voba_str_from_cstr("vfunc is not found")));
+            voba_throw_exception(
+                voba_make_string(
+                    VOBA_STRCAT(
+                        VOBA_CONST_CHAR("vfunc `"),
+                        voba_str_from_cstr(VOBA_GF(f)->name),
+                        VOBA_CONST_CHAR("' is not found for cls `"),
+                        voba_str_from_cstr(VOBA_CLS(cls)->name),
+                        VOBA_CONST_CHAR("'")
+                        )));
         }
     } else {
         voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class(f));
@@ -690,3 +727,68 @@ VOBA_FOR_EACH(DEFINE_VOBA_MAKE_ARRAY_N,SPACE)
 #define DEFINE_VOBA_MAKE_CLOSURE_ASSIGN(n) p[n + 2] = a##n
 VOBA_FOR_EACH(DEFINE_VOBA_MAKE_CLOSURE_N,SPACE)
 
+
+
+
+
+INLINE int64_t voba_int_value_to_i64(voba_value_t a)
+{
+    int64_t ret = 0;
+    voba_value_t cls = voba_get_class(a);
+    if(cls == voba_cls_i8){
+        ret = (int64_t)voba_value_to_i8(a);
+    }else if(cls == voba_cls_i16){
+        ret = (int64_t)voba_value_to_i16(a);
+    }else if(cls == voba_cls_i32){
+        ret = (int64_t)voba_value_to_i32(a);
+    }else if(cls == voba_cls_u8){
+        ret = (int64_t)voba_value_to_u8(a);
+    }else if(cls == voba_cls_u16){
+        ret = (int64_t)voba_value_to_u16(a);
+    }else if(cls == voba_cls_u32){
+        ret = (int64_t)voba_value_to_u32(a);
+    }else{
+        assert(0&&"never goes here");
+    }
+    return ret;
+}
+INLINE int voba_is_int(voba_value_t a )
+{
+    voba_value_t cls = voba_get_class(a);
+    if(voba_eq(cls,voba_cls_i8) ||
+       voba_eq(cls,voba_cls_i16) ||
+       voba_eq(cls,voba_cls_i32) ||
+       voba_eq(cls,voba_cls_u8) ||
+       voba_eq(cls,voba_cls_u16) ||
+       voba_eq(cls,voba_cls_u32))
+    {
+        return 1;
+    }
+    return 0;
+}
+INLINE voba_value_t i64_to_voba_int_value(int64_t a)
+{
+    voba_value_t ret = voba_make_i32(0);
+    if(a >= INT8_MIN && a <= INT8_MAX){
+        int8_t x = (int8_t) a;
+        ret = voba_make_i8(x);
+    }else if(a >= 0 && a <= UINT8_MAX){
+        uint8_t x = (uint8_t) a;
+        ret = voba_make_u8(x);
+    }else if(a >= INT16_MIN && a <= INT16_MAX){
+        int16_t x = (int16_t) a;
+        ret = voba_make_i16(x);
+    }else if(a >= 0 && a <= UINT16_MAX){
+        uint16_t x = (uint16_t) a;
+        ret = voba_make_u16(x);
+    }else if(a >= INT32_MIN && a <= INT32_MAX){
+        int32_t x = (int32_t) a;
+        ret = voba_make_i32(x);
+    }else if(a >= 0 && a <= UINT32_MAX){
+        uint32_t x = (uint32_t) a;
+        ret = voba_make_u32(x);
+    }else{
+        voba_throw_exception(voba_make_string(VOBA_CONST_CHAR("32-bit integer overflow")));
+    }
+    return ret;
+}

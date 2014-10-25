@@ -29,7 +29,9 @@ DEFINE_CLS(sizeof(voba_value_t),generic_function)
 DEFINE_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;
-EXEC_ONCE_PROGN{voba_gf_apply = voba_make_generic_function();}
+EXEC_ONCE_PROGN{
+    voba_gf_apply = voba_make_generic_function("apply");
+}
 
 voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)
 {

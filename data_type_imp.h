@@ -57,6 +57,7 @@ typedef int64_t voba_value_t;
 INLINE int64_t  voba_get_type1(voba_value_t v);
 INLINE int64_t  voba_get_type2(voba_value_t v);
 INLINE int      voba_eq(voba_value_t a,voba_value_t b);
+INLINE int      voba_eql(voba_value_t a,voba_value_t b);
 // it is defined as a macro, because the return type is unknown.
 #define voba_to_pointer(type,p) ((type)((p) & (~VOBA_TYPE_MASK)))
 INLINE voba_value_t voba_from_pointer(void* p, int type);
@@ -194,11 +195,12 @@ typedef struct voba_gf_s voba_gf_t;
 struct voba_gf_s {
     voba_value_t hash;
     voba_func_t  fun;
+    const char * name;
 };
 #define VOBA_GF(s)  VOBA_USER_DATA_AS(voba_gf_t *,s)
 
 extern voba_value_t voba_cls_generic_function;
-INLINE voba_value_t voba_make_generic_function();
+INLINE voba_value_t voba_make_generic_function(const char * name);
 // register a method for a class.
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func);
 // look up the hash table and find the implemention for a class.
@@ -625,6 +627,10 @@ VOBA_FOR_EACH(DECLARE_VOBA_MAKE_ARRAY_N,SEMI_COMMA);
     (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))
 VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);
 
+
+INLINE int64_t voba_int_value_to_i64(voba_value_t a);
+INLINE int voba_is_int(voba_value_t a );
+INLINE voba_value_t i64_to_voba_int_value(int64_t a);
 /* Local Variables: */
 /* mode:c */
 /* coding: utf-8-unix */
