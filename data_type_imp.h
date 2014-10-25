@@ -98,6 +98,7 @@ extern voba_value_t voba_cls_bool;
 #define VOBA_FALSE                     (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  0 * 256)
 INLINE int voba_is_true(voba_value_t v);
 INLINE int voba_is_false(voba_value_t v);
+INLINE voba_value_t voba_not(voba_value_t v);
 
 /*
     class integer

@@ -598,7 +598,16 @@ INLINE int voba_is_false(voba_value_t v)
 {
   return v == VOBA_FALSE;
 }
-
+INLINE voba_value_t voba_not(voba_value_t v)
+{
+    voba_value_t ret = VOBA_FALSE;
+    if(voba_is_false(v)){
+        ret = VOBA_TRUE;
+    }else{
+        ret = VOBA_FALSE;
+    }
+    return ret;
+}
 // ------------- get type and get class ----
 INLINE int64_t voba_get_type1(voba_value_t v)
 {
