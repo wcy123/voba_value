@@ -185,12 +185,19 @@ generic function is a user class, whose value is a hash table.
         +------------------------------+------------------------+
         |           a hash table                                |
         +------------------------------+------------------------+
+        |           default implementation(func)                |
+        +------------------------------+------------------------+
 
 */
+typedef struct voba_gf_s voba_gf_t;
+struct voba_gf_s {
+    voba_value_t hash;
+    voba_func_t  fun;
+};
+#define VOBA_GF(s)  VOBA_USER_DATA_AS(voba_gf_t *,s)
+
 extern voba_value_t voba_cls_generic_function;
 INLINE voba_value_t voba_make_generic_function();
-// return the hash table
-INLINE voba_value_t voba_gf_hash_table(voba_value_t gf);
 // register a method for a class.
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func);
 // look up the hash table and find the implemention for a class.
