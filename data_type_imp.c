@@ -522,16 +522,20 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
                         )));
         }
     } else {
-        voba_value_t vf = voba_gf_lookup(voba_gf_apply,voba_get_class(f));
-        switch(voba_get_type1(vf)){
-        case VOBA_TYPE_FUNC:
+        voba_value_t self  = f;
+        voba_value_t cls = voba_get_class(self);
+        voba_value_t vf = voba_gf_lookup(voba_gf_apply,cls);
+        int64_t type1 = voba_get_type1(vf);
+        if(!voba_is_nil(vf) && type1 == VOBA_TYPE_FUNC){
             ret = voba_value_to_func(vf);
-            break;
-        case VOBA_TYPE_CLOSURE:
-            voba_throw_exception(voba_make_string(voba_str_from_cstr("closure is not allowed")));
-            ret = NULL;
-        default:
-            ret = voba__apply_find_func(voba_gf_apply,vf);
+        }else{
+            voba_throw_exception(
+                voba_make_string(
+                    VOBA_STRCAT(
+                        VOBA_CONST_CHAR("object of `"),
+                        voba_str_from_cstr(VOBA_CLS(cls)->name),
+                        VOBA_CONST_CHAR("' is not callable`")
+                        )));
         }
     }
     return ret;
