@@ -441,21 +441,6 @@ INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_
     uint32_t end = (uint32_t) (cur + len);
     return voba__make_la(cur,end,array);
 }
-INLINE voba_value_t voba_la_cons(voba_value_t la, voba_value_t x)
-{
-    assert(voba_is_a(la,voba_cls_la));
-    uint32_t end = VOBA_LA(la)->end;
-    voba_value_t a = VOBA_LA(la)->array;
-    uint32_t a_len = ( (uint32_t) voba_array_len(a));
-    end ++;
-    if(end < a_len){
-        voba_array_set(a, end, x);
-    }else{
-        voba_array_push(a,x);
-    }
-    VOBA_LA(la)->end = end;
-    return la;
-}
 INLINE voba_value_t voba_la_car(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
@@ -499,25 +484,22 @@ INLINE uint32_t voba_la_len(voba_value_t la)
     assert(VOBA_LA(la)->end >= VOBA_LA(la)->cur);
     return VOBA_LA(la)->end - VOBA_LA(la)->cur;
 }
-INLINE voba_value_t voba_la_concat(voba_value_t la1,voba_value_t la2)
-{
-    voba_value_t ret = voba_la_nil();
-    voba_value_t x = voba_la_copy(la1);
-    while(!voba_la_is_nil(x)){
-        ret = voba_la_cons(ret,voba_la_car(x));
-        x = voba_la_cdr(x);
-    }
-    x = voba_la_copy(la2);
-    while(!voba_la_is_nil(x)){
-        ret = voba_la_cons(ret,voba_la_car(x));
-        x = voba_la_cdr(x);
-    }
-    return ret;
-}
 INLINE int voba_la_is_nil(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     return voba_la_len(la) == 0;
+}
+INLINE voba_value_t voba_la_to_array(voba_value_t la)
+{
+    assert(voba_is_a(la,voba_cls_la));
+    voba_value_t ret = voba_make_array_0();
+    voba_value_t xs = voba_la_copy(la);
+    while(voba_is_nil(xs)){
+        voba_value_t x = voba_la_car(xs);
+        voba_array_push(ret,x);
+        xs = voba_la_cdr(xs);
+    }
+    return ret;
 }
 INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
 {
