@@ -32,11 +32,23 @@ LDFLAGS  += -L $(GC_PATH)  -lgcmt-dll
 
 all: install
 
-install: libvoba_value.so
+INSTALL_LIB_FILES += $(PREFIX)/voba/lib/libvoba_value.so
+INSTALL_LIB_FILES += $(PREFIX)/voba/include/value.h
+INSTALL_LIB_FILES += $(PREFIX)/voba/include/voba_for_each.h
+INSTALL_LIB_FILES += $(PREFIX)/voba/include/data_type_imp.h
+INSTALL_LIB_FILES += $(PREFIX)/voba/include/data_type_imp.c
+
+install: $(INSTALL_LIB_FILES)
+
+$(PREFIX)/voba/lib/libvoba_value.so: libvoba_value.so
 	install libvoba_value.so $(PREFIX)/voba/lib/
+$(PREFIX)/voba/include/value.h: value.h
 	install value.h $(PREFIX)/voba/include/value.h
+$(PREFIX)/voba/include/voba_for_each.h: voba_for_each.h
 	install voba_for_each.h $(PREFIX)/voba/include/
+$(PREFIX)/voba/include/data_type_imp.h: data_type_imp.h
 	install data_type_imp.h $(PREFIX)/voba/include/
+$(PREFIX)/voba/include/data_type_imp.c: data_type_imp.c
 	install data_type_imp.c $(PREFIX)/voba/include/
 
 libvoba_value.so: voba_value.o  voba_value_cpp.o
