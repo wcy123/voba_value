@@ -53,45 +53,24 @@ voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch);
                 VOBA_CONST_CHAR(": error: "),                           \
                 __VA_ARGS__)))
 
-#define VOBA_DEF_ARG3(name,args,n)                                      \
+#define VOBA_ASSERT_N_ARG(args,n)                                       \
 if(voba_array_len(args) <= n) {                                         \
     VOBA_THROW(VOBA_CONST_CHAR("unexpected number of argument: "),      \
                voba_str_fmt_uint32_t(n+1,10),                           \
                VOBA_CONST_CHAR(" expected, but given "),                \
                voba_str_fmt_uint32_t(voba_array_len(args),10));         \
-}                                                                       \
-voba_value_t name = voba_array_at(args,n);                              
+}                                                                       
 
-#define VOBA_DEF_ARG4(type,name,args,n)                                 \
-    VOBA_DEF_ARG3(name,args,n);                                         \
-    if(!voba_is_a(name,type)){                                          \
+#define VOBA_ASSERT_CLS(name,cls,n)                                     \
+    if(!voba_is_a(name,cls)){                                           \
         VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
                    voba_str_fmt_uint32_t(n,10),                         \
-                   VOBA_CONST_CHAR(": `" #type "` expected, but given value is 0x"), \
+                   VOBA_CONST_CHAR(": `" #cls "` expected, "            \
+                                   "but given value is 0x"),            \
                    voba_str_fmt_uint64_t(name,16));                     \
     }
 
-#define VOBA_DEF_OPTIONAL_ARG3(name,args,n,default_value)               \
-    voba_value_t name = VOBA_UNDEF;                                     \
-    if(n < voba_array_len(args) ) {                                     \
-        name = voba_array_at(args,n);                                   \
-    }else{                                                              \
-        name = (default_value);                                         \
-    }                                                                   \
-
-#define VOBA_DEF_OPTIONAL_ARG4(type,name,args,n,default_value)          \
-    VOBA_DEF_OPTIONAL_ARG3(name,args,n,default_value);                  \
-    if(!voba_is_a(name,type)){                                          \
-        VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
-                   voba_str_fmt_uint32_t(n,10),                         \
-                   VOBA_CONST_CHAR(": `" #type "` expected, but given value is 0x"), \
-                   voba_str_fmt_uint64_t(name,16));                     \
-    }
-
-#define VOBA_DEF_CVAR(name,self,n)                                      \
-    voba_value_t name = voba_array_at(self,n)
-
-#define DEFINE_CLS(xsize,xname)                                         \
+#define VOBA_DEF_CLS(xsize,xname)                                       \
     voba_value_t voba_cls_##xname = VOBA_UNDEF;                         \
     EXEC_ONCE_PROGN                                                     \
     {                                                                   \

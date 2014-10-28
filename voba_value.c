@@ -6,27 +6,27 @@
 
 // it is defined in a special way, to avoid chicken-egg problem
 voba_value_t voba_cls_cls = VOBA_UNDEF;
-DEFINE_CLS(0,func)
-DEFINE_CLS(0,symbol)
-DEFINE_CLS(0,array)
-DEFINE_CLS(0,closure)
-DEFINE_CLS(0,pair)
-DEFINE_CLS(0,str)
-DEFINE_CLS(0,nil)
-DEFINE_CLS(0,bool)
-DEFINE_CLS(0,u8)
-DEFINE_CLS(0,i8)
-DEFINE_CLS(0,u16)
-DEFINE_CLS(0,i16)
-DEFINE_CLS(0,u32)
-DEFINE_CLS(0,i32)
-DEFINE_CLS(0,float)
-DEFINE_CLS(0,short_symbol)
-DEFINE_CLS(0,undef);
-DEFINE_CLS(voba_sizeof_hashtable(),hashtable)
-DEFINE_CLS(voba_sizeof_symbol_table(),symbol_table)
-DEFINE_CLS(sizeof(voba_value_t),generic_function)
-DEFINE_CLS(sizeof(voba_la_t),la)
+VOBA_DEF_CLS(0,func)
+VOBA_DEF_CLS(0,symbol)
+VOBA_DEF_CLS(0,array)
+VOBA_DEF_CLS(0,closure)
+VOBA_DEF_CLS(0,pair)
+VOBA_DEF_CLS(0,str)
+VOBA_DEF_CLS(0,nil)
+VOBA_DEF_CLS(0,bool)
+VOBA_DEF_CLS(0,u8)
+VOBA_DEF_CLS(0,i8)
+VOBA_DEF_CLS(0,u16)
+VOBA_DEF_CLS(0,i16)
+VOBA_DEF_CLS(0,u32)
+VOBA_DEF_CLS(0,i32)
+VOBA_DEF_CLS(0,float)
+VOBA_DEF_CLS(0,short_symbol)
+VOBA_DEF_CLS(0,undef);
+VOBA_DEF_CLS(voba_sizeof_hashtable(),hashtable)
+VOBA_DEF_CLS(voba_sizeof_symbol_table(),symbol_table)
+VOBA_DEF_CLS(sizeof(voba_value_t),generic_function)
+VOBA_DEF_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;
 EXEC_ONCE_PROGN{
