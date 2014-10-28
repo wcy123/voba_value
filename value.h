@@ -71,6 +71,23 @@ voba_value_t name = voba_array_at(args,n);
                    voba_str_fmt_uint64_t(name,16));                     \
     }
 
+#define VOBA_DEF_OPTIONAL_ARG3(name,args,n,default_value)               \
+    voba_value_t name = VOBA_UNDEF;                                     \
+    if(n < voba_array_len(args) ) {                                     \
+        name = voba_array_at(args,n);                                   \
+    }else{                                                              \
+        name = (default_value);                                         \
+    }                                                                   \
+
+#define VOBA_DEF_OPTIONAL_ARG4(type,name,args,n,default_value)          \
+    VOBA_DEF_OPTIONAL_ARG3(name,args,n,default_value);                  \
+    if(!voba_is_a(name,type)){                                          \
+        VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
+                   voba_str_fmt_uint32_t(n,10),                         \
+                   VOBA_CONST_CHAR(": `" #type "` expected, but given value is 0x"), \
+                   voba_str_fmt_uint64_t(name,16));                     \
+    }
+
 #define VOBA_DEF_CVAR(name,self,n)                                      \
     voba_value_t name = voba_array_at(self,n)
 
