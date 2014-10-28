@@ -69,6 +69,14 @@ if(voba_array_len(args) <= n) {                                         \
                                    "but given value is 0x"),            \
                    voba_str_fmt_uint64_t(name,16));                     \
     }
+#define VOBA_ASSERT_IS(name,is,n)                                      \
+    if(!(is)(name)){                                                    \
+        VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
+                   voba_str_fmt_uint32_t(n,10),                         \
+                   VOBA_CONST_CHAR(": `" #is "` expected, "             \
+                                   "but given value is 0x"),            \
+                   voba_str_fmt_uint64_t(name,16));                     \
+    }
 
 #define VOBA_DEF_CLS(xsize,xname)                                       \
     voba_value_t voba_cls_##xname = VOBA_UNDEF;                         \
