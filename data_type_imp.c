@@ -397,6 +397,7 @@ INLINE voba_value_t voba_make_generic_function(const char * name)
 }
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
 {
+    assert(voba_is_a(gf,voba_cls_generic_function));
     return voba_hash_insert(VOBA_GF(gf)->hash,cls,func);
 }
 INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
