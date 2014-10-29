@@ -720,24 +720,8 @@ VOBA_FOR_EACH(DEFINE_VOBA_MAKE_CLOSURE_N,SPACE)
 
 INLINE int64_t voba_int_value_to_i64(voba_value_t a)
 {
-    int64_t ret = 0;
-    voba_value_t cls = voba_get_class(a);
-    if(cls == voba_cls_i8){
-        ret = (int64_t)voba_value_to_i8(a);
-    }else if(cls == voba_cls_i16){
-        ret = (int64_t)voba_value_to_i16(a);
-    }else if(cls == voba_cls_i32){
-        ret = (int64_t)voba_value_to_i32(a);
-    }else if(cls == voba_cls_u8){
-        ret = (int64_t)voba_value_to_u8(a);
-    }else if(cls == voba_cls_u16){
-        ret = (int64_t)voba_value_to_u16(a);
-    }else if(cls == voba_cls_u32){
-        ret = (int64_t)voba_value_to_u32(a);
-    }else{
-        assert(0&&"never goes here");
-    }
-    return ret;
+    assert(voba_is_int(a));
+    return (a>>8);
 }
 INLINE int voba_is_int(voba_value_t a )
 {
