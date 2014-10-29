@@ -19,8 +19,8 @@ INLINE int voba_eql(voba_value_t a,voba_value_t b)
         voba_value_t cls1 = voba_get_class(a);
         voba_value_t cls2 = voba_get_class(b);
         if(voba_is_int(a) && voba_is_int(b)){
-            int64_t a1 = voba_int_value_to_i64(a);
-            int64_t b1 = voba_int_value_to_i64(b);
+            int64_t a1 = voba_int_value_to_i32(a);
+            int64_t b1 = voba_int_value_to_i32(b);
             if(a1 == b1){
                 ret = 1;
             }
@@ -642,27 +642,16 @@ INLINE int64_t voba_get_type2(voba_value_t v)
   return (v&0xff)>>3;
 }
 
-#define DEFINE_SMALL_TYPE(tag,name,type)        \
-INLINE voba_value_t voba_make_##name (type v)             \
-{                                               \
-    union {                                     \
-        voba_value_t v1;                        \
-        type v2;                                \
-    } r;                                        \
-    r.v1 = 0;                                   \
-    r.v2 = v;                                   \
-    return (VOBA_TYPE_SMALL + tag * 8 + r.v1 * 256);    \
-}                                               \
-INLINE type voba_value_to_##name (voba_value_t v)         \
-{                                               \
-    union {                                     \
-        voba_value_t v1;                        \
-        type v2;                                \
-    } r;                                        \
-    r.v1 = v;                                   \
-    r.v1 = r.v1 >> 8;                           \
-    return r.v2;                                \
-}
+#define DEFINE_SMALL_TYPE(tag,name,type)                \
+    INLINE voba_value_t voba_make_##name (type v)       \
+    {                                                   \
+        voba_value_t ret = (voba_value_t) v;            \
+        return (VOBA_TYPE_SMALL + tag * 8 + (ret<<8));  \
+    }                                                   \
+    INLINE type voba_value_to_##name (voba_value_t v)   \
+    {                                                   \
+        return ((type)(v >> 8));                        \
+    }
 
 VOBA_SMALL_TYPES(DEFINE_SMALL_TYPE)
 
@@ -718,10 +707,10 @@ VOBA_FOR_EACH(DEFINE_VOBA_MAKE_CLOSURE_N,SPACE)
 
 
 
-INLINE int64_t voba_int_value_to_i64(voba_value_t a)
+INLINE int64_t voba_int_value_to_i32(voba_value_t a)
 {
     assert(voba_is_int(a));
-    return (a>>8);
+    return (int32_t)(a>>8);
 }
 INLINE int voba_is_int(voba_value_t a )
 {

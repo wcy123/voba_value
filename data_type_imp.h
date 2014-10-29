@@ -624,7 +624,7 @@ VOBA_FOR_EACH(DECLARE_VOBA_MAKE_ARRAY_N,SEMI_COMMA);
 VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);
 
 
-INLINE int64_t voba_int_value_to_i64(voba_value_t a);
+INLINE int64_t voba_int_value_to_i32(voba_value_t a);
 INLINE int voba_is_int(voba_value_t a );
 INLINE voba_value_t i64_to_voba_int_value(int64_t a);
 /* Local Variables: */
