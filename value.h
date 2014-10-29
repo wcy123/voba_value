@@ -32,7 +32,7 @@ namespace voba {
   }
 }
 #endif    
-void    voba_throw_exception(voba_value_t v);
+void voba_throw_exception(voba_value_t v);
 voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch);
 #include "data_type_imp.c"
 #ifdef __cplusplus
