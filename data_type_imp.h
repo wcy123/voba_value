@@ -148,6 +148,7 @@ NOT IMPLEMENTED YET.
  */
 extern voba_value_t voba_cls_short_symbol;
 extern voba_value_t voba_cls_undef;
+extern voba_value_t voba_cls_done;
 
 /* class function
    ==============
@@ -609,6 +610,9 @@ VOBA_SMALL_TYPES(DECLARE_SMALL_TYPE)
 // #define VOBA_SECRET_VIRTUAL_TABLE (VOBA_TYPE_SMALL + VOBA_SECRET * 8 +  0 * 256)
 #define VOBA_UNDEF (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  1 * 256)
 INLINE int voba_is_undef(voba_value_t v) { return v == VOBA_UNDEF; }
+#define VOBA_DONE (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  2 * 256)
+INLINE int voba_is_done(voba_value_t v) { return v == VOBA_DONE; }
+
 #define COMMA  ,
 #define SEMI_COMMA ;
 #define SPACE

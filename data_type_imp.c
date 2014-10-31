@@ -570,6 +570,9 @@ INLINE voba_value_t voba_get_class(voba_value_t v)
     case VOBA_UNDEF:
         return voba_cls_undef;
         break;
+    case VOBA_DONE:
+        return voba_cls_done;
+        break;
     case VOBA_NIL:
         return voba_cls_nil;
     case VOBA_TRUE:
