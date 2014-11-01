@@ -1,4 +1,4 @@
-#define INLINE
+
 #include <stdarg.h>
 #include "value.h"
 #define EXEC_ONCE_TU_NAME "voba_value"

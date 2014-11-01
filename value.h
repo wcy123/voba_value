@@ -52,7 +52,9 @@ voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch);
                 voba_str_fmt_uint32_t(__LINE__,10),                     \
                 VOBA_CONST_CHAR(": error: "),                           \
                 __VA_ARGS__)))
-
+#ifdef NDEBUG
+#define VOBA_ASSERT_N_ARG(args,n)
+#else
 #define VOBA_ASSERT_N_ARG(args,n)                                       \
 if(voba_array_len(args) <= n) {                                         \
     VOBA_THROW(VOBA_CONST_CHAR("unexpected number of argument: "),      \
@@ -60,7 +62,10 @@ if(voba_array_len(args) <= n) {                                         \
                VOBA_CONST_CHAR(" expected, but given "),                \
                voba_str_fmt_uint32_t(voba_array_len(args),10));         \
 }                                                                       
-
+#endif
+#ifdef NDEBUG
+#define VOBA_ASSERT_CLS(name,cls,n)
+#else
 #define VOBA_ASSERT_CLS(name,cls,n)                                     \
     if(!voba_is_a(name,cls)){                                           \
         VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
@@ -69,6 +74,11 @@ if(voba_array_len(args) <= n) {                                         \
                                    "but given value is 0x"),            \
                    voba_str_fmt_uint64_t(name,16));                     \
     }
+#endif
+
+#ifdef NDEBUG
+#define VOBA_ASSERT_IS(name,is,n)
+#else
 #define VOBA_ASSERT_IS(name,is,n)                                      \
     if(!(is)(name)){                                                    \
         VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
@@ -77,7 +87,7 @@ if(voba_array_len(args) <= n) {                                         \
                                    "but given value is 0x"),            \
                    voba_str_fmt_uint64_t(name,16));                     \
     }
-
+#endif
 #define VOBA_DEF_CLS(xsize,xname)                                       \
     voba_value_t voba_cls_##xname = VOBA_UNDEF;                         \
     EXEC_ONCE_PROGN                                                     \
