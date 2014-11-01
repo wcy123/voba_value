@@ -27,7 +27,7 @@ VOBA_DEF_CLS(0,undef);
 VOBA_DEF_CLS(0,done);
 VOBA_DEF_CLS(voba_sizeof_hashtable(),hashtable)
 VOBA_DEF_CLS(voba_sizeof_symbol_table(),symbol_table)
-VOBA_DEF_CLS(sizeof(voba_value_t),generic_function)
+VOBA_DEF_CLS(sizeof(voba_gf_t),generic_function)
 VOBA_DEF_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;

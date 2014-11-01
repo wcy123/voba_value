@@ -135,7 +135,8 @@ INLINE voba_value_t  voba_array_set(voba_value_t a,int64_t i,voba_value_t v)
 }
 INLINE int voba_is_fixed_size_array(voba_value_t v)
 {
-    return voba_is_a(v,voba_cls_array) && voba_to_pointer(voba_value_t*,v)[0] != -1;
+    assert(voba_is_a(v,voba_cls_array));
+    return voba_to_pointer(voba_value_t*,v)[0] != -1;
 }
 INLINE int voba_is_var_size_array(voba_value_t v)
 {
@@ -405,27 +406,22 @@ INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t de
             voba_make_string(VOBA_CONST_CHAR("too many generic functions")));
         abort();
     }
+    for(uint32_t i = 0; i < VOBA_MAX_NUM_OF_CLS; ++i){
+        VOBA_GF(ret)->cls[i] = default_imp;
+    }
     return ret;
 }
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
 {
     //assert(voba_is_a(gf,voba_cls_generic_function));
     //return voba_hash_insert(VOBA_GF(gf)->hash,cls,func);
-    
+    VOBA_GF(gf)->cls[VOBA_CLS(cls)->id] = voba_value_to_func(func);
     return func;
 }
-INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
+INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 {
     assert(voba_is_a(gf,voba_cls_generic_function));
-    voba_value_t ret = voba_hash_find(VOBA_GF(gf)->hash,cls);
-    if(!voba_is_nil(ret)){
-        ret = voba_tail(ret);
-    }else{
-        if(VOBA_GF(gf)->fun){
-            ret = voba_make_func(VOBA_GF(gf)->fun);
-        }
-    }
-    return ret;
+    return VOBA_GF(gf)->cls[VOBA_CLS(cls)->id];
 }
 INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
 {
@@ -522,9 +518,9 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
     if(voba_is_a(f,voba_cls_generic_function) &&
        voba_array_len(a1) >= 1){
         voba_value_t cls = voba_get_class(voba_array_at(a1,0));
-        voba_value_t vf = voba_gf_lookup(f,cls);
-        if(voba_get_type1(vf) == VOBA_TYPE_FUNC){
-            ret = voba_value_to_func(vf);
+        voba_func_t vf = voba_gf_lookup(f,cls);
+        if(!(vf == NULL)){
+            ret = vf;
         }else{
             voba_throw_exception(
                 voba_make_string(
@@ -539,10 +535,9 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
     } else {
         voba_value_t self  = f;
         voba_value_t cls = voba_get_class(self);
-        voba_value_t vf = voba_gf_lookup(voba_gf_apply,cls);
-        int64_t type1 = voba_get_type1(vf);
-        if(!voba_is_nil(vf) && type1 == VOBA_TYPE_FUNC){
-            ret = voba_value_to_func(vf);
+        voba_func_t vf = voba_gf_lookup(voba_gf_apply,cls);
+        if(!(vf == NULL)){
+            ret = vf;
         }else{
             voba_throw_exception(
                 voba_make_string(
@@ -578,7 +573,7 @@ INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
 }
 // get_class
 #define VOBA_GET_CLASS_SMALL(tag,name,type) case tag:   return voba_cls_##name;
-INLINE voba_value_t voba_get_class(voba_value_t v)
+static inline voba_value_t voba_get_class(voba_value_t v)
 {
     switch(v){
     case VOBA_UNDEF:

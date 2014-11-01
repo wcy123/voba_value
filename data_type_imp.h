@@ -210,7 +210,7 @@ INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t de
 // register a method for a class.
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func);
 // look up the hash table and find the implemention for a class.
-INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls);
+INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls);
 
 /*   symbol
      ======
