@@ -312,6 +312,11 @@ INLINE voba_value_t voba_make_cls(size_t size, const char * name)
     VOBA_CLS(ret)->name = name;
     VOBA_CLS(ret)->size = size;
     VOBA_CLS(ret)->id = voba_cls_next_id ++;
+    if(voba_cls_next_id >= VOBA_MAX_NUM_OF_CLS){
+        voba_throw_exception(
+            voba_make_string(VOBA_CONST_CHAR("too many classes")));
+        abort();
+    }
     return ret;
 }
 INLINE voba_value_t* voba_allocate_user_data(size_t s)
@@ -395,12 +400,19 @@ INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t de
     VOBA_GF(ret)->fun = default_imp;
     VOBA_GF(ret)->name = name;
     VOBA_GF(ret)->id = voba_cls_generic_function_next_id++;
+    if(voba_cls_generic_function_next_id >= VOBA_MAX_NUM_OF_GF){
+        voba_throw_exception(
+            voba_make_string(VOBA_CONST_CHAR("too many generic functions")));
+        abort();
+    }
     return ret;
 }
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
 {
-    assert(voba_is_a(gf,voba_cls_generic_function));
-    return voba_hash_insert(VOBA_GF(gf)->hash,cls,func);
+    //assert(voba_is_a(gf,voba_cls_generic_function));
+    //return voba_hash_insert(VOBA_GF(gf)->hash,cls,func);
+    
+    return func;
 }
 INLINE voba_value_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 {

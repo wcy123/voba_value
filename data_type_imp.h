@@ -192,12 +192,15 @@ generic function is a user class, whose value is a hash table.
         +------------------------------+------------------------+
 
 */
+#define VOBA_MAX_NUM_OF_CLS 1000
+#define VOBA_MAX_NUM_OF_GF  1000
 typedef struct voba_gf_s voba_gf_t;
 struct voba_gf_s {
     voba_value_t hash;
     voba_func_t  fun;
     const char * name;
     uint32_t     id;
+    voba_func_t  cls[VOBA_MAX_NUM_OF_CLS];
 };
 #define VOBA_GF(s)  VOBA_USER_DATA_AS(voba_gf_t *,s)
 
