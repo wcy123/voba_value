@@ -40,7 +40,7 @@ struct my_allocator : public std::allocator< T >{
         return static_cast<T*>(GC_MALLOC(s*sizeof(T)));
     }
     void deallocate(T * p,size_t s) {
-        return GC_FREE(static_cast<void*>(p));
+        //return GC_FREE(static_cast<void*>(p));
     }
 };
 typedef voba::unordered_map<voba_value_t, voba_value_t, vtype_hasher, vtype_equal, my_allocator<pair<const voba_value_t, voba_value_t> > > hash_table_c;

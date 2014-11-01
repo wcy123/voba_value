@@ -7,7 +7,7 @@ extern "C" {
 #include <stdarg.h>
 #include <string.h>
 #include <strings.h>
-#include <gc.h>
+#include "my_gc.h"
 #ifndef INLINE
 #define INLINE static inline 
 #endif

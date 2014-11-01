@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
-#include <gc.h>
 #include "voba_for_each.h"
 // 3bits for type1
 
