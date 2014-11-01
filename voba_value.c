@@ -3,7 +3,8 @@
 #include "value.h"
 #define EXEC_ONCE_TU_NAME "voba_value"
 #include "exec_once.h"
-
+uint32_t voba_cls_generic_function_next_id = 0;
+uint32_t voba_cls_next_id = 0;
 // it is defined in a special way, to avoid chicken-egg problem
 voba_value_t voba_cls_cls = VOBA_UNDEF;
 VOBA_DEF_CLS(0,func)
@@ -31,7 +32,7 @@ VOBA_DEF_CLS(sizeof(voba_la_t),la)
 
 voba_value_t voba_gf_apply = VOBA_NIL;
 EXEC_ONCE_PROGN{
-    voba_gf_apply = voba_make_generic_function("apply");
+    voba_gf_apply = voba_make_generic_function("apply",NULL);
 }
 
 voba_value_t voba_array_fixed_vconcat(voba_value_t a,...)

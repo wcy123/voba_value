@@ -311,6 +311,7 @@ INLINE voba_value_t voba_make_cls(size_t size, const char * name)
     voba_value_t ret = voba_make_user_data(voba_cls_cls);
     VOBA_CLS(ret)->name = name;
     VOBA_CLS(ret)->size = size;
+    VOBA_CLS(ret)->id = voba_cls_next_id ++;
     return ret;
 }
 INLINE voba_value_t* voba_allocate_user_data(size_t s)
@@ -387,12 +388,13 @@ INLINE int voba_is_symbol_table(voba_value_t v)
 {
     return voba_cls_symbol_table == voba_get_class(v);
 }
-INLINE voba_value_t voba_make_generic_function(const char * name)
+INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t default_imp)
 {
     voba_value_t ret = voba_make_user_data(voba_cls_generic_function);
     VOBA_GF(ret)->hash = voba_make_hash();
-    VOBA_GF(ret)->fun = (voba_func_t)0;
+    VOBA_GF(ret)->fun = default_imp;
     VOBA_GF(ret)->name = name;
+    VOBA_GF(ret)->id = voba_cls_generic_function_next_id++;
     return ret;
 }
 INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
