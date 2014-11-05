@@ -415,12 +415,25 @@ INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_va
 {
     //assert(voba_is_a(gf,voba_cls_generic_function));
     //return voba_hash_insert(VOBA_GF(gf)->hash,cls,func);
+    if(0){
+        fprintf(stderr,__FILE__ ":%d:[%s] looking gf= %s cls=%s f= %p\n", __LINE__, __FUNCTION__
+                ,VOBA_GF(gf)->name
+                ,VOBA_CLS(cls)->name
+                ,voba_value_to_func(func));
+    }
     VOBA_GF(gf)->cls[VOBA_CLS(cls)->id] = voba_value_to_func(func);
     return func;
 }
 INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 {
     assert(voba_is_a(gf,voba_cls_generic_function));
+    if(0){
+        fprintf(stderr,__FILE__ ":%d:[%s] looking gf= %s cls=%s f= %p\n", __LINE__, __FUNCTION__
+                ,VOBA_GF(gf)->name
+                ,VOBA_CLS(cls)->name
+                ,VOBA_GF(gf)->cls[VOBA_CLS(cls)->id]);
+
+    }
     return VOBA_GF(gf)->cls[VOBA_CLS(cls)->id];
 }
 INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
