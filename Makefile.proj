@@ -1,0 +1,34 @@
+
+CXXFLAGS += -fPIC
+CXXFLAGS += -std=c++11
+CFLAGS += -fPIC
+
+
+SRCS_C += voba_value.c
+SRCS_CC += voba_value_cpp.cc
+
+libvoba_value.so: $(OBJS)
+	$(CXX) -shared -Wl,-soname,$@ -o $@ $^  $(LDFLAGS)
+
+
+install_files += $(libdir)/libvoba_value.so
+$(libdir)/libvoba_value.so: libvoba_value.so
+	$(INSTALL) $< $@
+
+header_files := value.h voba_for_each.h data_type_imp.h data_type_imp.c
+
+target_header_files += $(patsubst  %, $(includedir)/voba/%, $(header_files))
+install_files += $(target_header_files)
+$(target_header_files): $(includedir)/voba/% : %
+	$(INSTALL) $< $@
+
+
+dirs += $(includedir)/voba
+
+xx:
+	echo $(install_files)
+
+# Local Variables:
+# mode:makefile
+# coding: utf-8-unix
+# End:

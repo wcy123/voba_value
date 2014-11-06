@@ -4,10 +4,20 @@ extern "C" {
 #endif
 #include <assert.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include <strings.h>
-#include "my_gc.h"
+#ifdef USE_BDW_GC
+#include <gc.h>
+#else
+#define GC_MALLOC malloc
+#define GC_MALLOC_ATOMIC malloc
+#define GC_REALLOC realloc
+#define GC_FREE free
+#define GC_strdup strdup
+#define GC
+#endif
 #ifndef INLINE
 #define INLINE static inline 
 #endif
