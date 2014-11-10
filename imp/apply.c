@@ -4,8 +4,8 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
 {
     voba_func_t ret = NULL;
     if(voba_is_a(f,voba_cls_generic_function) &&
-       voba_array_len(a1) >= 1){
-        voba_value_t cls = voba_get_class(voba_array_at(a1,0));
+       voba_tuple_len(a1) >= 1){
+        voba_value_t cls = voba_get_class(voba_tuple_at(a1,0));
         voba_func_t vf = voba_gf_lookup(f,cls);
         if(!(vf == NULL)){
             ret = vf;
@@ -44,6 +44,7 @@ INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args)
 }
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a1)
 {
+    assert(voba_is_a(a1,voba_cls_tuple));
     switch(voba_get_type1(f)){
     case VOBA_TYPE_FUNC:
         return voba_direct_apply(voba_value_to_func(f),a1);

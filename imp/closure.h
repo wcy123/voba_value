@@ -32,3 +32,8 @@ INLINE voba_value_t voba_closure_tuple(voba_value_t c);
 INLINE voba_value_t voba_closure_len(voba_value_t c);
 
 
+#define VOBA_MACRO_ARG2(n) ,voba_value_t a##n
+#define DECLARE_VOBA_MAKE_CLOSURE_N(n)                                  \
+    INLINE voba_value_t voba_make_closure_##n                           \
+    (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))
+VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);

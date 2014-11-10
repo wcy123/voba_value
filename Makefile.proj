@@ -16,37 +16,41 @@ $(libdir)/libvoba_value.so: libvoba_value.so
 	$(INSTALL) $< $@
 
 header_files := value.h
-header_imp_files += imp/small.h
-header_imp_files += imp/bool.h
-header_imp_files += imp/closure.h
-header_imp_files += imp/fun.h
-header_imp_files += imp/gf.h
-header_imp_files += imp/basic.h
-header_imp_files += imp/symbol.h
-header_imp_files += imp/tuple.h
-header_imp_files += imp/apply.h
-header_imp_files += imp/pair.h
-header_imp_files += imp/str.h
-header_imp_files += imp/usr.h
-header_imp_files += imp/hash.h
-header_imp_files += imp/la.h
-header_imp_files += imp/basic.c
-header_imp_files += imp/small.c
-header_imp_files += imp/str.c
-header_imp_files += imp/tuple.c
-header_imp_files += imp/fun.c
-header_imp_files += imp/closure.c
-header_imp_files += imp/pair.c
-header_imp_files += imp/symbol.c
-header_imp_files += imp/usr.c
-header_imp_files += imp/gf.c
-header_imp_files += imp/la.c
-header_imp_files += imp/symbol_table.c
-header_imp_files += imp/exception.h
 header_imp_files += imp/apply.c
+header_imp_files += imp/apply.h
+header_imp_files += imp/array.c
+header_imp_files += imp/array.h
+header_imp_files += imp/closure.c
+header_imp_files += imp/closure.h
 header_imp_files += imp/cls.c
+header_imp_files += imp/cls.h
+header_imp_files += imp/complex_macro.h
+header_imp_files += imp/eq.h
+header_imp_files += imp/exception.h
+header_imp_files += imp/for_each.h
+header_imp_files += imp/fun.c
+header_imp_files += imp/fun.h
+header_imp_files += imp/gf.c
+header_imp_files += imp/gf.h
+header_imp_files += imp/hash.h
+header_imp_files += imp/la.c
+header_imp_files += imp/la.h
+header_imp_files += imp/overview.c
+header_imp_files += imp/overview.h
+header_imp_files += imp/pair.c
+header_imp_files += imp/pair.h
+header_imp_files += imp/small.c
+header_imp_files += imp/small.h
+header_imp_files += imp/str.c
+header_imp_files += imp/str.h
+header_imp_files += imp/symbol.c
+header_imp_files += imp/symbol.h
 header_imp_files += imp/symbol_table.h
-header_imp_files += imp/voba_for_each.h
+header_imp_files += imp/tuple.c
+header_imp_files += imp/tuple.h
+header_imp_files += imp/unused.c
+header_imp_files += imp/usr.c
+header_imp_files += imp/usr.h
 
 
 target_header_files += $(patsubst  %, $(includedir)/voba/%, $(header_files))
@@ -55,15 +59,15 @@ $(target_header_files): $(includedir)/voba/% : %
 	$(INSTALL) $< $@
 
 target_header_imp_files += $(patsubst  %, $(includedir)/voba/%, $(header_imp_files))
-install_files += $(target_header_files)
-$(target_header_imp_files): $(includedir)/voba/imp% : %
+install_files += $(target_header_imp_files)
+$(target_header_imp_files): $(includedir)/voba/imp/% : imp/%
 	$(INSTALL) $< $@
 
 
 dirs += $(includedir)/voba $(includedir)/voba/imp
 
 xx:
-	echo $(install_files)
+	echo $(target_header_imp_files)
 
 # Local Variables:
 # mode:makefile

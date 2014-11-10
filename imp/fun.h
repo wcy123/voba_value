@@ -27,11 +27,11 @@ INLINE voba_func_t  voba_value_to_func(voba_value_t v);
 #define VOBA_ASSERT_N_ARG(args,n)
 #else
 #define VOBA_ASSERT_N_ARG(args,n)                                       \
-if(voba_array_len(args) <= n) {                                         \
+if(voba_tuple_len(args) <= n) {                                         \
     VOBA_THROW(VOBA_CONST_CHAR("unexpected number of argument: "),      \
                voba_str_fmt_uint32_t(n+1,10),                           \
                VOBA_CONST_CHAR(" expected, but given "),                \
-               voba_str_fmt_uint32_t(voba_array_len(args),10));         \
+               voba_str_fmt_uint32_t(voba_tuple_len(args),10));         \
 }                                                                       
 #endif
 #ifdef NDEBUG

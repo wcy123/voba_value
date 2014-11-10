@@ -12,6 +12,16 @@ INLINE voba_value_t voba_make_array(uint32_t capacity, uint32_t len, voba_value_
     p1->data = p;
     return ret;
 }
+INLINE voba_value_t voba_array_from_tuple(voba_value_t tuple)
+{
+    assert(voba_is_a(tuple,voba_cls_tuple));
+    uint32_t len = (uint32_t)voba_tuple_len(tuple);
+    uint32_t capacity = len;
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * len);
+    if(!p){abort();};
+    memcpy(p,voba_tuple_base(tuple), sizeof(voba_value_t)*len);
+    return voba_make_array(capacity,len,p);
+}
 INLINE voba_value_t voba_make_array_nv(uint32_t n,va_list ap)
 {
     voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * n);
@@ -86,7 +96,7 @@ INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
 }
 INLINE voba_value_t voba_array_push(voba_value_t a,voba_value_t v)
 {
-    assert(voba_is_a(v,voba_cls_array));
+    assert(voba_is_a(a,voba_cls_array));
     voba_array__enlarge(a,1);
     voba_value_t * p = voba_array_base(a);
     uint32_t len = voba_array_len(a);
@@ -146,3 +156,20 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
             len * sizeof(voba_value_t));
     return a;
 }
+// I really hate to write these macros, but I hate more duplicate
+// code. I used to use python or M4 generate the following code, but
+// it isn't more readable and it is not so good to depend on tools
+// other than standard compilers.
+#define DEFINE_VOBA_MAKE_ARRAY_N(n)                                     \
+    INLINE voba_value_t                                                 \
+    voba_make_array_##n (VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG, COMMA)) {   \
+        uint32_t len = n;                                               \
+        uint32_t capacity = clz_long(len);                              \
+        voba_value_t * p = (voba_value_t*)                              \
+            GC_MALLOC(sizeof(voba_value_t) * len);                      \
+        if(!p){abort();}                                                \
+        VOBA_FOR_EACH_N(n)(DEFINE_VOBA_MAKE_ARRAY_ASSIGN,SEMI_COMMA);   \
+        return voba_make_array(capacity,len,p);                         \
+    }
+#define DEFINE_VOBA_MAKE_ARRAY_ASSIGN(n) p[n] = a##n
+VOBA_FOR_EACH(DEFINE_VOBA_MAKE_ARRAY_N,SPACE)
