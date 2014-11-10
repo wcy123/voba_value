@@ -102,9 +102,9 @@ INLINE voba_value_t voba_make_array_n(int64_t n,...)
 INLINE voba_value_t * voba_value_to_c_array(voba_value_t v)
 {
   return voba_is_fixed_size_array(v)?
-    voba_to_pointer(voba_value_t*, v)
-    :
-    voba_to_pointer(voba_value_t*, (voba_to_pointer(voba_value_t*, v)[1]))
+      voba_to_pointer(voba_value_t*, v)
+      :
+      voba_to_pointer(voba_value_t*, (voba_to_pointer(voba_value_t*, v)[1]))
     ;
 }
 INLINE int64_t voba_array_capacity(voba_value_t v)

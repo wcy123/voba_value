@@ -21,104 +21,49 @@ extern "C" {
 #ifndef INLINE
 #define INLINE static inline 
 #endif
+#include "imp/overview.h"
+/* FOR_EACH macro used by tuple and array */
+#include "imp/for_each.h"
+#include "imp/fun.h"
+#include "imp/str.h"
+#include "imp/symbol.h"
+#include "imp/closure.h"
+#include "imp/tuple.h"
+#include "imp/pair.h"
+#include "imp/usr.h"
+#include "imp/small.h"
+/* user defined class */
+#include "imp/cls.h"
+#include "imp/symbol_table.h"
+#include "imp/gf.h"
+#include "imp/hash.h"
+#include "imp/array.h"
+#include "imp/la.h"
+#include "imp/apply.h"
+#include "imp/exception.h"
 
-#include "voba_str.h"
-#include "data_type_imp.h"
-
+#include "imp/overview.c"
+#include "imp/fun.c"
+#include "imp/str.c"
+#include "imp/symbol.c"
+#include "imp/closure.c"
+#include "imp/tuple.c"
+#include "imp/pair.c"
+#include "imp/usr.c"
+#include "imp/small.c"
+/* user defined class */
+#include "imp/cls.c"
+//#include "imp/symbol_table.c"
+#include "imp/gf.c"
+//#include "imp/hash.c"
+#include "imp/array.c"
+#include "imp/la.c"
+#include "imp/apply.c"
+//#include "imp/exception.c"
+    
 #ifdef __cplusplus
-#include <exception>
-namespace voba {
-  class exception : std::exception{
-  public:
-    explicit exception(voba_value_t v):value(v){}
-    virtual const char* what() const throw();
-    voba_value_t value;
-  };
-  const char* exception::what() const throw()
-  {
-    static char buf[128];
-    snprintf(buf,128,"exception %ld(0x%lx)",value,value);
-    return buf;
-  }
-}
-#endif    
-void voba_throw_exception(voba_value_t v);
-voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch);
-#include "data_type_imp.c"
-#ifdef __cplusplus
 }
 #endif
-
-
-
-// some useful macros
-#define VOBA_FUNC __attribute__((aligned(16)))
-
-#define VOBA_THROW(...) voba_throw_exception(                           \
-        voba_make_string(                                               \
-            VOBA_STRCAT(                                                \
-                VOBA_CONST_CHAR(__FILE__),                              \
-                VOBA_CONST_CHAR(":"),                                   \
-                voba_str_fmt_uint32_t(__LINE__,10),                     \
-                VOBA_CONST_CHAR(": error: "),                           \
-                __VA_ARGS__)))
-#ifdef NDEBUG
-#define VOBA_ASSERT_N_ARG(args,n)
-#else
-#define VOBA_ASSERT_N_ARG(args,n)                                       \
-if(voba_array_len(args) <= n) {                                         \
-    VOBA_THROW(VOBA_CONST_CHAR("unexpected number of argument: "),      \
-               voba_str_fmt_uint32_t(n+1,10),                           \
-               VOBA_CONST_CHAR(" expected, but given "),                \
-               voba_str_fmt_uint32_t(voba_array_len(args),10));         \
-}                                                                       
-#endif
-#ifdef NDEBUG
-#define VOBA_ASSERT_CLS(name,cls,n)
-#else
-#define VOBA_ASSERT_CLS(name,cls,n)                                     \
-    if(!voba_is_a(name,cls)){                                           \
-        VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
-                   voba_str_fmt_uint32_t(n,10),                         \
-                   VOBA_CONST_CHAR(": `" #cls "` expected, "            \
-                                   "but given value is 0x"),            \
-                   voba_str_fmt_uint64_t(name,16));                     \
-    }
-#endif
-
-#ifdef NDEBUG
-#define VOBA_ASSERT_IS(name,is,n)
-#else
-#define VOBA_ASSERT_IS(name,is,n)                                      \
-    if(!(is)(name)){                                                    \
-        VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
-                   voba_str_fmt_uint32_t(n,10),                         \
-                   VOBA_CONST_CHAR(": `" #is "` expected, "             \
-                                   "but given value is 0x"),            \
-                   voba_str_fmt_uint64_t(name,16));                     \
-    }
-#endif
-#define VOBA_DEF_CLS(xsize,xname)                                       \
-    voba_value_t voba_cls_##xname = VOBA_UNDEF;                         \
-    EXEC_ONCE_PROGN                                                     \
-    {                                                                   \
-        if(voba_eq(voba_cls_cls,VOBA_UNDEF)){                           \
-            /*                                                          \
-               voba_cls_cls itself is a user data too. but we need a    \
-               voba_cls to create a user data. so there is a            \
-               chicken-egg problem.  voba_allocate_user_data is used    \
-               to break the recursive, i.e. `voba_cls_cls` is created   \
-               in a special way.                                        \
-            */                                                          \
-            voba_value_t * p =                                          \
-                voba_allocate_user_data(sizeof(voba_cls_t));            \
-            voba_cls_cls = voba_from_pointer(p,VOBA_TYPE_USER);         \
-            VOBA_CLS(voba_cls_cls)->size = sizeof(voba_cls_t);          \
-            VOBA_CLS(voba_cls_cls)->name = "cls";                       \
-            p[0] = voba_cls_cls;                                        \
-        }                                                               \
-        voba_cls_##xname = voba_make_cls(xsize,#xname);                 \
-    }                                                                
 
 
 /* Local Variables: */

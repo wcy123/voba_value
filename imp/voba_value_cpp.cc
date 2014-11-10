@@ -207,14 +207,14 @@ extern "C" voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_c
 {
     voba_value_t args[] = {1,VOBA_NIL};
     try{
-        return voba_apply(fun_body,voba_make_tuple(args));
+        return voba_apply(fun_body,voba_make_array(args));
     }catch(voba::exception e){
         args[1] = e.value;
-        return voba_apply(fun_catch,voba_make_tuple(args));
+        return voba_apply(fun_catch,voba_make_array(args));
     }
 }
 
 
 
-#include "imp/hash_paul.inc"
+#include "hash_paul.inc"
 
