@@ -16,15 +16,17 @@ INLINE voba_value_t voba_array_from_tuple(voba_value_t tuple)
 {
     assert(voba_is_a(tuple,voba_cls_tuple));
     uint32_t len = (uint32_t)voba_tuple_len(tuple);
-    uint32_t capacity = len;
-    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * len);
+    uint32_t capacity = len == 0?2:len; /* minimun capacity is 2 */
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * capacity);
     if(!p){abort();};
     memcpy(p,voba_tuple_base(tuple), sizeof(voba_value_t)*len);
     return voba_make_array(capacity,len,p);
 }
 INLINE voba_value_t voba_make_array_nv(uint32_t n,va_list ap)
 {
-    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * n);
+    uint32_t len = n;
+    uint32_t capacity = len;
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * capacity);
     assert(n>0);
     assert(p);
     for(int i = 0 ; i < n; ++i){
@@ -43,14 +45,17 @@ INLINE voba_value_t voba_make_array_n(uint32_t n,...)
 }
 INLINE voba_value_t * voba_array_base(voba_value_t v)
 {
+    assert(voba_is_a(v,voba_cls_array));
     return VOBA_ARRAY(v)->data;
 }
 INLINE uint32_t voba_array_capacity(voba_value_t v)
 {
+    assert(voba_is_a(v,voba_cls_array));
     return VOBA_ARRAY(v)->capacity;
 }
 INLINE uint32_t voba_array_len(voba_value_t v)
 {
+    assert(voba_is_a(v,voba_cls_array));
     return VOBA_ARRAY(v)->len;
 }
 INLINE voba_value_t voba_array_at(voba_value_t v,uint32_t i)
@@ -79,7 +84,7 @@ INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
     if(len + inc + 1 > capacity){ // one more room for `capacity+size`
         capacity = capacity * 2;
         p = (voba_value_t*) GC_REALLOC((void*)p, capacity*sizeof(voba_value_t));
-        assert(p);
+        if(!p){abort();}
         VOBA_ARRAY(a)->capacity = capacity;
         /*
           for example: when capcity is 8  and len is 3
@@ -166,7 +171,7 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
         uint32_t len = n;                                               \
         uint32_t capacity = clz_long(len);                              \
         voba_value_t * p = (voba_value_t*)                              \
-            GC_MALLOC(sizeof(voba_value_t) * len);                      \
+            GC_MALLOC(sizeof(voba_value_t) * capacity);                 \
         if(!p){abort();}                                                \
         VOBA_FOR_EACH_N(n)(DEFINE_VOBA_MAKE_ARRAY_ASSIGN,SEMI_COMMA);   \
         return voba_make_array(capacity,len,p);                         \
