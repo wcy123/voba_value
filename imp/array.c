@@ -156,9 +156,10 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
     assert(voba_is_a(b,voba_cls_array));
     uint32_t len = voba_array_len(b);
     voba_array__enlarge(a,len);
-    memmove(voba_array_base(a) + voba_array_len(b),
+    memmove(voba_array_base(a) + voba_array_len(a),
             voba_array_base(b),
             len * sizeof(voba_value_t));
+    VOBA_ARRAY(a)->len += len;
     return a;
 }
 // I really hate to write these macros, but I hate more duplicate
