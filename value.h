@@ -41,6 +41,7 @@ extern "C" {
 #include "imp/la.h"
 #include "imp/apply.h"
 #include "imp/exception.h"
+#include "imp/generator.h"
 
 #include "imp/overview.c"
 #include "imp/fun.c"
@@ -59,7 +60,7 @@ extern "C" {
 #include "imp/la.c"
 #include "imp/apply.c"
 //#include "imp/exception.c"
-    
+#include "imp/generator.c"    
 #ifdef __cplusplus
 }
 #endif

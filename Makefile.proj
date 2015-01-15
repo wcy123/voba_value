@@ -2,12 +2,12 @@
 CXXFLAGS += -fPIC
 CXXFLAGS += -std=c++11
 CFLAGS += -fPIC
+ASFLAGS += -fPIC
 
-
-SRCS_C += voba_value.c
+SRCS_C += voba_value.c imp/cg_utils.c #value2.c
 SRCS_CC += voba_value_cpp.cc
 
-libvoba_value.so: $(OBJS)
+libvoba_value.so: $(OBJS) imp/cg_linux_amd64.o
 	$(CXX) -shared -Wl,-soname,$@ -o $@ $^  $(LDFLAGS)
 
 
@@ -51,6 +51,9 @@ header_imp_files += imp/tuple.h
 header_imp_files += imp/unused.c
 header_imp_files += imp/usr.c
 header_imp_files += imp/usr.h
+header_imp_files += imp/cg.h
+header_imp_files += imp/generator.c
+header_imp_files += imp/generator.h
 
 
 target_header_files += $(patsubst  %, $(includedir)/voba/%, $(header_files))

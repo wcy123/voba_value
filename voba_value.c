@@ -29,12 +29,32 @@ VOBA_DEF_CLS(voba_sizeof_symbol_table(),symbol_table)
 VOBA_DEF_CLS(sizeof(voba_array_t),array)
 VOBA_DEF_CLS(sizeof(voba_gf_t),generic_function)
 VOBA_DEF_CLS(sizeof(voba_la_t),la)
-
+VOBA_DEF_CLS(sizeof(cg_t),generator)
 voba_value_t voba_gf_apply = VOBA_NIL;
+VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t args);
 EXEC_ONCE_PROGN{
     voba_gf_apply = voba_make_generic_function("apply",NULL);
+    voba_gf_add_class(voba_gf_apply,voba_cls_generator, voba_make_func(apply_generator));
 }
-
-
-
+voba_value_t voba_make_tuple_1_x(voba_value_t x) 
+{
+    return voba_make_tuple_n(1,x);
+}
+VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t args)
+{
+    voba_value_t g = self;
+    voba_value_t ret = VOBA_NIL;
+    if(cg_is_done(VOBA_GENERATOR(g))){
+        ret = VOBA_DONE;
+    }else{
+        VOBA_ASSERT_CLS(g,voba_cls_generator,0);
+        int64_t len = voba_tuple_len(args);
+        voba_value_t v = VOBA_UNDEF;
+        if(len > 0){
+            v = voba_tuple_at(args,0);
+        }
+        ret = cg_invoke(VOBA_GENERATOR(g),v);
+    }
+    return ret;
+}
 
