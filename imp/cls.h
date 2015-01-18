@@ -1,14 +1,23 @@
 #pragma once
-/* the first user defined data type is a cls itself. */
-extern voba_value_t voba_cls_cls;
-extern uint32_t voba_cls_next_id;
+/**@file
+cls
+=== 
+
+The first user defined data type is a cls itself. 
+
+*/
+extern voba_value_t voba_cls_cls; /*!< the class object associated with \a cls itself */
+extern uint32_t voba_cls_next_id; /*!< every class has a unique id, which is used for generic function.*/
 typedef struct voba_cls_s voba_cls_t;
+/** */
 struct voba_cls_s {
-    size_t size;
-    const char * name;
-    uint32_t id;
+    size_t size; /*!< the size of user defined object*/
+    const char * name; /*!< the name of class */
+    uint32_t id; /*!< the id of classs*/
 };
+/** @return a \a cls obejct which represents the class of the object \a v*/
 INLINE voba_value_t voba_get_class(voba_value_t v);
+/** @return the name of the class object */
 INLINE const char * voba_get_class_name(voba_value_t v);
 
 #define VOBA_CLS(s)  VOBA_USER_DATA_AS(voba_cls_t *,s)

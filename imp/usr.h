@@ -1,6 +1,9 @@
 #pragma once
-/* user data */
-/*
+/** @file
+user data
+=========
+
+@verbatim
 +--------------------+------------------------+
 | .     61 bits value                   | 100 |
 +-|------------------+------------------------+
@@ -11,28 +14,33 @@
        +-----------------------------+  |       +-----------------------------+
        |     but 8 bytes alignment   |  |  (size)
        +-----------------------------+ /
+@endverbatim
 
+User data is garbage collected when unused. This is not a problem for
+c, but might be a problem for C++, because deconstructor is automatic
+invoked, a solution is needed. GC supports to register a finalizer.
 
-the user data is garbage collected when unused, this is not a problem
-for c, but might be a problem for C++, because deconstructor is
-automatic invoked. a solution is needed. TODO.
+\a size of user_data does not including the room for \a cls object, e.g.
 
-when voba_class_t is NIL, the default user class `vova_cls_user_data`
-is used. this function regards user data as a opaque data area.
-
-`size` of user_data, not including the room for cls function. E.g.
- 
+@code{.c}
        struct point { int x; int y}; 
        voba_make_user_data(NIL, sizeof(struct point)) 
        ((struct point*) user_data_base(v))->x = 100; 
        ((struct point*) user_data_base(v))->y = 100;
+@endcode
+
+see cls.h, which is itself a user defined object.
 
 */
+/** create a user defined object, whose class is \a cls*/
 INLINE voba_value_t voba_make_user_data(voba_value_t cls);
+/** @return the class object associated with the user defined object \a v*/
 INLINE voba_value_t voba_user_data_class(voba_value_t v);
+/** @return the pointer to the user defined object \a v*/
 INLINE void*   voba_user_data_base(voba_value_t v);
-#define VOBA_USER_DATA_AS(type,v) ((type)(voba_user_data_base(v)))
 
+#define VOBA_USER_DATA_AS(type,v) ((type)(voba_user_data_base(v)))
+/** test whether a user defined object \a v is an instances of class \a cls*/
 INLINE int voba_is_a(voba_value_t v, voba_value_t cls);
 
 

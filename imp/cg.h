@@ -6,9 +6,10 @@
 #else
 #error unsupported architecture
 #endif
+/// todo
 typedef struct cg_s{
-    uintptr_t stack_size;
-    uintptr_t * stack;
+    uintptr_t stack_size; /// todo 
+    uintptr_t * stack; /// todo
     uintptr_t is_done;
 } cg_t;
 

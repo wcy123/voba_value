@@ -47,7 +47,7 @@ VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t ar
     if(cg_is_done(VOBA_GENERATOR(g))){
         ret = VOBA_DONE;
     }else{
-        VOBA_ASSERT_CLS(g,voba_cls_generator,0);
+        VOBA_ASSERT_ARG_ISA(g,voba_cls_generator,0);
         int64_t len = voba_tuple_len(args);
         voba_value_t v = VOBA_UNDEF;
         if(len > 0){

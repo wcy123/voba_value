@@ -5,6 +5,7 @@
 #include "value.h"
 using namespace std;
 static uint32_t SuperFastHash (const char * data, int len);
+/// todo
 struct vtype_hasher {
     size_t operator() (const voba_value_t key)
         {
@@ -16,6 +17,7 @@ struct vtype_hasher {
             }
         }
 };
+/// todo
 struct vtype_equal {
     bool operator() (const voba_value_t k1, const voba_value_t k2) const
         {
@@ -34,6 +36,7 @@ struct vtype_equal {
             return ret;
         }
 };
+/// todo
 template<typename T>
 struct my_allocator : public std::allocator< T >{
     T * allocate(size_t s) {
@@ -90,6 +93,7 @@ extern "C" size_t voba_hashtable_size(voba_value_t h)
     assert(voba_is_a(h,voba_cls_hashtable));
     return HASH(h)->size();
 }
+/// hash the symbol name
 struct symbol_table_hasher {
     size_t operator() (const voba_value_t k1)
         {
@@ -98,6 +102,7 @@ struct symbol_table_hasher {
                                  voba_value_to_str(voba_symbol_name(k1))->len);
         }
 };
+/// symbols with a same symbol name in a symbol table are same symbols
 struct symbol_table_equal {
     bool operator() (const voba_value_t k1, const voba_value_t k2) const
         {

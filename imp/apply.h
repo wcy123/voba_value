@@ -1,4 +1,5 @@
 #pragma once
+/** @file */
 /* apply
    =====
  It is the only core function of voba_value library.
@@ -12,7 +13,8 @@
  3. otherwise, use `voba_gf_lookup(voba_gf_apply, voba_get_class(f))` to find the actual 
 
 */
-
+/** generic function for callable object
+ */
 extern voba_value_t voba_gf_apply;
 INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args);
 voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in voba_value.c
