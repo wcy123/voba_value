@@ -1,15 +1,18 @@
 #pragma once
 #include "for_each.h"
 
-/*
+/** @file
+small types
+===========
 
 when it is VOBA_TYPE_SMALL,
-
-+--------+-------+-------+
-| data   | type2 | type1 |
-+--------------+---------+
-| 48bits | 5bits | 3bits |
-+--------+-------+-------|
+@verbatim
++--------------------------------------+-------+-------+
+| data                                 | type2 | type1 |
++--------------------------------------+-------+-------+
+| 48bits                               | 5bits | 3bits |
++--------------------------------------+-------+-------|
+@endverbatim
 `voba_get_type2` return 5-bits type.
 
 */
@@ -26,68 +29,86 @@ when it is VOBA_TYPE_SMALL,
 #define    VOBA_TYPE_SPECIAL_VALUES 11   // internal used, which is not visible
 #define    VOBA_TYPE_SECRET       10   // internal used, which is not visible
 INLINE int64_t  voba_get_type2(voba_value_t v);
-/*
-     class bool
-     =========
+/**
+constant value nil
+==================
 
-+-----------------------------------------------------------+-------+
-| data                                              | type2 | type1 |
-+-----------------------------------------------------------+-------+
-|                  1 (TRUE) or 0 (FALS)             | 00001 |  111  |
-+-----------------------------------------------------------+-------+
-
-
-It has two values, VOBA_TRUE and VOBA_FALSE
-
- */
-extern voba_value_t voba_cls_bool;
-#define VOBA_TRUE                      (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  1 * 256)
-#define VOBA_FALSE                     (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  0 * 256)
-INLINE int voba_is_true(voba_value_t v);
-INLINE int voba_is_false(voba_value_t v);
-INLINE voba_value_t voba_not(voba_value_t v);
-/*
-        class nil
-        =========
-
+@verbatim
 +---------------------------+------------------------+
 |                    0                               |
 +---------------------------+------------------------+
+@endverbatim
 
 This class only contain one value, VOBA_NIL. The least significant
 3-bits is 000, which is as same as VOBA_TYPE_FUNC, but no function
 address is zero, so it is safe to share the same type tag with
 VOBA_TYPE_FUNC.
 
- */
-extern voba_value_t voba_cls_nil;
+::VOBA_NIL is usually represents
+ - end of a list
+ - empty value
+ - it has the special value of zero.
+*/
 #define VOBA_NIL 0
+extern voba_value_t voba_cls_nil;
 INLINE int voba_is_nil(voba_value_t p);
-/*
-    class short symbol
-    ==================
-NOT IMPLEMENTED YET.
+/** 
+constant value undef
+===================
 
+It represents an unintialized value.
+
+*/
+#define VOBA_UNDEF (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  1 * 256)
+extern voba_value_t voba_cls_undef;
+INLINE int voba_is_undef(voba_value_t v) { return v == VOBA_UNDEF; }
+
+/** 
+constant VOBA_DONE
+==================
+
+It repensent the end of iteration.
+
+*/
+#define VOBA_DONE (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  2 * 256)
+extern voba_value_t voba_cls_done;
+INLINE int voba_is_done(voba_value_t v) { return v == VOBA_DONE; }
+/**
+class bool
+=========
+@verbatim
++-----------------------------------------------------------+-------+
+| data                                              | type2 | type1 |
++-----------------------------------------------------------+-------+
+|                  1 (TRUE) or 0 (FALS)             | 00001 |  111  |
++-----------------------------------------------------------+-------+
+@endverbatim
+It has two values, ::VOBA_TRUE and ::VOBA_FALSE
+*/
+extern voba_value_t voba_cls_bool;
+///
+#define VOBA_TRUE                      (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  1 * 256)
+/// 
+#define VOBA_FALSE                     (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  0 * 256)
+INLINE int voba_is_true(voba_value_t v);
+INLINE int voba_is_false(voba_value_t v);
+INLINE voba_value_t voba_not(voba_value_t v);
+/** 
+class short symbol
+==================
+NOT IMPLEMENTED YET.
  */
 extern voba_value_t voba_cls_short_symbol;
-extern voba_value_t voba_cls_undef;
-extern voba_value_t voba_cls_done;
-
-// constants
-// NIL don't have any class associated with it.
-// #define VOBA_SECRET_VIRTUAL_TABLE (VOBA_TYPE_SMALL + VOBA_SECRET * 8 +  0 * 256)
-#define VOBA_UNDEF (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  1 * 256)
-INLINE int voba_is_undef(voba_value_t v) { return v == VOBA_UNDEF; }
-#define VOBA_DONE (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  2 * 256)
-INLINE int voba_is_done(voba_value_t v) { return v == VOBA_DONE; }
-/*
+/**
     class integer
     ============
+@verbatim
 +-----------------------------------------------------------+-------+
 | data                                              | type2 | type1 |
 +-----------------------------------------------------------+-------+
 |                 value                             | 00010 |  111  |
 +-----------------------------------------------------------+-------+
+@endverbatim
 
 voba_make_i8, voba_make_u8, voba_make_i16,voba_make_i32
 
@@ -104,15 +125,16 @@ extern voba_value_t voba_cls_u16;
 extern voba_value_t voba_cls_i16;
 extern voba_value_t voba_cls_u32;
 extern voba_value_t voba_cls_i32;
-/*
-    class float
-    ============
-
+/**
+class float
+============
+@verbatim
 +-----------------------------------------------------------+-------+
 | data                                              | type2 | type1 |
 +-----------------------------------------------------------+-------+
 |                 value (32bits)                    | 01000 |  111  |
 +-----------------------------------------------------------+-------+
+@endverbatim
 
 voba_make_float, voba_value_to_float, similar to `class integer`.
 

@@ -1,5 +1,6 @@
 docs/html
 docs/doxygen_sqlite3.db
+docs/doxygen.conf
 *.o
 *.so
 test/test_*.out

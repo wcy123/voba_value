@@ -15,6 +15,7 @@
  *   - tuple, see tuple.h
  *   - closure, see closure.h
  *   - pair, see pair.h
+ *   - small types, see small.h
  *   - user defined, see usr.h
  *      - cls, see cls.h
  *      - symbol table, see symbol_table.h
