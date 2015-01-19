@@ -1,6 +1,8 @@
 Voba value system, the basic data structure
 ===========================================
 
+see <http://wcy123.github.io/voba_value/index.html> for more details
+
 This is a rich value system to representing a lot of useful data
 structure, e.g. list, array, hash etc.
 
@@ -46,4 +48,5 @@ There are 8 basic types:
      - symbol table, see symbol.h
      - other user defined object
   - small types, see small.h
+
 
