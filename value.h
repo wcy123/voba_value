@@ -1,32 +1,4 @@
 /** @file */
-/** \mainpage Voba value system, the basic data structure
-
- * \section Overview
- *
- * This is a rich value system to representing a lot of useful data
- * structure, e.g. list, array, hash etc.  This is the corner stone
- * for the language `voba`, but it could be used independently. see
- * overview.h
- * 
- * There are 8 basic types:
- *   - function, see fun.h
- *   - string, see str.h
- *   - symbol, see symbol.h
- *   - tuple, see tuple.h
- *   - closure, see closure.h
- *   - pair, see pair.h
- *   - small types, see small.h
- *   - user defined, see usr.h
- *      - cls, see cls.h
- *      - symbol table, see symbol_table.h
- *      - generic function, see gf.h
- *      - list array view, la, see la.h
- *      - generator, generator.h
- *      - symbol table, see symbol.h
- *      - other user defined object
- *   - small types, see small.h
- * 
- */
 #pragma once
 #ifdef __cplusplus
 extern "C" {
