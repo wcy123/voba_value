@@ -11,3 +11,4 @@ test/test_i8
 a.*
 compile_voba_header.sh
 depend.inc
+docs/voba_str.tag
