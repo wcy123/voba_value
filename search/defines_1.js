@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['voba_5fassert_5farg_5ffun',['VOBA_ASSERT_ARG_FUN',['../fun_8h.html#a74e741d220d2e73619727049e8b93e6e',1,'fun.h']]],
+  ['voba_5fassert_5farg_5fisa',['VOBA_ASSERT_ARG_ISA',['../fun_8h.html#ab9eef2ffccaf746a79fa0ac2f26d21ae',1,'fun.h']]],
+  ['voba_5fassert_5fn_5farg',['VOBA_ASSERT_N_ARG',['../fun_8h.html#a635ac22465f30ceb6beeaa1bfabf2ad0',1,'fun.h']]],
+  ['voba_5fdone',['VOBA_DONE',['../small_8h.html#a7aee94368f3e0efc2cf9a831aabf73df',1,'small.h']]],
+  ['voba_5ffunc',['VOBA_FUNC',['../fun_8h.html#a87beae3391f3bf28034f8507dceaa5c7',1,'fun.h']]],
+  ['voba_5fnil',['VOBA_NIL',['../small_8h.html#a0cbe908387e7765090f0ee3f4de435b8',1,'small.h']]],
+  ['voba_5fto_5fpointer',['voba_to_pointer',['../overview_8h.html#a7209305e30bf409a5c5838199b69e5fb',1,'overview.h']]],
+  ['voba_5ftype_5fclosure',['VOBA_TYPE_CLOSURE',['../overview_8h.html#a785d3abe52c7b227f267f8b39500b697',1,'overview.h']]],
+  ['voba_5ftype_5ffunc',['VOBA_TYPE_FUNC',['../overview_8h.html#a81b7761791a722bacd0b1f681808e65a',1,'overview.h']]],
+  ['voba_5ftype_5fmask',['VOBA_TYPE_MASK',['../overview_8h.html#a6752a48c5c4d06cbbcf20a68f44d34e2',1,'overview.h']]],
+  ['voba_5ftype_5fnil',['VOBA_TYPE_NIL',['../overview_8h.html#a0628aee3b3304fba9851b38dc1230393',1,'overview.h']]],
+  ['voba_5ftype_5fpair',['VOBA_TYPE_PAIR',['../overview_8h.html#a332154eb105741fcda1828621d7c146c',1,'overview.h']]],
+  ['voba_5ftype_5fsmall',['VOBA_TYPE_SMALL',['../overview_8h.html#aa0df034e892d3a7b7793f50a5ccf863e',1,'overview.h']]],
+  ['voba_5ftype_5fstring',['VOBA_TYPE_STRING',['../overview_8h.html#ac682fb106f3e24a10d5b15057e61ed8b',1,'overview.h']]],
+  ['voba_5ftype_5fsymbol',['VOBA_TYPE_SYMBOL',['../overview_8h.html#a948e9472f7e28931232f7d80247f1f55',1,'overview.h']]],
+  ['voba_5ftype_5ftuple',['VOBA_TYPE_TUPLE',['../overview_8h.html#aa629b8fc769802756e413e0221c9822e',1,'overview.h']]],
+  ['voba_5ftype_5fuser',['VOBA_TYPE_USER',['../overview_8h.html#a4cb70fc17d3f32a51f5049e8d263d375',1,'overview.h']]],
+  ['voba_5fundef',['VOBA_UNDEF',['../small_8h.html#a7d0d4a3b0daef3b047efe0784c9b82db',1,'small.h']]]
+];
