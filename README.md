@@ -50,3 +50,22 @@ There are 8 basic types:
   - small types, see small.h
 
 
+### dependency
+
+<pre>
+@dot
+digraph example {
+node [shape=record, fontname=Helvetica, fontsize=10];
+ voba_value [ label="voba_value" URL="https://wcy123.github.io/voba_value"];
+ exec_once [ label="exec_once" URL="https://wcy123.github.io/exec_once"];
+ voba_str [ label="voba_str" URL="https://wcy123.github.io/voba_str"];
+ vhash [ label="vhash" URL="https://wcy123.github.io/vhash"];
+ voba_value -> exec_once [ arrowhead="open", style="dashed" ];
+ voba_value -> voba_str [ arrowhead="open", style="dashed" ];
+ voba_value -> vhash [ arrowhead="open", style="dashed" ];
+ 
+}
+@enddot
+</pre>
+ 
+

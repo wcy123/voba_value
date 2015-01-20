@@ -86,9 +86,9 @@ class bool
 It has two values, ::VOBA_TRUE and ::VOBA_FALSE
 */
 extern voba_value_t voba_cls_bool;
-///
+/// true value
 #define VOBA_TRUE                      (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  1 * 256)
-/// 
+/// false value
 #define VOBA_FALSE                     (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  0 * 256)
 INLINE int voba_is_true(voba_value_t v);
 INLINE int voba_is_false(voba_value_t v);
