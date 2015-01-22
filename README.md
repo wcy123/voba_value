@@ -40,12 +40,13 @@ There are 8 basic types:
   - pair, see pair.h
   - small types, see small.h
   - user defined, see usr.h
+     - array, see array.h
+     - hash, see hash.h
      - cls, see cls.h
-     - symbol table, see symbol_table.h
      - generic function, see gf.h
+     - symbol table, see symbol_table.h
      - list array view, la, see la.h
      - generator, generator.h
-     - symbol table, see symbol.h
      - other user defined object
   - small types, see small.h
 
