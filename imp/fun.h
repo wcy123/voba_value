@@ -92,7 +92,7 @@ if(voba_tuple_len(args) <= n) {                                         \
 #define VOBA_ASSERT_ARG_FUN(name,f,n)
 #else
 #define VOBA_ASSERT_ARG_FUN(name,f,n)                                   \
-    if(!(is)(name)){                                                    \
+    if(!(f)(name)){                                                    \
         VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
                    voba_str_fmt_uint32_t(n,10),                         \
                    VOBA_CONST_CHAR(": `" #f "` expected, "              \
