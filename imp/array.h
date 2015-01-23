@@ -1,6 +1,23 @@
 #pragma once
+/** @file
+Array
+====
+
+Unlike tuple(see tuple.h), \a array is variable size of a continuous memory.
+see ::voba_array_s
+
+Many APIs modify the first argument in place with side effect. It will
+destory the first argument, so use the return value instead. for example
+~~~{.c}
+voba_value_t a = voba_array_from_tuple(tuple);
+a = voba_array_push(a,xx);
+~~~
+
+*/
 typedef struct voba_array_s voba_array_t;
-/// todo
+/** 
+  the main structure of an array
+*/
 struct voba_array_s {
     uint32_t capacity;
     uint32_t len;

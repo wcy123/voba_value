@@ -26,6 +26,28 @@ where \a args is the argument tuple \a (a1 a2 ...)
 /** generic function for callable object
  */
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a);
+/** the generic function object. see gf.h 
+
+instances whose class implements this generic function is callable.
+for example,
+~~~{.c}
+voba_gf_add_class(voba_gf_apply,voba_cls_array,voba_make_func(apply_array));
+
+VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+{
+    ....
+}
+~~~
+
+then \a array becomes callable. 
+
+~~~{.c}
+voba_value_t a = voba_array_from_tuple(tuple);
+voba_value_t args[] = { 1, voba_make_i8(0) };
+voba_value_t r = voba_apply(a, args); // invoke apply_array 
+~~~
+
+*/
 extern voba_value_t voba_gf_apply;
 INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args);
 voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in voba_value.c

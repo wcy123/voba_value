@@ -57,10 +57,6 @@ INLINE voba_value_t voba_la_cdr(voba_value_t la)
     VOBA_LA(la)->cur = cur;
     return la;
 }
-INLINE voba_value_t voba_la_nil()
-{
-    return voba__make_la(0,0,voba_make_array_0());
-}
 INLINE voba_value_t voba_la_copy(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));

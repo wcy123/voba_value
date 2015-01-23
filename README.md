@@ -49,7 +49,8 @@ There are 8 basic types:
      - generator, generator.h
      - other user defined object
   - small types, see small.h
-
+  - `apply`, see apply.h
+  
 
 ### dependency
 
