@@ -90,32 +90,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <a href="apply_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/* apply</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">   =====</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> It is the only core function of voba_value library.</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> voba_apply(f, args) evaluates s-exp (f a1 a2 ....)</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> where args is the argument tuple (a1 a2 ...)</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment"> `f` is any type which is callable.</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment"> 1. voba_cls_func: call it directly</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> 2. voba_cls_generic_function: use `voba_gf_lookup(f, voba_get_class(a1))` to find the actual voba_cls_func.</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> 3. otherwise, use `voba_gf_lookup(voba_gf_apply, voba_get_class(f))` to find the actual </span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">extern</span> <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <a class="code" href="apply_8h.html#a31de1b5aa9fca149fef202df077138a4">voba_gf_apply</a>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;INLINE <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_direct_apply(<a class="code" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f,<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_direct_apply_n(<a class="code" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f,<span class="keywordtype">size_t</span> n, ...); <span class="comment">// defined in voba_value.c</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;INLINE <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_apply(<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> f, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> a);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;INLINE <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <a class="code" href="apply_8h.html#a16186dc39b10214b25592bec19c6b761">voba_apply</a>(<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> f, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> a);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">extern</span> <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <a class="code" href="apply_8h.html#a31de1b5aa9fca149fef202df077138a4">voba_gf_apply</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;INLINE <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_direct_apply(<a class="code" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f,<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_direct_apply_n(<a class="code" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f,<span class="keywordtype">size_t</span> n, ...); <span class="comment">// defined in voba_value.c</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="ttc" id="apply_8h_html_a31de1b5aa9fca149fef202df077138a4"><div class="ttname"><a href="apply_8h.html#a31de1b5aa9fca149fef202df077138a4">voba_gf_apply</a></div><div class="ttdeci">voba_value_t voba_gf_apply</div><div class="ttdef"><b>Definition:</b> voba_value.c:33</div></div>
 <div class="ttc" id="fun_8h_html_ab00928290fc28dbcb8ff07f2f11f94bc"><div class="ttname"><a href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a></div><div class="ttdeci">voba_value_t(* voba_func_t)(voba_value_t self, voba_value_t args)</div><div class="ttdef"><b>Definition:</b> fun.h:45</div></div>
+<div class="ttc" id="apply_8h_html_a16186dc39b10214b25592bec19c6b761"><div class="ttname"><a href="apply_8h.html#a16186dc39b10214b25592bec19c6b761">voba_apply</a></div><div class="ttdeci">INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t a)</div><div class="ttdef"><b>Definition:</b> apply.c:45</div></div>
 <div class="ttc" id="overview_8h_html_a4b4beb86106b46a64b829791f267f60b"><div class="ttname"><a href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a></div><div class="ttdeci">uint64_t voba_value_t</div><div class="ttdef"><b>Definition:</b> overview.h:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jan 20 2015 20:24:25 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 23 2015 14:54:38 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

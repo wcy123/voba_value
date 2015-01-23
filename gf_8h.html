@@ -222,7 +222,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>voba_cls_generic_
 <p>this is the key concept of generic function, given a generic function object and a class object, we are able to find the registered implementation. </p><div class="fragment"><div class="line"><a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> gf_to_string; <span class="comment">// create a generic function, named to_string</span></div>
 <div class="line"><a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> obj; <span class="comment">// any object</span></div>
 <div class="line"><a class="code" href="gf_8h.html#ac87a7b3f8c8633f07cb0640f3baabe53">voba_gf_add_class</a>(gf_to_string, <a class="code" href="cls_8h.html#a0940835062b532750c8e1e20fcce9433">voba_get_class</a>(obj),func);</div>
-<div class="line">voba_apply(gf_to_string, obj); <span class="comment">// similiar to invoke func(gf_to_string,obj);</span></div>
+<div class="line"><a class="code" href="apply_8h.html#a16186dc39b10214b25592bec19c6b761">voba_apply</a>(gf_to_string, obj); <span class="comment">// similiar to invoke func(gf_to_string,obj);</span></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -256,7 +256,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>voba_cls_generic_
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jan 20 2015 20:24:25 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 23 2015 14:54:38 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

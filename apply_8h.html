@@ -91,7 +91,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">apply.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h1>apply </h1>
+<p>It is the only core function of voba_value library.</p>
+<div class="fragment"><div class="line"><a class="code" href="apply_8h.html#a16186dc39b10214b25592bec19c6b761">voba_apply</a>(f, args) </div>
+</div><!-- fragment --><p>evaluates s-exp </p><div class="fragment"><div class="line">(f a1 a2 ....)</div>
+</div><!-- fragment --><p>where <em>args</em> is the argument tuple <em></em>(a1 a2 ...)</p>
+<p><em>f</em> is any type which is callable.</p>
+<ol type="1">
+<li><em>voba_cls_func:</em> call it directly</li>
+<li><em>voba_cls_generic_function:</em> use <code>voba_gf_lookup(f, voba_get_class(a1))</code> to find the actual voba_cls_func.</li>
+<li><em>otherwise</em>, use <code>voba_gf_lookup(voba_gf_apply, voba_get_class(f))</code> to find the actual </li>
+</ol>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="apply_8h__dep__incl.png" border="0" usemap="#imp_2apply_8hdep" alt=""/></div>
@@ -103,21 +115,48 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a16186dc39b10214b25592bec19c6b761"><td class="memItemLeft" align="right" valign="top">INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="apply_8h.html#a16186dc39b10214b25592bec19c6b761">voba_apply</a> (<a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> f, <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> a)</td></tr>
+<tr class="separator:a16186dc39b10214b25592bec19c6b761"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e6b17382af236be310cab5c5ba6a6fa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e6b17382af236be310cab5c5ba6a6fa"></a>
 INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>voba_direct_apply</b> (<a class="el" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f, <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args)</td></tr>
 <tr class="separator:a2e6b17382af236be310cab5c5ba6a6fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ef03c9681b8b7e33e581a8485c6816f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ef03c9681b8b7e33e581a8485c6816f"></a>
 <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>voba_direct_apply_n</b> (<a class="el" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f, size_t n,...)</td></tr>
 <tr class="separator:a3ef03c9681b8b7e33e581a8485c6816f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16186dc39b10214b25592bec19c6b761"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16186dc39b10214b25592bec19c6b761"></a>
-INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>voba_apply</b> (<a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> f, <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> a)</td></tr>
-<tr class="separator:a16186dc39b10214b25592bec19c6b761"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a31de1b5aa9fca149fef202df077138a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="apply_8h.html#a31de1b5aa9fca149fef202df077138a4">voba_gf_apply</a></td></tr>
 <tr class="separator:a31de1b5aa9fca149fef202df077138a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a16186dc39b10214b25592bec19c6b761"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>generic function for callable object </p>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a class="anchor" id="a31de1b5aa9fca149fef202df077138a4"></a>
 <div class="memitem">
@@ -128,14 +167,24 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>generic function for callable object </p>
-
+<p>the generic function object. see <a class="el" href="gf_8h.html">gf.h</a></p>
+<p>instances whose class implements this generic function is callable. for example, </p><div class="fragment"><div class="line"><a class="code" href="gf_8h.html#ac87a7b3f8c8633f07cb0640f3baabe53">voba_gf_add_class</a>(<a class="code" href="apply_8h.html#a31de1b5aa9fca149fef202df077138a4">voba_gf_apply</a>,voba_cls_array,<a class="code" href="fun_8h.html#afe87a8eb49c61b53146652fa7e7ac8af">voba_make_func</a>(apply_array));</div>
+<div class="line"></div>
+<div class="line"><a class="code" href="fun_8h.html#a87beae3391f3bf28034f8507dceaa5c7">VOBA_FUNC</a> <span class="keyword">static</span> <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> apply_array(<a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <span class="keyword">self</span>, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args)</div>
+<div class="line">{</div>
+<div class="line">    ....</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>then <em>array</em> becomes callable.</p>
+<div class="fragment"><div class="line"><a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> a = voba_array_from_tuple(tuple);</div>
+<div class="line"><a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args[] = { 1, voba_make_i8(0) };</div>
+<div class="line"><a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> r = <a class="code" href="apply_8h.html#a16186dc39b10214b25592bec19c6b761">voba_apply</a>(a, args); <span class="comment">// invoke apply_array </span></div>
+</div><!-- fragment --> 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jan 20 2015 20:24:25 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 23 2015 14:54:38 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

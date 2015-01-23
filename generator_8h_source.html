@@ -88,17 +88,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">generator.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;cg.h&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#define VOBA_GENERATOR(s) VOBA_USER_DATA_AS(cg_t *,s)</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">extern</span> <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_cls_generator;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;INLINE <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_make_generator(<a class="code" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <span class="keyword">self</span>, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args);</div>
+<a href="generator_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;cg.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define VOBA_GENERATOR(s) VOBA_USER_DATA_AS(cg_t *,s)</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">extern</span> <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> voba_cls_generator;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;INLINE <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <a class="code" href="generator_8h.html#ac67846925325bedcc6cc74eca4666d36">voba_make_generator</a>(<a class="code" href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a> f, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> <span class="keyword">self</span>, <a class="code" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> args);</div>
+<div class="ttc" id="generator_8h_html_ac67846925325bedcc6cc74eca4666d36"><div class="ttname"><a href="generator_8h.html#ac67846925325bedcc6cc74eca4666d36">voba_make_generator</a></div><div class="ttdeci">INLINE voba_value_t voba_make_generator(voba_func_t f, voba_value_t self, voba_value_t args)</div><div class="ttdef"><b>Definition:</b> generator.c:3</div></div>
 <div class="ttc" id="fun_8h_html_ab00928290fc28dbcb8ff07f2f11f94bc"><div class="ttname"><a href="fun_8h.html#ab00928290fc28dbcb8ff07f2f11f94bc">voba_func_t</a></div><div class="ttdeci">voba_value_t(* voba_func_t)(voba_value_t self, voba_value_t args)</div><div class="ttdef"><b>Definition:</b> fun.h:45</div></div>
 <div class="ttc" id="overview_8h_html_a4b4beb86106b46a64b829791f267f60b"><div class="ttname"><a href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a></div><div class="ttdeci">uint64_t voba_value_t</div><div class="ttdef"><b>Definition:</b> overview.h:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jan 20 2015 20:24:25 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jan 23 2015 14:54:38 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>
