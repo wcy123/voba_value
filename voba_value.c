@@ -1,6 +1,6 @@
 #include <stdarg.h>
 #include "value.h"
-#define EXEC_ONCE_TU_NAME "voba_value"
+#define EXEC_ONCE_TU_NAME "voba.value"
 #include "exec_once.h"
 uint32_t voba_cls_generic_function_next_id = 0;
 uint32_t voba_cls_next_id = 0;
