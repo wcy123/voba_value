@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['capacity',['capacity',['../../../../voba_str/docs/html/structvoba__str__s.html#a83e322207759b447a5fbc51b5a1b6ccd',1,'voba_str_s']]]
+  ['fun',['fun',['../structvoba__gf__s.html#a8f29a6f938cf9126becf0a7549e98abd',1,'voba_gf_s']]]
 ];

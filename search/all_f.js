@@ -51,8 +51,6 @@ var searchData=
   ['voba_5fnil',['VOBA_NIL',['../small_8h.html#a0cbe908387e7765090f0ee3f4de435b8',1,'small.h']]],
   ['voba_5fset_5fhead',['voba_set_head',['../pair_8h.html#aa8152fd8726d0360099520354bd20e26',1,'pair.c']]],
   ['voba_5fset_5ftail',['voba_set_tail',['../pair_8h.html#a1dd135a21fb428da9f7a7166a76de386',1,'pair.c']]],
-  ['voba_5fstr_2eh',['voba_str.h',['../../../../voba_str/docs/html/voba__str_8h.html',1,'']]],
-  ['voba_5fstr_5fs',['voba_str_s',['../../../../voba_str/docs/html/structvoba__str__s.html',1,'']]],
   ['voba_5ftail',['voba_tail',['../pair_8h.html#a69376adb6a6e955701b08da7b6d2a506',1,'pair.c']]],
   ['voba_5fto_5fpointer',['voba_to_pointer',['../overview_8h.html#a7209305e30bf409a5c5838199b69e5fb',1,'overview.h']]],
   ['voba_5ftrue',['VOBA_TRUE',['../small_8h.html#a433a6427dc54655201a16500259a6dcf',1,'small.h']]],

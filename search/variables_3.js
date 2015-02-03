@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hash',['hash',['../structvoba__gf__s.html#a7d3dbd4d7197d53e8917402343e1efed',1,'voba_gf_s']]]
+  ['name',['name',['../structvoba__cls__s.html#af9ff68ec3f5e14e08f737a97b6459f8f',1,'voba_cls_s']]]
 ];

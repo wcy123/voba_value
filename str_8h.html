@@ -102,14 +102,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
                               +----------------+------------+       
                               | capcity(32bits)| len(32bit) |       
                               +-----------------------------+       
-</pre><p>A string object is a point to a <a class="elRef" doxygen="/home/chunywan/d/working/voba/voba_value/docs/voba_str.tag:../../../voba_str/docs/html/" href="../../../voba_str/docs/html/voba__str_8h.html#adc66161948c8ab3e7a72311eb924e0e9">voba_str_t</a> object. </p>
-</div><div class="textblock"><code>#include &quot;<a class="elRef" doxygen="/home/chunywan/d/working/voba/voba_value/docs/voba_str.tag:../../../voba_str/docs/html/" href="../../../voba_str/docs/html/voba__str_8h.html">voba_str.h</a>&quot;</code><br />
+</pre><p>A string object is a point to a ::voba_str_t object. </p>
+</div><div class="textblock"><code>#include &quot;voba_str.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for str.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="str_8h__incl.png" border="0" usemap="#imp_2str_8h" alt=""/></div>
 <map name="imp_2str_8h" id="imp_2str_8h">
-<area shape="rect" id="node2" doxygen="/home/chunywan/d/working/voba/voba_value/docs/voba_str.tag:../../../voba_str/docs/html/" href="../../../voba_str/docs/html/voba__str_8h.html" title="voba_str.h" alt="" coords="5,80,88,107"/></map>
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -124,13 +124,13 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a79cadb21dd7a97706cf283d239170ab7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a79cadb21dd7a97706cf283d239170ab7"></a>
-INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>voba_make_string</b> (<a class="elRef" doxygen="/home/chunywan/d/working/voba/voba_value/docs/voba_str.tag:../../../voba_str/docs/html/" href="../../../voba_str/docs/html/voba__str_8h.html#adc66161948c8ab3e7a72311eb924e0e9">voba_str_t</a> *s)</td></tr>
+INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>voba_make_string</b> (voba_str_t *s)</td></tr>
 <tr class="separator:a79cadb21dd7a97706cf283d239170ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7971fb3542f94e0732ed0ca4873b962f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7971fb3542f94e0732ed0ca4873b962f"></a>
 INLINE <a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>voba_make_cstr</b> (const char *s)</td></tr>
 <tr class="separator:a7971fb3542f94e0732ed0ca4873b962f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ae02dc44c4aae31591837712fc7e709"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ae02dc44c4aae31591837712fc7e709"></a>
-INLINE <a class="elRef" doxygen="/home/chunywan/d/working/voba/voba_value/docs/voba_str.tag:../../../voba_str/docs/html/" href="../../../voba_str/docs/html/voba__str_8h.html#adc66161948c8ab3e7a72311eb924e0e9">voba_str_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>voba_value_to_str</b> (<a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> s)</td></tr>
+INLINE voba_str_t *&#160;</td><td class="memItemRight" valign="bottom"><b>voba_value_to_str</b> (<a class="el" href="overview_8h.html#a4b4beb86106b46a64b829791f267f60b">voba_value_t</a> s)</td></tr>
 <tr class="separator:a8ae02dc44c4aae31591837712fc7e709"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -155,7 +155,7 @@ Variables</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jan 23 2015 14:54:38 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Feb 3 2015 22:47:43 for VOBA Value System by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>
