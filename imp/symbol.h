@@ -32,7 +32,7 @@ extern voba_value_t voba_cls_symbol; /*!< the class object associated with symbo
  *  
  *  @param symbol_name the name of the symbol
  *  @param symbol_table the symbol table object, \a symbol_table is
- *  VOBA_NIL for a un-interned symbol. see symbol_table.h
+ *  ::VOBA_NIL for a un-interned symbol. see symbol_table.h
  */
 // implemented in voba_value.cc
 voba_value_t voba_make_symbol(
@@ -49,4 +49,6 @@ voba_make_symbol_cstr_with_value(
 #define VOBA_SYMBOL(s,table) voba_make_symbol_data(#s,sizeof(#s) -1 , table)
 INLINE voba_value_t voba_symbol_name(voba_value_t v);
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
+/** @brief set the symbol value
+ */
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
