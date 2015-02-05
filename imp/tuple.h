@@ -31,22 +31,27 @@ voba_value_t a_tuple = voba_make_tuple(args);
 @endcode
 
 */
-extern voba_value_t  voba_cls_tuple; /*!< the class object associated with \a tuple*/
-/** make a tuple.  
+extern voba_value_t  voba_cls_tuple; /*!< @brief the class object associated with \a tuple*/
+/** @brief make a tuple.  
    
    @param p the first element is not a ::voba_value_t, but a size of
    the array.
-
+   
 */
 INLINE voba_value_t  voba_make_tuple(voba_value_t* p);
-/** create a tuple with varadic arguments */
+/** @brief create a tuple with varadic arguments */
 INLINE voba_value_t  voba_make_tuple_n(int64_t n,...);
+/** @brief the length of a tuple */
 INLINE int64_t       voba_tuple_len(voba_value_t v);
+/** @brief the base address of a tuple.*/
 INLINE voba_value_t* voba_tuple_base(voba_value_t v);
+/** @brief The element at `i` for a tuple*/
 INLINE voba_value_t  voba_tuple_at(voba_value_t v,int64_t i);
+/** @brief set the element in a tuple*/
 INLINE voba_value_t  voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v);
+/** @fn voba_make_tuple_0
+    @brief a set of functions to create a tuple, voba_make_tuple_<N>, N = 0,1,2,...,20
 
-/** create a set of functions
 @code{.c}
 voba_value_t voba_make_tuple_0(voba_value_t a0);
 voba_value_t voba_make_tuple_1(voba_value_t a0, voba_value_t a1);

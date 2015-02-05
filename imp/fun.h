@@ -39,13 +39,13 @@ where \a self is \a f and \a args is a tuple \a [ \a a1, \a a2, \a a4 , .... \a 
 */
 
 #define VOBA_FUNC __attribute__((aligned(16))) /*!< a voba function must be 16-byte aligned*/
-/** the class object associated with function type. */
+/** @brief the class object associated with function type. */
 extern voba_value_t voba_cls_func;
-/** the type of function pointer */
+/** @brief the type of function pointer */
 typedef voba_value_t (*voba_func_t)(voba_value_t self, voba_value_t args);
-/** create a new function object from a function pointer */
+/** @brief create a new function object from a function pointer */
 INLINE voba_value_t  voba_make_func(voba_func_t);
-/** convert a voba value to a function pointer */
+/** @brief convert a voba value to a function pointer */
 INLINE voba_func_t  voba_value_to_func(voba_value_t v);
 
 /** useful macros for a function */

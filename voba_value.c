@@ -30,16 +30,24 @@ VOBA_DEF_CLS(sizeof(voba_array_t),array)
 VOBA_DEF_CLS(sizeof(voba_gf_t),generic_function)
 VOBA_DEF_CLS(sizeof(voba_la_t),la)
 VOBA_DEF_CLS(sizeof(cg_t),generator)
+
 voba_value_t voba_gf_apply = VOBA_NIL;
-VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t args);
 EXEC_ONCE_PROGN{
     voba_gf_apply = voba_make_generic_function("apply",NULL);
-    voba_gf_add_class(voba_gf_apply,voba_cls_generator, voba_make_func(apply_generator));
 }
-voba_value_t voba_make_tuple_1_x(voba_value_t x) 
-{
-    return voba_make_tuple_n(1,x);
+voba_value_t voba_gf_iter = VOBA_NIL;
+EXEC_ONCE_PROGN{
+    voba_gf_iter = voba_make_generic_function("iter",NULL);
 }
+voba_value_t voba_gf_match = VOBA_NIL;
+EXEC_ONCE_PROGN{
+    voba_gf_match = voba_make_generic_function("match",NULL);
+}
+
+
+/** @brief ::voba_cls_generator is a class for callable objects
+ @todo explain generator in details
+ */
 VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t args)
 {
     voba_value_t g = self;
@@ -56,5 +64,8 @@ VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t ar
         ret = cg_invoke(VOBA_GENERATOR(g),v);
     }
     return ret;
+}
+EXEC_ONCE_PROGN {
+    voba_gf_add_class(voba_gf_apply,voba_cls_generator, voba_make_func(apply_generator));
 }
 

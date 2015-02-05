@@ -26,29 +26,38 @@ than one symbol table.
 see symbol_table.h
 */
 
-extern voba_value_t voba_cls_symbol; /*!< the class object associated with symbol */
+extern voba_value_t voba_cls_symbol; /*!< @brief the class object associated with symbol */
 
-/** create a symbol
+/** @brief create a symbol
  *  
  *  @param symbol_name the name of the symbol
  *  @param symbol_table the symbol table object, \a symbol_table is
  *  ::VOBA_NIL for a un-interned symbol. see symbol_table.h
  */
 // implemented in voba_value.cc
+/** @brief create a symbol 
+    
+    @param symbol_name Symbol name
+    @param symbol_table a symbol table, see symbol_table.h, VOBA_NIL to create an un-interned symbol
+    @return a new symbol
+ */
 voba_value_t voba_make_symbol(
     voba_str_t * symbol_name,
-    voba_value_t symbol_table); 
+    voba_value_t symbol_table);
+/** @brief create a symbol */
 INLINE voba_value_t voba_make_symbol_cstr(
     const char * symbol_name,
     voba_value_t symbol_table);
+/** @brief create a symbol*/
 INLINE voba_value_t
 voba_make_symbol_cstr_with_value(
     const char * symbol_name,
     voba_value_t symbol_table,
     voba_value_t v);
 #define VOBA_SYMBOL(s,table) voba_make_symbol_data(#s,sizeof(#s) -1 , table)
+/** @brief access symbol name*/
 INLINE voba_value_t voba_symbol_name(voba_value_t v);
+/** @brief access symbol value*/
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
-/** @brief set the symbol value
- */
+/** @brief set the symbol value */
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);

@@ -59,12 +59,77 @@ extern "C" {
 #include "imp/gf.c"
 #include "imp/array.c"
 #include "imp/la.c"
+/** @brief The generic function object for callable objects.
+
+instances whose class implements this generic function is callable.
+for example,
+~~~{.c}
+voba_gf_add_class(voba_gf_apply,voba_cls_array,voba_make_func(apply_array));
+
+VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+{
+    ....
+}
+~~~
+
+then \a array becomes callable. 
+
+~~~{.c}
+voba_value_t a = voba_array_from_tuple(tuple);
+voba_value_t args[] = { 1, voba_make_i8(0) };
+voba_value_t r = voba_apply(a, args); // invoke apply_array 
+~~~
+
+*/
+extern voba_value_t voba_gf_apply;
+/** The generic function used to define callable objects. see gf.h 
+
+Objects whose class implements this generic function are callable.
+for example,
+~~~{.c}
+voba_gf_add_class(voba_gf_apply,voba_cls_array,voba_make_func(apply_array));
+
+VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+{
+    ....
+}
+~~~
+
+then \a array becomes callable. 
+
+~~~{.c}
+voba_value_t a = voba_array_from_tuple(tuple);
+voba_value_t args[] = { 1, voba_make_i8(0) };
+voba_value_t r = voba_apply(a, args); // invoke apply_array 
+~~~
+
+*/
+extern voba_value_t voba_gf_apply;
+/** @brief The generic function object used to define iterative object.
+
+`(voba_gf_iter obj)` should return a callable object. This callable
+object is called iterator. The iterator can be invoked many time until
+it returns ::VOBA_DONE, indicating the end of iteration. For example,
+function object(see ::voba_cls_fun) returns itself.
+
+ */
+extern voba_value_t voba_gf_iter;
+/** @brief The generic function object for `match`
+
+If a class implements this generic function, the class can be used for
+pattern matching. It is used by `match` statement of voba language.
+
+@todo explain `match` statement in detail
+
+ */
+extern voba_value_t voba_gf_match;    
 #include "imp/apply.c"
 //#include "imp/exception.c"
 #include "imp/generator.c"    
 #ifdef __cplusplus
 }
 #endif
+
 
 
 /* Local Variables: */

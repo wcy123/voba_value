@@ -25,11 +25,21 @@ closure
 A \a closure is a pointer which points to an array . 
 
 */
-extern voba_value_t voba_cls_closure; /*!< the class object associated with \a closure */
-INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i); ///
-INLINE voba_func_t  voba_closure_func(voba_value_t c); ///
-INLINE voba_value_t voba_closure_tuple(voba_value_t c); /// 
-INLINE uint64_t voba_closure_len(voba_value_t c); ///
+/** @brief the class object associated with \a closure */
+
+extern voba_value_t voba_cls_closure;
+/** @brief return the `i` th captured variable.*/
+INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i);
+/** @brief the closure function*/
+INLINE voba_func_t  voba_closure_func(voba_value_t c);
+/** @brief the tuple of all captured variables 
+
+    @todo this function is redundent, or ::voba_closure_at,
+    ::voba_closure_len are redundent.
+ */
+INLINE voba_value_t voba_closure_tuple(voba_value_t c);
+/** @brief the number of captured closure variables*/
+INLINE uint64_t voba_closure_len(voba_value_t c);
 
 
 #define VOBA_MACRO_ARG2(n) ,voba_value_t a##n
