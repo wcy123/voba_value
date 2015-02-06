@@ -98,20 +98,47 @@ There are 8 basic types:
       - `::voba_cls_float`
   - user defined, see usr.h
      - array, see array.h
+         - `::voba_cls_array`
+         - `::voba_array_from_tuple`
+         - `::voba_make_array_n`
+         - `::voba_array_base`
+         - `::voba_array_at`
+         - `::voba_array_set`
+         - `::voba_array_push`
+         - `::voba_array_pop`
+         - `::voba_array_shift`
+         - `::voba_array_unshift`
+         - array is callable, see `::apply_array`
+         - array is iterable, see `::iter_array`
+         - TODO: pattern matching for arrays
      - hash, see hash.h
-     - cls, see cls.h
-     - generic function, see gf.h
+         - `::voba_make_hash`
+         - `::voba_hash_insert`
+         - `::voba_hash_find`
+         - `::voba_hashtable_size`
+         - TODO: hashtable is callable.
+         - TODO: hashtable is iterable.
      - symbol table, see symbol_table.h
+         - `::oba_cls_symbol_table`
+         - `::voba_make_symbol_table`
+         - `::voba_symbol_table_size`
+         - `::voba_intern_symbol`  TODO: update document after bug fixing.
+         - `::voba_unintern_symbol`
+         - `::voba_lookup_symbol`
      - list array view, la, see la.h
+         - TODO: rewrite this module
      - generator, generator.h
+         - `::voba_make_generator`
+         - generator is callable, see `::apply_generator`
      - other user defined object
   - `::voba_apply`, see apply.h
   - predefined generic functions
       - `::voba_gf_apply` 
       - `::voba_gf_iter`
       - `::voba_gf_match`
-  
+  - exception, see exception.h
 
+  
 ### dependency
 
 <pre>

@@ -26,7 +26,8 @@ than one symbol table.
 see symbol_table.h
 */
 
-extern voba_value_t voba_cls_symbol; /*!< @brief the class object associated with symbol */
+/** @brief The class object for symbol */
+extern voba_value_t voba_cls_symbol;
 
 /** @brief create a symbol
  *  
@@ -61,3 +62,9 @@ INLINE voba_value_t voba_symbol_name(voba_value_t v);
 INLINE voba_value_t voba_symbol_value(voba_value_t v);
 /** @brief set the symbol value */
 INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
+
+
+/** 
+ @todo support for keyword symbol
+ @todo create a symbol table object for keyword symbol
+*/

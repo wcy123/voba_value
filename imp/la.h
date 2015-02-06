@@ -23,9 +23,13 @@ for example:
     }
 ~~~
 
+@todo, LA should be a view for both `::voba_cls_tuple` and
+`::voba_cls_array`
+@todo design pattern matching for `la`, `tuple` and `array`
 */
+/** @brief The class object for `la` */
 extern voba_value_t voba_cls_la;
-/// to be done
+
 typedef struct voba_la_s {
     uint32_t cur;
     uint32_t end;

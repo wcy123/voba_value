@@ -151,6 +151,7 @@ extern "C" voba_value_t voba_make_symbol(voba_str_t * name, voba_value_t h)
 extern "C" voba_value_t voba_intern_symbol(voba_value_t symbol, voba_value_t h)
 {
     assert(voba_is_a(h,voba_cls_symbol_table));
+    assert(voba_is_a(symbol,voba_cls_symbol));
     voba_value_t ret = VOBA_NIL;
     voba_symbol_table_c::iterator it = VOBA_SET(h)->find(symbol);
     if(it != VOBA_SET(h)->end()){

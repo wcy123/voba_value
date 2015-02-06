@@ -1,3 +1,4 @@
+/** @file */
 #include <stdarg.h>
 #include "value.h"
 #define EXEC_ONCE_TU_NAME "voba.value"
@@ -45,7 +46,7 @@ EXEC_ONCE_PROGN{
 }
 
 
-/** @brief ::voba_cls_generator is a class for callable objects
+/** @brief Objects of ::voba_cls_generator are callable objects
  @todo explain generator in details
  */
 VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t args)
@@ -68,4 +69,91 @@ VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t ar
 EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_generator, voba_make_func(apply_generator));
 }
+
+/** @brief An array is callable.
+    
+`(array_obj index)` returns the element in the array at `index`.
+
+  */
+VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+{
+    VOBA_ASSERT_N_ARG(args,0);
+    voba_value_t index1 = voba_tuple_at(args,0);
+    VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
+    int64_t index = (index1 >> 8);
+    return voba_array_at(self,index);
+}
+/** @brief The closure for iterator of an array */
+VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t args)
+{
+    voba_value_t a = voba_tuple_at(self,0);
+    voba_value_t i = voba_tuple_at(self,1);
+    int64_t len = voba_array_len(a);
+    voba_value_t ret = VOBA_DONE;
+    if(i < len){
+        ret = voba_array_at(a, i);
+        i++;
+        voba_tuple_set(self,1,i);
+    }
+    return ret;
+}
+/** @brief Array is iterable */
+VOBA_FUNC static voba_value_t iter_array(voba_value_t self, voba_value_t args)
+{
+    VOBA_ASSERT_N_ARG(args,0);
+    voba_value_t a = voba_tuple_at(args,0);
+    VOBA_ASSERT_ARG_ISA(a,voba_cls_array,0);
+    return voba_make_closure_2(iter_array_real,a,0);
+}
+EXEC_ONCE_PROGN {
+    voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
+    voba_gf_add_class(voba_gf_iter, voba_cls_array, voba_make_func(iter_array));
+}
+
+
+/** @brief match for builtin classes
+ @todo add document for this function.
+ */
+VOBA_FUNC voba_value_t match_single(voba_value_t self, voba_value_t args) 
+{
+    voba_value_t ret = VOBA_FALSE;
+    VOBA_ASSERT_N_ARG(args,0);
+    voba_value_t cls = voba_tuple_at(args,0);
+    VOBA_ASSERT_N_ARG(args,1);
+    voba_value_t v = voba_tuple_at(args,1);
+    VOBA_ASSERT_N_ARG(args,2);
+    voba_value_t index = voba_tuple_at(args,2);
+    VOBA_ASSERT_N_ARG(args,3);
+    voba_value_t len = voba_tuple_at(args,3);
+    int32_t index1 = voba_value_to_i32(index);
+    int32_t len1 = voba_value_to_i32(len);
+    switch(index1){
+    case -1:
+        if(len1 == 1 && voba_is_a(v,cls)){
+            ret = VOBA_TRUE;
+        }
+        break;
+    case 0:
+        assert(len1 == 1);
+        ret = v;
+        break;
+    default:
+        assert(0&&"never goes here");
+    }
+    return ret;
+}
+EXEC_ONCE_PROGN {
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_i8,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_i16,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_i32,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_u8,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_u16,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_u32,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_float,voba_make_func(match_single));
+    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_str,voba_make_func(match_single));
+}
+
+/** 
+ @todo add match for ::voba_cls_pair
+ */
 

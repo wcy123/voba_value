@@ -1,5 +1,5 @@
 #pragma once
-/** @file
+/** @file 
 hashtable
 =========
 
@@ -26,15 +26,28 @@ hash table is destroyed.
 most of them are implemented in c++, using vhash, see http://github.com/wcy123/vhash
 
 */
+/** @brief The class object for hashtable.*/
 extern voba_value_t voba_cls_hashtable;
-/** create a hash table */
-voba_value_t voba_make_hash();// implemented in voba_value.cc
-/** @returns a pair if succesfull, NIL otherwise. 
-   head is the key and tail is the value. */
+/** @brief create a hash table */
+voba_value_t voba_make_hash(); /// implemented in voba_value.cc @todo rename it to voba_make_hashtable
+/** @brief insert an element into a hash table.
+    @param h The hash table
+    @param k The key 
+    @param v The value
+    @returns a pair if succesfull, ::VOBA_NIL otherwise.  The head is
+    the key and the tail is the value.
+*/
 voba_value_t voba_hash_insert(voba_value_t h, voba_value_t k, voba_value_t v); // implemented in voba_value.cc
-/** @returns a pair if successful, NIL otherwise. */
+/** @brief look up a hash table 
+    @param h The hash table
+    @param k The key
+    @returns a pair if successful, ::VOBA_NIL otherwise.
+*/
 voba_value_t voba_hash_find(voba_value_t h, voba_value_t k);// implemented in voba_value.cc
+/** private function */
 size_t voba_sizeof_hashtable(); // implemented in voba_value.cc
+/** @brief return the number of element in a hash table
+ */
 size_t voba_hashtable_size(voba_value_t h); // implemented in voba_value.cc
 
 

@@ -112,6 +112,8 @@ object is called iterator. The iterator can be invoked many time until
 it returns ::VOBA_DONE, indicating the end of iteration. For example,
 function object(see ::voba_cls_fun) returns itself.
 
+@todo explain `iter` in detail
+
  */
 extern voba_value_t voba_gf_iter;
 /** @brief The generic function object for `match`
