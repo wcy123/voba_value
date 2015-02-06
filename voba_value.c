@@ -143,14 +143,14 @@ VOBA_FUNC voba_value_t match_single(voba_value_t self, voba_value_t args)
     return ret;
 }
 EXEC_ONCE_PROGN {
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_i8,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_i16,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_i32,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_u8,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_u16,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_u32,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_float,voba_make_func(match_single));
-    voba_gf_add_class(voba_symbol_value(voba_gf_match),voba_cls_str,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_i8,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_i16,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_i32,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_u8,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_u16,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_u32,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_float,voba_make_func(match_single));
+    voba_gf_add_class(voba_gf_match,voba_cls_str,voba_make_func(match_single));
 }
 
 /** 
