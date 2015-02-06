@@ -109,6 +109,15 @@ EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
     voba_gf_add_class(voba_gf_iter, voba_cls_array, voba_make_func(iter_array));
 }
+/** @brief function and closure are iterable */
+VOBA_FUNC voba_value_t iter_func (voba_value_t self, voba_value_t args)
+{
+    return voba_tuple_at(args,0);
+}
+EXEC_ONCE_PROGN {
+    voba_gf_add_class(voba_gf_iter, voba_cls_func, voba_make_func(iter_func));
+    voba_gf_add_class(voba_gf_iter, voba_cls_closure, voba_make_func(iter_func));
+}
 
 
 /** @brief match for builtin classes

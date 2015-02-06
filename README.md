@@ -36,6 +36,7 @@ There are 8 basic types:
        - `::voba_cls_func`
        - `::voba_make_func`
        - `::voba_value_to_func`
+       - function is iterable, see `::iter_func`, `::voba_gf_iter`
   - string, see str.h
        - `::voba_cls_str`
        - `::voba_make_string`
@@ -64,6 +65,7 @@ There are 8 basic types:
       - `::voba_closure_func`
       - `::voba_closure_tuple`
       - `::voba_closure_len`
+      - closure is iterable, see `::iter_closure`, `::voba_gf_iter`
   - pair, see pair.h
       - `::voba_cls_pair`
       - `::voba_make_pair`
