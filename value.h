@@ -105,17 +105,7 @@ voba_value_t r = voba_apply(a, args); // invoke apply_array
 
 */
 extern voba_value_t voba_gf_apply;
-/** @brief The generic function object used to define iterative object.
 
-`(voba_gf_iter obj)` should return a callable object. This callable
-object is called iterator. The iterator can be invoked many time until
-it returns ::VOBA_DONE, indicating the end of iteration. For example,
-function object(see ::voba_cls_fun) returns itself.
-
-@todo explain `iter` in detail
-
- */
-extern voba_value_t voba_gf_iter;
 /** @brief The generic function object for `match`
 
 If a class implements this generic function, the class can be used for

@@ -36,10 +36,6 @@ voba_value_t voba_gf_apply = VOBA_NIL;
 EXEC_ONCE_PROGN{
     voba_gf_apply = voba_make_generic_function("apply",NULL);
 }
-voba_value_t voba_gf_iter = VOBA_NIL;
-EXEC_ONCE_PROGN{
-    voba_gf_iter = voba_make_generic_function("iter",NULL);
-}
 voba_value_t voba_gf_match = VOBA_NIL;
 EXEC_ONCE_PROGN{
     voba_gf_match = voba_make_generic_function("match",NULL);
@@ -70,6 +66,7 @@ EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_generator, voba_make_func(apply_generator));
 }
 
+VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t args);
 /** @brief An array is callable.
     
 `(array_obj index)` returns the element in the array at `index`.
@@ -78,10 +75,20 @@ EXEC_ONCE_PROGN {
 VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
 {
     VOBA_ASSERT_N_ARG(args,0);
-    voba_value_t index1 = voba_tuple_at(args,0);
-    VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
-    int64_t index = (index1 >> 8);
-    return voba_array_at(self,index);
+    int64_t len = voba_array_len(args);
+    voba_value_t ret = VOBA_NIL;
+    if(len == 0){
+        VOBA_ASSERT_N_ARG(args,0);
+        voba_value_t a = voba_tuple_at(args,0);
+        VOBA_ASSERT_ARG_ISA(a,voba_cls_array,0);
+        ret = voba_make_closure_2(iter_array_real,a,0);
+    }else{
+        voba_value_t index1 = voba_tuple_at(args,0);
+        VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
+        int64_t index = (index1 >> 8);
+        ret = voba_array_at(self,index);
+    }
+    return ret;
 }
 /** @brief The closure for iterator of an array */
 VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t args)
@@ -97,26 +104,13 @@ VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t ar
     }
     return ret;
 }
-/** @brief Array is iterable */
-VOBA_FUNC static voba_value_t iter_array(voba_value_t self, voba_value_t args)
-{
-    VOBA_ASSERT_N_ARG(args,0);
-    voba_value_t a = voba_tuple_at(args,0);
-    VOBA_ASSERT_ARG_ISA(a,voba_cls_array,0);
-    return voba_make_closure_2(iter_array_real,a,0);
-}
 EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
-    voba_gf_add_class(voba_gf_iter, voba_cls_array, voba_make_func(iter_array));
 }
 /** @brief function and closure are iterable */
 VOBA_FUNC voba_value_t iter_func (voba_value_t self, voba_value_t args)
 {
     return voba_tuple_at(args,0);
-}
-EXEC_ONCE_PROGN {
-    voba_gf_add_class(voba_gf_iter, voba_cls_func, voba_make_func(iter_func));
-    voba_gf_add_class(voba_gf_iter, voba_cls_closure, voba_make_func(iter_func));
 }
 
 
