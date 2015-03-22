@@ -158,6 +158,13 @@ EXEC_ONCE_PROGN {
  @todo add match for ::voba_cls_pair
  */
 
+VOBA_FUNC static voba_value_t string_to_string(voba_value_t self,voba_value_t v)
+{
+    voba_str_t* ret = voba_str_from_char('"',1);
+    ret = voba_strcat(ret,voba_value_to_str(voba_tuple_at(v,0)));
+    ret = voba_strcat_char(ret,'"');
+    return voba_make_string(ret);
+}
 /** @brief to_string implementation of arrays.
  */
 VOBA_FUNC static  voba_value_t array_to_string(voba_value_t self,voba_value_t vs)
@@ -171,6 +178,23 @@ VOBA_FUNC static  voba_value_t array_to_string(voba_value_t self,voba_value_t vs
             ret = voba_strcat_char(ret,',');
         }
         voba_value_t args[] = {1,voba_array_at(v,i)};
+        ret = voba_strcat(ret,
+                          voba_value_to_str(voba_apply(voba_gf_to_string,voba_make_tuple(args))));
+    }
+    ret = voba_strcat_char(ret,']');
+    return voba_make_string(ret);
+}
+VOBA_FUNC static  voba_value_t tuple_to_string(voba_value_t self,voba_value_t vs)
+{
+    voba_value_t v = voba_tuple_at(vs,0);
+    int64_t len = voba_tuple_len(v);
+    voba_str_t* ret = voba_str_empty();
+    ret = voba_strcat_char(ret,'[');
+    for(int i = 0; i < len ; ++i){
+        if(i!=0){
+            ret = voba_strcat_char(ret,',');
+        }
+        voba_value_t args[] = {1,voba_tuple_at(v,i)};
         ret = voba_strcat(ret,
                           voba_value_to_str(voba_apply(voba_gf_to_string,voba_make_tuple(args))));
     }
@@ -301,7 +325,9 @@ VOBA_FUNC static voba_value_t symbol_to_string(voba_value_t self,voba_value_t ar
                                 voba_str_fmt_uint64_t(s,16),NULL));
 }
 EXEC_ONCE_PROGN{
+    voba_gf_add_class(voba_gf_to_string,voba_cls_str,voba_make_func(string_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_array,voba_make_func(array_to_string));
+    voba_gf_add_class(voba_gf_to_string,voba_cls_tuple,voba_make_func(tuple_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_i8,voba_make_func(int_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_i16,voba_make_func(int_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_i32,voba_make_func(int_to_string));
