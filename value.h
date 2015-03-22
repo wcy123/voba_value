@@ -114,7 +114,10 @@ pattern matching. It is used by `match` statement of voba language.
 @todo explain `match` statement in detail
 
  */
-extern voba_value_t voba_gf_match;    
+extern voba_value_t voba_gf_match;
+/** @brief convert an object to a string.
+ */
+extern voba_value_t voba_gf_to_string;
 #include "imp/apply.c"
 //#include "imp/exception.c"
 #include "imp/generator.c"    
