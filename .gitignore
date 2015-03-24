@@ -41,3 +41,4 @@ docs/voba_str.tag
 *.i*86
 *.x86_64
 *.hex
+docs/voba_value.tag
