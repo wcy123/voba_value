@@ -61,7 +61,9 @@ voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch);
                 VOBA_CONST_CHAR(__FILE__),                              \
                 VOBA_CONST_CHAR(":"),                                   \
                 voba_str_fmt_uint32_t(__LINE__,10),                     \
-                VOBA_CONST_CHAR(": error: "),                           \
+                VOBA_CONST_CHAR(": ("),                                 \
+                VOBA_CONST_CHAR(__func__),                              \
+                VOBA_CONST_CHAR(") exception: "),                       \
                 __VA_ARGS__)))
 
 

@@ -68,8 +68,6 @@ VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t ar
 EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_generator, voba_make_func(apply_generator));
 }
-
-VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t args);
 /** @brief An array is callable.
     
 `(array_obj index)` returns the element in the array at `index`.
@@ -77,38 +75,54 @@ VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t ar
   */
 VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
 {
+    voba_value_t ret = VOBA_NIL;
     VOBA_ASSERT_N_ARG(args,0);
-    int64_t len = voba_array_len(args);
+    voba_value_t index1 = voba_tuple_at(args,0);
+    VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
+    int64_t index = (index1 >> 8);
+    ret = voba_array_at(self,index);
+    return ret;
+}
+EXEC_ONCE_PROGN {
+    voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
+}
+VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t self, voba_value_t args);
+/** @brief An tuple is callable.
+    
+`(tuple_obj index)` returns the element in the tuple at `index`.
+
+  */
+VOBA_FUNC static voba_value_t apply_tuple(voba_value_t self, voba_value_t args)
+{
+    int64_t len = voba_tuple_len(args);
     voba_value_t ret = VOBA_NIL;
     if(len == 0){
-        VOBA_ASSERT_N_ARG(args,0);
-        voba_value_t a = voba_tuple_at(args,0);
-        VOBA_ASSERT_ARG_ISA(a,voba_cls_array,0);
-        ret = voba_make_closure_2(iter_array_real,a,0);
+        VOBA_ASSERT_ARG_ISA(self,voba_cls_tuple,0);
+        ret = voba_make_closure_2(iter_tuple_real,self,0);
     }else{
         voba_value_t index1 = voba_tuple_at(args,0);
         VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
         int64_t index = (index1 >> 8);
-        ret = voba_array_at(self,index);
+        ret = voba_tuple_at(self,index);
     }
     return ret;
 }
-/** @brief The closure for iterator of an array */
-VOBA_FUNC static voba_value_t iter_array_real(voba_value_t self, voba_value_t args)
+/** @brief The closure for iterator of an tuple */
+VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t self, voba_value_t args)
 {
     voba_value_t a = voba_tuple_at(self,0);
     voba_value_t i = voba_tuple_at(self,1);
-    int64_t len = voba_array_len(a);
+    int64_t len = voba_tuple_len(a);
     voba_value_t ret = VOBA_DONE;
     if(i < len){
-        ret = voba_array_at(a, i);
+        ret = voba_tuple_at(a, i);
         i++;
         voba_tuple_set(self,1,i);
     }
     return ret;
 }
 EXEC_ONCE_PROGN {
-    voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
+    voba_gf_add_class(voba_gf_apply,voba_cls_tuple, voba_make_func(apply_tuple));
 }
 
 
@@ -343,4 +357,24 @@ EXEC_ONCE_PROGN{
     voba_gf_add_class(voba_gf_to_string,voba_cls_done,voba_make_func(done_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_bool,voba_make_func(boolean_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_symbol,voba_make_func(symbol_to_string));
+}
+static voba_value_t print1(voba_value_t x)
+{
+    voba_value_t args[] = {1,x};
+    voba_value_t s = voba_apply(voba_gf_to_string,voba_make_tuple(args));
+    fwrite((const void*)voba_str_to_cstr(voba_value_to_str(s)),1,voba_strlen(voba_value_to_str(s)),stdout);
+    fflush(stdout);
+    return x;
+}
+VOBA_FUNC voba_value_t voba_print(voba_value_t self, voba_value_t a1) 
+{
+    int64_t len = voba_tuple_len(a1);
+    for(int i = 0; i < len; ++i){
+        print1(voba_tuple_at(a1,i));
+        if(i!=0){
+             fputc(' ',stdout);
+        }
+    }
+    fputc('\n',stdout);
+    return VOBA_NIL;
 }

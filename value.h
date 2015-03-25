@@ -118,6 +118,10 @@ extern voba_value_t voba_gf_match;
 /** @brief convert an object to a string.
  */
 extern voba_value_t voba_gf_to_string;
+/** @brief print
+    this function is very common for debugging purpose.
+ */    
+VOBA_FUNC voba_value_t voba_print(voba_value_t self, voba_value_t a1) ;
 #include "imp/apply.c"
 //#include "imp/exception.c"
 #include "imp/generator.c"    
