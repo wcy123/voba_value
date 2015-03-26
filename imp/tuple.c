@@ -40,3 +40,9 @@ INLINE voba_value_t voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v)
     return voba_tuple_base(a)[i] = v;
 }
 
+INLINE voba_value_t* voba_alloc(size_t n_of_elt)
+{
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * n_of_elt);
+    if(!p){abort();};
+    return p;
+}

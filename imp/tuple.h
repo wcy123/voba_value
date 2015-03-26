@@ -52,6 +52,7 @@ INLINE voba_value_t  voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v);
 /** @fn voba_make_tuple_0
     @brief a set of functions to create a tuple, voba_make_tuple_<N>, N = 0,1,2,...,20
 
+
 @code{.c}
 voba_value_t voba_make_tuple_0(voba_value_t a0);
 voba_value_t voba_make_tuple_1(voba_value_t a0, voba_value_t a1);
@@ -59,6 +60,9 @@ voba_value_t voba_make_tuple_1(voba_value_t a0, voba_value_t a1);
 voba_value_t voba_make_tuple_20(voba_value_t a0, voba_value_t a1,..., voba_value_t a19);
 @endcode
 */
+
+/** @brief allocate a number of memory for voba_value */
+INLINE voba_value_t* voba_alloc(size_t n_of_elt);
 
 // I really hate to write these macros, but I hate more duplicate
 // code. I used to use python or M4 generate the following code, but
