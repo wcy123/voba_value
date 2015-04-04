@@ -73,3 +73,15 @@ voba_value_t        voba_lookup_symbol(voba_value_t str, voba_value_t h);
 size_t              voba_sizeof_symbol_table();
 
 
+/** @brief the default symbol table.
+
+    when create a symbol without a symbol table, the default symbol
+    table is used.
+ */
+extern voba_value_t voba_default_symbol_table ;
+
+/** @brief the symbol table for constant symbol whose symbol name
+ * starts with a colon.
+ */
+extern voba_value_t voba_constant_symbol_table ;
+

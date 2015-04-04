@@ -378,3 +378,12 @@ VOBA_FUNC voba_value_t voba_print(voba_value_t self, voba_value_t a1)
     fputc('\n',stdout);
     return VOBA_NIL;
 }
+
+
+voba_value_t voba_default_symbol_table;
+voba_value_t voba_constant_symbol_table;
+EXEC_ONCE_PROGN {
+    voba_default_symbol_table = voba_make_symbol_table();
+    voba_constant_symbol_table = voba_make_symbol_table();
+}
+

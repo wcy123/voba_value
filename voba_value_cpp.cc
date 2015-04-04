@@ -135,15 +135,16 @@ extern "C" voba_value_t voba_make_symbol(voba_str_t * name, voba_value_t h)
     assert(voba_is_nil(h) || voba_is_a(h,voba_cls_symbol_table));
     // create an un-interned symbol, with a symbol value NIL
     voba_value_t v = voba__make_symbol_lowlevel(voba_make_string(voba_strdup(name)),VOBA_NIL);
-    if(!voba_is_nil(h)){
-        voba_symbol_table_c::iterator it = VOBA_SET(h)->find(v);
-        if(it != VOBA_SET(h)->end()){
-            v = *it;
-        }else{
-            voba_value_t v2 = *(VOBA_SET(h)->insert(v));
-            assert(v == v2);
-            v = v2;
-        }
+    if(voba_is_nil(h)){
+        h = voba_default_symbol_table;
+    }
+    voba_symbol_table_c::iterator it = VOBA_SET(h)->find(v);
+    if(it != VOBA_SET(h)->end()){
+        v = *it;
+    }else{
+        voba_value_t v2 = *(VOBA_SET(h)->insert(v));
+        assert(v == v2);
+        v = v2;
     }
     // a symbol is a pair, but with different type tag.
     return v;
