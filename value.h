@@ -124,7 +124,7 @@ extern voba_value_t voba_gf_to_string;
 VOBA_FUNC voba_value_t voba_print(voba_value_t self, voba_value_t a1) ;
 #include "imp/apply.c"
 //#include "imp/exception.c"
-#include "imp/generator.c"    
+#include "imp/generator.c"
 #ifdef __cplusplus
 }
 #endif

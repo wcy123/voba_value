@@ -37,3 +37,11 @@ INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args);
 voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in voba_value.c
 
 
+/** @brief apply macros
+ */
+
+#define VOBA_APPLY(r,f,...) {                                   \
+    voba_value_t tmpargs [] = {0, __VA_ARGS__};                 \
+    tmpargs[0] = sizeof(tmpargs) / sizeof(voba_value_t);        \
+    r = voba_apply(f, voba_make_tuple(tmpargs));                \
+    }                                                           
