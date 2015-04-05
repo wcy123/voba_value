@@ -106,15 +106,6 @@ voba_value_t r = voba_apply(a, args); // invoke apply_array
 */
 extern voba_value_t voba_gf_apply;
 
-/** @brief The generic function object for `match`
-
-If a class implements this generic function, the class can be used for
-pattern matching. It is used by `match` statement of voba language.
-
-@todo explain `match` statement in detail
-
- */
-extern voba_value_t voba_gf_match;
 /** @brief convert an object to a string.
  */
 extern voba_value_t voba_gf_to_string;
