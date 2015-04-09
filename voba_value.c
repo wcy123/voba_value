@@ -74,7 +74,7 @@ VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
     voba_value_t ret = VOBA_NIL;
     VOBA_ASSERT_N_ARG(args,0);
     voba_value_t index1 = voba_tuple_at(args,0);
-    VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
+    VOBA_ASSERT_ARG_ISA(index1,voba_cls_i32,0);
     int64_t index = (index1 >> 8);
     ret = voba_array_at(self,index);
     return ret;
@@ -97,7 +97,7 @@ VOBA_FUNC static voba_value_t apply_tuple(voba_value_t self, voba_value_t args)
         ret = voba_make_closure_2(iter_tuple_real,self,0);
     }else{
         voba_value_t index1 = voba_tuple_at(args,0);
-        VOBA_ASSERT_ARG_FUN(index1,voba_is_int,0);
+        VOBA_ASSERT_ARG_ISA(index1,voba_cls_i32,0);
         int64_t index = (index1 >> 8);
         ret = voba_tuple_at(self,index);
     }
@@ -171,7 +171,7 @@ VOBA_FUNC static voba_value_t int_to_string (voba_value_t self,voba_value_t args
 {
     VOBA_ASSERT_N_ARG(args,0);
     voba_value_t a1 = voba_tuple_at(args,0);
-    int64_t a2  = voba_int_value_to_i32(a1);
+    int64_t a2  = voba_value_to_i32(a1);
     voba_str_t* a3 = voba_str_fmt_int64_t(a2,10);
     voba_value_t ret = voba_make_string(a3);
     return ret;
@@ -338,4 +338,9 @@ EXEC_ONCE_PROGN {
     voba_default_symbol_table = voba_make_symbol_table();
     voba_constant_symbol_table = voba_make_symbol_table();
 }
+
+voba_cls_t * the_voba_class_table = NULL;
+int32_t the_voba_class_table_length = 0;
+voba_gf_t * the_voba_gf_table = NULL;
+int32_t the_voba_gf_table_length = 0;
 

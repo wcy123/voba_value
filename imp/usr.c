@@ -14,8 +14,8 @@ INLINE voba_value_t* voba_allocate_user_data(size_t s)
 INLINE voba_value_t voba_make_user_data(voba_value_t cls)
 {
     // size doesn't include the cls function, so allocate a room for it.
-    assert(VOBA_CLS(cls)->size > 0);
-    voba_value_t * p = voba_allocate_user_data(VOBA_CLS(cls)->size);
+    assert(voba_cls_size(cls) > 0);
+    voba_value_t * p = voba_allocate_user_data(voba_cls_size(cls));
     p[0] = cls;
     return voba_from_pointer(p,VOBA_TYPE_USER);
 }

@@ -8,18 +8,10 @@ generic function is a user class, whose value is an array.
 
 @verbatim
 +------------------------------------------------+-------+
-| data                                           | type1 |
+| data                                   | type2 | type1 |
 +------------------------------------------------+-------+
-| .    value (61 bits)                           |  101  |
-+-|----------------------------------------------+-------+
-  |
-  `-->  +------------------------------+------------------------+
-        |           voba_cls_generic_function                   |
-        +------------------------------+------------------------+
-        |                                                       |
-        +      struct voba_gf_s                                 +
-        |                                                       |
-        +------------------------------+------------------------+
+|      unused (38 bits)    index(10bits) | 1010  |  111  |
++------------------------------------------------+-------+
 @endverbatim
 
 With traditional object oriented programming languages, e.g. C++,
@@ -28,24 +20,24 @@ CLOS, a virtual function is associated with the type of all its
 arguments. Generic function is in-between the two. A generic function
 is a virtual function which is associated with its first argument,
 
-*/
-#define VOBA_MAX_NUM_OF_CLS 1000
-#define VOBA_MAX_NUM_OF_GF  1000
-typedef struct voba_gf_s voba_gf_t;
+`index` is an index of the global generic function table.
 
+*/
+typedef struct voba_gf_s voba_gf_t;
 /** data structure for generic function objects*/
-struct voba_gf_s {
-    voba_value_t hash; /*!< depricated, it is not efficient enough */
-    voba_func_t  fun;  /*!< the default implementation */
+struct voba_gf_header_s{
     const char * name;
-    uint32_t     id;
+};
+#define VOBA_MAX_NUM_OF_CLS (1024 - sizeof(struct voba_gf_header_s)/sizeof(voba_func_t))
+struct voba_gf_s {
+    struct voba_gf_header_s header;
     voba_func_t  cls[VOBA_MAX_NUM_OF_CLS];
 };
 #define VOBA_GF(s)  VOBA_USER_DATA_AS(voba_gf_t *,s)
-
+extern struct voba_gf_s * the_voba_gf_table;
+extern int32_t the_voba_gf_table_length;
 extern voba_value_t voba_cls_generic_function;
-extern uint32_t voba_cls_generic_function_next_id;
-/** create a generic function object */
+/** @brief create a generic function object */
 INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t default_imp);
 /** register a method for a class. 
  *  @return return value is not useful, return \a func anyway.
@@ -62,4 +54,8 @@ INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_va
  */
 INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls);
 
-
+/* @brief return the index to the global generic function table
+ */
+INLINE int32_t voba_gf_id(voba_value_t gf);
+INLINE const char * voba_gf_name(voba_value_t gf);
+INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls);

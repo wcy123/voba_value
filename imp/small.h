@@ -17,17 +17,14 @@ when it is VOBA_TYPE_SMALL,
 
 */
 // macro definitions for type2, i.e. when type1 == VOBA_TYPE_SMALL
-#define    VOBA_TYPE_BOOL         1
-#define    VOBA_TYPE_I8           2
-#define    VOBA_TYPE_U8           3
-#define    VOBA_TYPE_I16          4
-#define    VOBA_TYPE_U16          5
-#define    VOBA_TYPE_I32          6
-#define    VOBA_TYPE_U32          7
-#define    VOBA_TYPE_FLOAT        8
-#define    VOBA_TYPE_SHORT_SYMBOL 9
-#define    VOBA_TYPE_SPECIAL_VALUES 11   // internal used, which is not visible
-#define    VOBA_TYPE_SECRET       10   // internal used, which is not visible
+#define    VOBA_TYPE_BOOL		1
+#define    VOBA_TYPE_I32		2
+#define    VOBA_TYPE_FLOAT		3
+#define    VOBA_TYPE_SHORT_SYMBOL	4
+#define    VOBA_TYPE_GENERIC_FUNCTION	5
+#define    VOBA_TYPE_CLASS		6
+#define    VOBA_TYPE_SPECIAL_VALUES	100	// internal use, true, false, done, undef
+#define    VOBA_TYPE_SECRET		101	// internal use, I like secret, it is not used at all.
 INLINE int64_t  voba_get_type2(voba_value_t v);
 /** @brief nil
 constant value nil
@@ -100,7 +97,7 @@ INLINE voba_value_t voba_not(voba_value_t v);
 NOT IMPLEMENTED YET.
  */
 extern voba_value_t voba_cls_short_symbol;
-/** @brief class integer
+/** @brief class int32_t
 
 @verbatim
 +-----------------------------------------------------------+-------+
@@ -110,26 +107,11 @@ extern voba_value_t voba_cls_short_symbol;
 +-----------------------------------------------------------+-------+
 @endverbatim
 
-voba_make_i8, voba_make_u8, voba_make_i16,voba_make_i32
-
-voba_value_to_i8, voba_value_to_u8, voba_value_to_i16,
-voba_value_to_u16, voba_value_to_i32, voba_value_to_u32,
-
-These functions are trivival so that they are implemented by macro
-VOBA_SMALL_TYPES(DECLARE_SMALL_TYPE)
-
  */
-extern voba_value_t voba_cls_u8;
-/** @brief class object for i8 */
-extern voba_value_t voba_cls_i8;
-/** @brief class object for u16 */
-extern voba_value_t voba_cls_u16;
-/** @brief class object for i16 */
-extern voba_value_t voba_cls_i16;
-/** @brief class object for u32 */
-extern voba_value_t voba_cls_u32;
 /** @brief class object for i32 */
 extern voba_value_t voba_cls_i32;
+INLINE voba_value_t voba_make_i32(int32_t a);
+INLINE int32_t voba_value_to_i32(voba_value_t a);
 /** @brief class float
 
 @verbatim
@@ -144,22 +126,5 @@ voba_make_float, voba_value_to_float, similar to `class integer`.
 
 */
 extern voba_value_t voba_cls_float;
-// small type
-#define VOBA_SMALL_TYPES(XX)                                           \
-    XX(VOBA_TYPE_I8,i8,int8_t)                                         \
-    XX(VOBA_TYPE_U8,u8,uint8_t)                                        \
-    XX(VOBA_TYPE_I16,i16,int16_t)                                      \
-    XX(VOBA_TYPE_U16,u16,uint16_t)                                     \
-    XX(VOBA_TYPE_I32,i32,int32_t)                                      \
-    XX(VOBA_TYPE_U32,u32,uint32_t)                                     \
-    XX(VOBA_TYPE_FLOAT,float,float)
-#define DECLARE_SMALL_TYPE(tag,name,type)       \
-    INLINE voba_value_t voba_make_##name (type v);        \
-    INLINE type voba_value_to_##name (voba_value_t v);
-
-VOBA_SMALL_TYPES(DECLARE_SMALL_TYPE)
-
-
-INLINE int64_t voba_int_value_to_i32(voba_value_t a);
-INLINE int voba_is_int(voba_value_t a );
-INLINE voba_value_t i64_to_voba_int_value(int64_t a);
+INLINE voba_value_t voba_make_float (float v);
+INLINE float voba_value_to_float (voba_value_t v);

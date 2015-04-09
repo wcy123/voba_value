@@ -14,9 +14,9 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
                 voba_make_string(
                     VOBA_STRCAT(
                         VOBA_CONST_CHAR("vfunc `"),
-                        voba_str_from_cstr(VOBA_GF(f)->name),
+                        voba_str_from_cstr(voba_gf_name(f)),
                         VOBA_CONST_CHAR("' is not found for cls `"),
-                        voba_str_from_cstr(VOBA_CLS(cls)->name),
+                        voba_str_from_cstr(voba_cls_name(cls)),
                         VOBA_CONST_CHAR("'")
                         )));
         }
@@ -31,7 +31,7 @@ INLINE voba_func_t voba__apply_find_func(voba_value_t f, voba_value_t a1)
                 voba_make_string(
                     VOBA_STRCAT(
                         VOBA_CONST_CHAR("object of `"),
-                        voba_str_from_cstr(VOBA_CLS(cls)->name),
+                        voba_str_from_cstr(voba_cls_name(cls)),
                         VOBA_CONST_CHAR("' is not callable`")
                         )));
         }
