@@ -82,44 +82,35 @@ VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
 EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
 }
-VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t self, voba_value_t args);
-/** @brief An tuple is callable.
-    
-`(tuple_obj index)` returns the element in the tuple at `index`.
-
-  */
-VOBA_FUNC static voba_value_t apply_tuple(voba_value_t self, voba_value_t args)
-{
-    int64_t len = voba_tuple_len(args);
-    voba_value_t ret = VOBA_NIL;
-    if(len == 0){
-        VOBA_ASSERT_ARG_ISA(self,voba_cls_tuple,0);
-        ret = voba_make_closure_2(iter_tuple_real,self,0);
-    }else{
-        voba_value_t index1 = voba_tuple_at(args,0);
-        VOBA_ASSERT_ARG_ISA(index1,voba_cls_i32,0);
-        int64_t index = (index1 >> 8);
-        ret = voba_tuple_at(self,index);
-    }
-    return ret;
-}
+/* VOBA_FUNC static voba_value_t apply_tuple(voba_value_t self, voba_value_t args) */
+/* { */
+/*     int64_t len = voba_tuple_len(args); */
+/*     voba_value_t ret = VOBA_NIL; */
+/*     if(len == 0){ */
+/*         VOBA_ASSERT_ARG_ISA(self,voba_cls_tuple,0); */
+/*         ret = voba_make_closure_2(iter_tuple_real,self,0); */
+/*     }else{ */
+/*         voba_value_t index1 = voba_tuple_at(args,0); */
+/*         VOBA_ASSERT_ARG_ISA(index1,voba_cls_i32,0); */
+/*         int64_t index = (index1 >> 8); */
+/*         ret = voba_tuple_at(self,index); */
+/*     } */
+/*     return ret; */
+/* } */
 /** @brief The closure for iterator of an tuple */
-VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t self, voba_value_t args)
-{
-    voba_value_t a = voba_tuple_at(self,0);
-    voba_value_t i = voba_tuple_at(self,1);
-    int64_t len = voba_tuple_len(a);
-    voba_value_t ret = VOBA_DONE;
-    if(i < len){
-        ret = voba_tuple_at(a, i);
-        i++;
-        voba_tuple_set(self,1,i);
-    }
-    return ret;
-}
-EXEC_ONCE_PROGN {
-    voba_gf_add_class(voba_gf_apply,voba_cls_tuple, voba_make_func(apply_tuple));
-}
+/* VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t self, voba_value_t args) */
+/* { */
+/*     voba_value_t a = voba_tuple_at(self,0); */
+/*     voba_value_t i = voba_tuple_at(self,1); */
+/*     int64_t len = voba_tuple_len(a); */
+/*     voba_value_t ret = VOBA_DONE; */
+/*     if(i < len){ */
+/*         ret = voba_tuple_at(a, i); */
+/*         i++; */
+/*         voba_tuple_set(self,1,i); */
+/*     } */
+/*     return ret; */
+/* } */
 /** 
  @todo add match for ::voba_cls_pair
  */
@@ -343,4 +334,3 @@ voba_cls_t * the_voba_class_table = NULL;
 int32_t the_voba_class_table_length = 0;
 voba_gf_t * the_voba_gf_table = NULL;
 int32_t the_voba_gf_table_length = 0;
-

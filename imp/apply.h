@@ -45,3 +45,5 @@ voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in vob
     tmpargs[0] = sizeof(tmpargs) / sizeof(voba_value_t);        \
     r = voba_apply(f, voba_make_tuple(tmpargs));                \
     }                                                           
+
+INLINE voba_value_t apply_tuple(voba_value_t self, voba_value_t args);
