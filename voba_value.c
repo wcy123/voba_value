@@ -44,9 +44,9 @@ EXEC_ONCE_PROGN{
 /** @brief Objects of ::voba_cls_generator are callable objects
  @todo explain generator in details
  */
-VOBA_FUNC static voba_value_t apply_generator(voba_value_t self, voba_value_t args)
+VOBA_FUNC static voba_value_t apply_generator(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
-    voba_value_t g = self;
+    voba_value_t g = fun;
     voba_value_t ret = VOBA_NIL;
     if(cg_is_done(VOBA_GENERATOR(g))){
         ret = VOBA_DONE;
@@ -69,20 +69,20 @@ EXEC_ONCE_PROGN {
 `(array_obj index)` returns the element in the array at `index`.
 
   */
-VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+VOBA_FUNC static voba_value_t apply_array(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t ret = VOBA_NIL;
     VOBA_ASSERT_N_ARG(args,0);
     voba_value_t index1 = voba_tuple_at(args,0);
     VOBA_ASSERT_ARG_ISA(index1,voba_cls_i32,0);
     int64_t index = (index1 >> 8);
-    ret = voba_array_at(self,index);
+    ret = voba_array_at(fun,index);
     return ret;
 }
 EXEC_ONCE_PROGN {
     voba_gf_add_class(voba_gf_apply,voba_cls_array, voba_make_func(apply_array));
 }
-/* VOBA_FUNC static voba_value_t apply_tuple(voba_value_t self, voba_value_t args) */
+/* VOBA_FUNC static voba_value_t apply_tuple(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[]) */
 /* { */
 /*     int64_t len = voba_tuple_len(args); */
 /*     voba_value_t ret = VOBA_NIL; */
@@ -98,7 +98,7 @@ EXEC_ONCE_PROGN {
 /*     return ret; */
 /* } */
 /** @brief The closure for iterator of an tuple */
-/* VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t self, voba_value_t args) */
+/* VOBA_FUNC static voba_value_t iter_tuple_real(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[]) */
 /* { */
 /*     voba_value_t a = voba_tuple_at(self,0); */
 /*     voba_value_t i = voba_tuple_at(self,1); */
@@ -115,7 +115,7 @@ EXEC_ONCE_PROGN {
  @todo add match for ::voba_cls_pair
  */
 
-VOBA_FUNC static voba_value_t string_to_string(voba_value_t self,voba_value_t v)
+VOBA_FUNC static voba_value_t string_to_string(voba_value_t fun,voba_value_t v, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_str_t* ret = voba_str_from_char('"',1);
     ret = voba_strcat(ret,voba_value_to_str(voba_tuple_at(v,0)));
@@ -124,7 +124,7 @@ VOBA_FUNC static voba_value_t string_to_string(voba_value_t self,voba_value_t v)
 }
 /** @brief to_string implementation of arrays.
  */
-VOBA_FUNC static  voba_value_t array_to_string(voba_value_t self,voba_value_t vs)
+VOBA_FUNC static  voba_value_t array_to_string(voba_value_t fun,voba_value_t vs, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t v = voba_tuple_at(vs,0);
     int64_t len = voba_array_len(v);
@@ -141,7 +141,7 @@ VOBA_FUNC static  voba_value_t array_to_string(voba_value_t self,voba_value_t vs
     ret = voba_strcat_char(ret,']');
     return voba_make_string(ret);
 }
-VOBA_FUNC static  voba_value_t tuple_to_string(voba_value_t self,voba_value_t vs)
+VOBA_FUNC static  voba_value_t tuple_to_string(voba_value_t fun,voba_value_t vs, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t v = voba_tuple_at(vs,0);
     int64_t len = voba_tuple_len(v);
@@ -158,7 +158,7 @@ VOBA_FUNC static  voba_value_t tuple_to_string(voba_value_t self,voba_value_t vs
     ret = voba_strcat_char(ret,']');
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t int_to_string (voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t int_to_string (voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     VOBA_ASSERT_N_ARG(args,0);
     voba_value_t a1 = voba_tuple_at(args,0);
@@ -167,7 +167,7 @@ VOBA_FUNC static voba_value_t int_to_string (voba_value_t self,voba_value_t args
     voba_value_t ret = voba_make_string(a3);
     return ret;
 }
-VOBA_FUNC static voba_value_t funcp_to_string(voba_value_t self, voba_value_t args)
+VOBA_FUNC static voba_value_t funcp_to_string(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_str_t * ret = voba_str_empty();
     ret = voba_strcat_cstr(ret,"<funcp ");
@@ -175,7 +175,7 @@ VOBA_FUNC static voba_value_t funcp_to_string(voba_value_t self, voba_value_t ar
     ret = voba_strcat_cstr(ret," >");    
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t closure_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t closure_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_str_t *ret = voba_str_empty();
     ret = voba_strcat_cstr(ret,"<closure ");
@@ -185,7 +185,7 @@ VOBA_FUNC static voba_value_t closure_to_string(voba_value_t self,voba_value_t a
     ret = voba_strcat_char(ret,'>');
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t pair_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t pair_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t tmp_args[] = {1, VOBA_NIL};
     voba_value_t v = voba_tuple_at(args,0);
@@ -217,7 +217,7 @@ VOBA_FUNC static voba_value_t pair_to_string(voba_value_t self,voba_value_t args
     ret = voba_strcat_char(ret,')');
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t la_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t la_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t tmp_args[] = {1, VOBA_NIL};
     voba_value_t v = voba_tuple_at(args,0);
@@ -242,23 +242,23 @@ VOBA_FUNC static voba_value_t la_to_string(voba_value_t self,voba_value_t args)
     ret = voba_strcat_char(ret,']');
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t nil_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t nil_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_str_t *ret = voba_str_from_cstr("nil");
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t undef_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t undef_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_str_t *ret = voba_str_from_cstr("undef");
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t done_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t done_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_str_t *ret = voba_str_from_cstr("done");
     return voba_make_string(ret);
 }
 
-VOBA_FUNC static voba_value_t boolean_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t boolean_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t v = voba_tuple_at(args,0);
     if(voba_is_true(v)){
@@ -273,7 +273,7 @@ VOBA_FUNC static voba_value_t boolean_to_string(voba_value_t self,voba_value_t a
     voba_str_t *ret = voba_str_from_cstr("unknown");
     return voba_make_string(ret);
 }
-VOBA_FUNC static voba_value_t symbol_to_string(voba_value_t self,voba_value_t args)
+VOBA_FUNC static voba_value_t symbol_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t s = voba_tuple_at(args,0);
     return voba_make_string(voba_vstrcat(
@@ -309,7 +309,7 @@ static voba_value_t print1(voba_value_t x)
     fflush(stdout);
     return x;
 }
-VOBA_FUNC voba_value_t voba_print(voba_value_t self, voba_value_t a1) 
+VOBA_FUNC voba_value_t voba_print(voba_value_t fun, voba_value_t a1, voba_value_t* next_fun, voba_value_t next_args[]) 
 {
     int64_t len = voba_tuple_len(a1);
     for(int i = 0; i < len; ++i){

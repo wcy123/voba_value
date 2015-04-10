@@ -19,7 +19,7 @@ The type of function pointer is typedef as ::voba_func_t
 The function must be 16 aligned, usually use ::VOBA_FUNC
 For example:
 @code{.c}
-VOBA_FUNC static voba_value_t a_function(voba_value_t self, voba_value_t args)
+VOBA_FUNC static voba_value_t a_function(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
    .......
 }
@@ -42,7 +42,7 @@ where \a self is \a f and \a args is a tuple \a [ \a a1, \a a2, \a a4 , .... \a 
 /** @brief the class object associated with function type. */
 extern voba_value_t voba_cls_func;
 /** @brief the type of function pointer */
-typedef voba_value_t (*voba_func_t)(voba_value_t self, voba_value_t args);
+typedef voba_value_t (*voba_func_t)(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[]);
 /** @brief create a new function object from a function pointer */
 INLINE voba_value_t  voba_make_func(voba_func_t);
 /** @brief convert a voba value to a function pointer */

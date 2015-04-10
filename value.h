@@ -66,7 +66,7 @@ for example,
 ~~~{.c}
 voba_gf_add_class(voba_gf_apply,voba_cls_array,voba_make_func(apply_array));
 
-VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+VOBA_FUNC static voba_value_t apply_array(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     ....
 }
@@ -89,7 +89,7 @@ for example,
 ~~~{.c}
 voba_gf_add_class(voba_gf_apply,voba_cls_array,voba_make_func(apply_array));
 
-VOBA_FUNC static voba_value_t apply_array(voba_value_t self, voba_value_t args)
+VOBA_FUNC static voba_value_t apply_array(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
     ....
 }
@@ -112,7 +112,7 @@ extern voba_value_t voba_gf_to_string;
 /** @brief print
     this function is very common for debugging purpose.
  */    
-VOBA_FUNC voba_value_t voba_print(voba_value_t self, voba_value_t a1) ;
+VOBA_FUNC voba_value_t voba_print(voba_value_t fun, voba_value_t a1, voba_value_t* next_fun, voba_value_t next_args[]);
 #include "imp/apply.c"
 //#include "imp/exception.c"
 #include "imp/generator.c"

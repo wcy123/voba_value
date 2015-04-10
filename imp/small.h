@@ -72,6 +72,19 @@ It repensent the end of iteration.
 extern voba_value_t voba_cls_done;
 /** @brief return 0 if `p` is not ::VOBA_DONE*/
 INLINE int voba_is_done(voba_value_t v) { return v == VOBA_DONE; }
+
+
+/** @brief constant VOBA_TAIL_CALL
+
+It repensent the end of iteration.
+
+*/
+#define VOBA_TAIL_CALL (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  3 * 256)
+/** @brief the class object for ::VOBA_TAIL_CALL */
+extern voba_value_t voba_cls_tail_call;
+/** @brief return 0 if `p` is not ::VOBA_TAIL_CALL*/
+INLINE int voba_is_tail_call(voba_value_t v) { return v == VOBA_TAIL_CALL; }
+
 /** @brief class bool
 @verbatim
 +-----------------------------------------------------------+-------+

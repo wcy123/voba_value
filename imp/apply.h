@@ -32,10 +32,12 @@ where \a args is the argument tuple \a (a1 a2 ...)
    @param args The tuple which represents arguments, `a0`, ... , `an`
  */
 INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args);
-
-INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args);
-voba_value_t voba_direct_apply_n(voba_func_t f,size_t n, ...); // defined in voba_value.c
-
+INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[]);
+INLINE voba_value_t voba_apply_gf(voba_value_t gf, voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[]);
+INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_value_t* next_fun, voba_value_t next_args[]);
+#ifndef VOBA_MAX_NUM_OF_TAIL_CALL_ARGS
+#define VOBA_MAX_NUM_OF_TAIL_CALL_ARGS 20
+#endif
 
 /** @brief apply macros
  */

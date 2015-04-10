@@ -56,6 +56,6 @@ INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls);
 
 /* @brief return the index to the global generic function table
  */
-INLINE int32_t voba_gf_id(voba_value_t gf);
+INLINE int32_t voba_gf_id(voba_value_t gf) __attribute__((always_inline));
 INLINE const char * voba_gf_name(voba_value_t gf);
-INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls);
+INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls) __attribute__((always_inline));

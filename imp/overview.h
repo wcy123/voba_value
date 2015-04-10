@@ -16,7 +16,7 @@
 \endverbatim
 
 */
-typedef uint64_t voba_value_t;
+typedef int64_t voba_value_t;
 /// type tag of function pointer, see fun.h
 #define    VOBA_TYPE_FUNC    0
 /// type tag of str, see str.h
