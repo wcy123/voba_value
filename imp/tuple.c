@@ -46,3 +46,10 @@ INLINE voba_value_t* voba_alloc(size_t n_of_elt)
     if(!p){abort();};
     return p;
 }
+INLINE voba_value_t voba_tuple_copy(voba_value_t tuple)
+{
+    voba_value_t * ret = voba_alloc(voba_tuple_len(tuple)+1);
+    memcpy((void*)ret,voba_to_pointer(void*,tuple),
+	   (voba_tuple_len(tuple)+1) * sizeof(voba_value_t));
+    return voba_make_tuple(ret);
+}

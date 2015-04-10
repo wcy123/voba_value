@@ -63,7 +63,8 @@ voba_value_t voba_make_tuple_20(voba_value_t a0, voba_value_t a1,..., voba_value
 
 /** @brief allocate a number of memory for voba_value */
 INLINE voba_value_t* voba_alloc(size_t n_of_elt);
-
+/** @brief copy a tuple */
+INLINE voba_value_t voba_tuple_copy(voba_value_t tuple);
 // I really hate to write these macros, but I hate more duplicate
 // code. I used to use python or M4 generate the following code, but
 // it isn't more readable and it is not so good to depend on tools
