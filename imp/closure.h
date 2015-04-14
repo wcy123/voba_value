@@ -30,6 +30,8 @@ A \a closure is a pointer which points to an array .
 extern voba_value_t voba_cls_closure;
 /** @brief return the `i` th captured variable.*/
 INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i);
+/** @brief set `i` th captured variable.*/
+INLINE voba_value_t voba_closure_set_at(voba_value_t c,uint32_t i,voba_value_t v);
 /** @brief the closure function*/
 INLINE voba_func_t  voba_closure_func(voba_value_t c);
 /** @brief the tuple of all captured variables 

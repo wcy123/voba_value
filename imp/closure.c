@@ -12,6 +12,13 @@ INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i)
     assert(((int64_t)i) < voba_closure_len(c));
     return voba_to_pointer(voba_value_t*, c)[i + 2]; // +2, skip func and size.
 }
+INLINE voba_value_t voba_closure_set_at(voba_value_t c,uint32_t i,voba_value_t v)
+{
+    assert(voba_is_a(c,voba_cls_closure));
+    assert(((int64_t)i) < voba_closure_len(c));
+    voba_to_pointer(voba_value_t*, c)[i + 2] = v; // +2, skip func and size.
+    return v;
+}
 INLINE voba_value_t voba_closure_tuple(voba_value_t c)
 {
     assert(voba_is_a(c,voba_cls_closure));
