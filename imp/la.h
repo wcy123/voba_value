@@ -41,6 +41,7 @@ INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur);
 INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_t len);
 INLINE voba_value_t voba_la_car(voba_value_t la);
 INLINE voba_value_t voba_la_cdr(voba_value_t la);
+INLINE voba_value_t voba_la_last(voba_value_t la);
 INLINE int voba_la_is_nil(voba_value_t la);
 INLINE voba_value_t voba_la_copy(voba_value_t la);
 // copy array under la1 and la2, create a new array, and return the la

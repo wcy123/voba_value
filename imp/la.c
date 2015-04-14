@@ -57,6 +57,18 @@ INLINE voba_value_t voba_la_cdr(voba_value_t la)
     VOBA_LA(la)->cur = cur;
     return la;
 }
+INLINE voba_value_t voba_la_last(voba_value_t la)
+{
+    assert(voba_is_a(la,voba_cls_la));
+    uint32_t cur = VOBA_LA(la)->cur;
+    voba_value_t a = VOBA_LA(la)->array;
+    uint32_t end = VOBA_LA(la)->end;
+#ifndef NDEBUG
+    uint32_t a_len = ( (uint32_t) voba_array_len(a));
+#endif
+    assert(cur <= a_len && cur <= end && end <= a_len);
+    return voba_array_at(a,(int64_t)(end-1));
+}
 INLINE voba_value_t voba_la_copy(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
@@ -78,9 +90,9 @@ INLINE voba_value_t voba_la_to_array(voba_value_t la)
     assert(voba_is_a(la,voba_cls_la));
     voba_value_t ret = voba_make_array_0();
     voba_value_t xs = voba_la_copy(la);
-    while(voba_is_nil(xs)){
+    while(!voba_la_is_nil(xs)){
         voba_value_t x = voba_la_car(xs);
-        voba_array_push(ret,x);
+        ret = voba_array_push(ret,x);
         xs = voba_la_cdr(xs);
     }
     return ret;
