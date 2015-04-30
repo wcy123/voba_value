@@ -26,6 +26,7 @@ extern "C" {
 /* FOR_EACH macro used by tuple and array */
 #include "imp/for_each.h"
 #include "imp/fun.h"
+#include "imp/box.h"
 #include "imp/str.h"
 #include "imp/symbol.h"
 #include "imp/closure.h"
@@ -46,6 +47,7 @@ extern "C" {
 
 #include "imp/overview.c"
 #include "imp/fun.c"
+#include "imp/box.c"
 #include "imp/str.c"
 #include "imp/symbol.c"
 #include "imp/closure.c"

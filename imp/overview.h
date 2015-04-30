@@ -19,8 +19,8 @@
 typedef int64_t voba_value_t;
 /// type tag of function pointer, see fun.h
 #define    VOBA_TYPE_FUNC    0
-/// type tag of str, see str.h
-#define    VOBA_TYPE_STRING  1
+/// type tag of box, see box.h
+#define    VOBA_TYPE_BOX     1
 /// type tag of symbol, see symbol.h
 #define    VOBA_TYPE_SYMBOL  2
 /// type tag of tuple, see tuple.h

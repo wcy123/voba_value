@@ -2,14 +2,10 @@
 
 INLINE voba_value_t voba_make_cls(size_t size, const char * name)
 {
-    if(the_voba_class_table == NULL){
-	the_voba_class_table = (struct voba_cls_s*)
-	    GC_MALLOC(sizeof(struct voba_cls_s));
-    }else{
-	the_voba_class_table = (struct voba_cls_s*)
-	    GC_REALLOC(the_voba_class_table,
-		       sizeof(struct voba_cls_s)*(the_voba_class_table_length+1));
-    }
+    assert(the_voba_class_table != NULL);
+    the_voba_class_table = (struct voba_cls_s*)
+	GC_REALLOC(the_voba_class_table,
+		   sizeof(struct voba_cls_s)*(the_voba_class_table_length+1));
     if(!the_voba_class_table) abort(); // out-of-memory
     the_voba_class_table[the_voba_class_table_length].size = size;
     the_voba_class_table[the_voba_class_table_length].name = name;
@@ -63,8 +59,8 @@ static inline voba_value_t voba_get_class(voba_value_t v)
         return voba_cls_pair;
     case VOBA_TYPE_USER:
         return voba_user_data_class(v);
-    case VOBA_TYPE_STRING:
-        return voba_cls_str;
+    case VOBA_TYPE_BOX:
+        return voba_cls_box;
     default:
         assert(0);
     }

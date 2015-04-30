@@ -7,12 +7,21 @@ uint32_t voba_cls_generic_function_next_id = 0;
 uint32_t voba_cls_next_id = 0;
 // it is defined in a special way, to avoid chicken-egg problem
 voba_value_t voba_cls_cls = VOBA_UNDEF;
+voba_cls_t * the_voba_class_table = NULL;
+int32_t the_voba_class_table_length = 1; // reserver types
+EXEC_ONCE_PROGN{
+    /// reserve the first user defined object is the string class.
+    the_voba_class_table = (struct voba_cls_s*)
+	GC_MALLOC(sizeof(struct voba_cls_s)*the_voba_class_table_length);
+    the_voba_class_table[0].size = sizeof(voba_str_t) - sizeof(voba_value_t);
+    the_voba_class_table[0].name = "string";
+}
 VOBA_DEF_CLS(0,func)
+VOBA_DEF_CLS(0,box)
 VOBA_DEF_CLS(0,symbol)
 VOBA_DEF_CLS(0,tuple)
 VOBA_DEF_CLS(0,closure)
 VOBA_DEF_CLS(0,pair)
-VOBA_DEF_CLS(0,str)
 VOBA_DEF_CLS(0,nil)
 VOBA_DEF_CLS(0,bool)
 VOBA_DEF_CLS(0,u8)
@@ -330,7 +339,5 @@ EXEC_ONCE_PROGN {
     voba_constant_symbol_table = voba_make_symbol_table();
 }
 
-voba_cls_t * the_voba_class_table = NULL;
-int32_t the_voba_class_table_length = 0;
 voba_gf_t * the_voba_gf_table = NULL;
 int32_t the_voba_gf_table_length = 0;

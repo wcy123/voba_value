@@ -43,7 +43,7 @@ struct voba_cls_s {
     const char * name; /*!< the name of class */
 };
 extern voba_cls_t * the_voba_class_table;
-extern int32_t        the_voba_class_table_length;
+extern int32_t      the_voba_class_table_length;
 /** @return a \a cls obejct which represents the class of the object \a v*/
 INLINE voba_value_t voba_get_class(voba_value_t v) __attribute__((always_inline));
 /** @return the name of the class object */

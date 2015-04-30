@@ -4,7 +4,7 @@
 INLINE voba_value_t voba_make_string(voba_str_t* s)
 {
     if(s == NULL) return VOBA_NIL;
-    return voba_from_pointer(s,VOBA_TYPE_STRING);
+    return voba_from_pointer(s,VOBA_TYPE_USER);
 }
 INLINE voba_value_t voba_make_cstr(const char * s)
 {

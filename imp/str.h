@@ -21,7 +21,10 @@ A string object is a point to a ::voba_str_t object.
  */
 //
 #include "voba_str.h"
-extern voba_value_t voba_cls_str; /*!< @brief the class object associated with string object*/
+/*** @brief the class object associated with string object
+ * revserved user defined type.
+ */
+#define  voba_cls_str (VOBA_TYPE_SMALL + (VOBA_TYPE_CLASS*8) + (0 * 256))
 /** @brief create a string voba_str_t */
 INLINE voba_value_t  voba_make_string(voba_str_t* s);
 /** @brief create a string from a const C string*/
