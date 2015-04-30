@@ -80,10 +80,12 @@ It repensent the end of iteration.
 
 */
 #define VOBA_TAIL_CALL (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  3 * 256)
-/** @brief the class object for ::VOBA_TAIL_CALL */
-extern voba_value_t voba_cls_tail_call;
 /** @brief return 0 if `p` is not ::VOBA_TAIL_CALL*/
 INLINE int voba_is_tail_call(voba_value_t v) { return v == VOBA_TAIL_CALL; }
+/** @brief contant VOBA_BOX_END
+    it is the end mark for a sequence of voba value, e.g. tuple or array.
+ */
+#define VOBA_BOX_END (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  4 * 256)
 
 /** @brief class bool
 @verbatim
