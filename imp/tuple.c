@@ -2,16 +2,19 @@
 // ------------- tuple ---------------------
 INLINE voba_value_t voba_make_tuple(voba_value_t* p)
 {
+    assert(p[p[0]] == VOBA_BOX_END);
     return voba_from_pointer(p,VOBA_TYPE_TUPLE);
 }
 INLINE voba_value_t voba_make_tuple_nv(int64_t n,va_list ap)
 {
-    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * (n + 1));
+    voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * (n + 2));
     assert(p);
     p[0] = n;
-    for(int i = 0 ; i < n; ++i){
+    int i;
+    for(i = 0 ; i < n; ++i){
         p[i+1] = va_arg(ap,voba_value_t);
     }
+    p[i+1] = VOBA_BOX_END;
     return voba_make_tuple(p);
 }
 INLINE voba_value_t voba_make_tuple_n(int64_t n,...) 
@@ -50,6 +53,6 @@ INLINE voba_value_t voba_tuple_copy(voba_value_t tuple)
 {
     voba_value_t * ret = voba_alloc(voba_tuple_len(tuple)+1);
     memcpy((void*)ret,voba_to_pointer(void*,tuple),
-	   (voba_tuple_len(tuple)+1) * sizeof(voba_value_t));
+	   (voba_tuple_len(tuple)+2) * sizeof(voba_value_t));
     return voba_make_tuple(ret);
 }
