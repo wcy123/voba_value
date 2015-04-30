@@ -43,8 +43,8 @@ INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_
  */
 
 #define VOBA_APPLY(r,f,...) {                                   \
-    voba_value_t tmpargs [] = {0, __VA_ARGS__};                 \
-    tmpargs[0] = sizeof(tmpargs) / sizeof(voba_value_t);        \
+    voba_value_t tmpargs [] = {0, __VA_ARGS__, VOBA_BOX_END};	\
+    tmpargs[0] = sizeof(tmpargs) / sizeof(voba_value_t) -2 ;	\
     r = voba_apply(f, voba_make_tuple(tmpargs));                \
     }                                                           
 

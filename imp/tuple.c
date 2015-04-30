@@ -2,7 +2,7 @@
 // ------------- tuple ---------------------
 INLINE voba_value_t voba_make_tuple(voba_value_t* p)
 {
-    assert(p[p[0]] == VOBA_BOX_END);
+    assert(p[p[0] + 1] == VOBA_BOX_END);
     return voba_from_pointer(p,VOBA_TYPE_TUPLE);
 }
 INLINE voba_value_t voba_make_tuple_nv(int64_t n,va_list ap)

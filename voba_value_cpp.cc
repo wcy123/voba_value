@@ -212,7 +212,7 @@ void voba_throw_exception(voba_value_t v)
 }
 extern "C" voba_value_t voba_try_catch(voba_value_t fun_body, voba_value_t fun_catch)
 {
-    voba_value_t args[] = {1,VOBA_NIL};
+    voba_value_t args[] = {1,VOBA_NIL,VOBA_BOX_END};
     try{
         return voba_apply(fun_body,voba_make_tuple(args));
     }catch(voba::exception e){

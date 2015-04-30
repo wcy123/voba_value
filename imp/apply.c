@@ -74,7 +74,8 @@ INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args)
     voba_value_t ret = VOBA_TAIL_CALL;
     voba_value_t next_fun = VOBA_NIL;
     voba_value_t next_args[VOBA_MAX_NUM_OF_TAIL_CALL_ARGS + 1];
-    next_args[0] = -1;
+    next_args[0] = 0;
+    next_args[1] = VOBA_BOX_END;
     assert(voba_is_a(args,voba_cls_tuple));
     do{
 	switch(voba_get_type1(f)){
