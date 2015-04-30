@@ -1,7 +1,7 @@
 #include "array.h"
 INLINE uint32_t voba_array_len_to_capacity(uint32_t len)
 {
-    return (uint32_t)(clz_long(len + 1));
+    return (uint32_t)(clz_long(len + 2));
 }
 INLINE voba_value_t voba_make_array(uint32_t capacity, uint32_t len, voba_value_t* p)
 {
@@ -10,28 +10,32 @@ INLINE voba_value_t voba_make_array(uint32_t capacity, uint32_t len, voba_value_
     p1->capacity = capacity;
     p1->len = len;
     p1->data = p;
+    assert(p[len] == VOBA_BOX_END);
     return ret;
 }
 INLINE voba_value_t voba_array_from_tuple(voba_value_t tuple)
 {
     assert(voba_is_a(tuple,voba_cls_tuple));
     uint32_t len = (uint32_t)voba_tuple_len(tuple);
-    uint32_t capacity = len == 0?2:len; /* minimun capacity is 2 */
+    uint32_t capacity = len == 0?2:(len+1); /* minimun capacity is 2 */
     voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * capacity);
     if(!p){abort();};
-    memcpy(p,voba_tuple_base(tuple), sizeof(voba_value_t)*len);
+    // len + 1 to include the VOBA_BOX_END
+    memcpy(p,voba_tuple_base(tuple), sizeof(voba_value_t)*(len+1));
     return voba_make_array(capacity,len,p);
 }
 INLINE voba_value_t voba_make_array_nv(uint32_t n,va_list ap)
 {
     uint32_t len = n;
-    uint32_t capacity = len;
+    uint32_t capacity = len + 1; // include the space for VOBA_BOX_END
     voba_value_t * p = (voba_value_t*)GC_MALLOC(sizeof(voba_value_t) * capacity);
     assert(n>0);
     assert(p);
-    for(int i = 0 ; i < n; ++i){
+    int i;
+    for(i = 0 ; i < n; ++i){
         p[i] = va_arg(ap,voba_value_t);
     }
+    p[n] = VOBA_BOX_END;
     return voba_make_array(n,n,p);
 }
 INLINE voba_value_t voba_make_array_n(uint32_t n,...) 
@@ -73,6 +77,8 @@ INLINE voba_value_t voba_array_copy(voba_value_t v)
     size_t c1 = sizeof(voba_value_t) * capacity;
     voba_value_t * p = (voba_value_t*)GC_MALLOC(c1);
     assert(p);
+    // c1 should be larger than len at least by 1 to include VOBA_BOX_END
+    assert(c1 > len + 1);
     memcpy((void*)p,voba_array_base(v),c1);
     return voba_make_array(capacity,len,p);
 }
@@ -81,7 +87,7 @@ INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
     uint32_t len = voba_array_len(a);
     uint32_t capacity = voba_array_capacity(a);
     voba_value_t * p = voba_array_base(a);
-    if(len + inc + 1 > capacity){ // one more room for `capacity+size`
+    if(len + inc + 2 > capacity){ // one more room for `capacity+size`
         capacity = capacity * 2;
         p = (voba_value_t*) GC_REALLOC((void*)p, capacity*sizeof(voba_value_t));
         if(!p){abort();}
@@ -95,6 +101,7 @@ INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
 
         */
         bzero(&p[len+1], sizeof(voba_value_t)*(capacity - len - 1));
+	p[len] = VOBA_BOX_END;
         VOBA_ARRAY(a)->data = p;
     }
     return;
@@ -106,6 +113,7 @@ INLINE voba_value_t voba_array_push(voba_value_t a,voba_value_t v)
     voba_value_t * p = voba_array_base(a);
     uint32_t len = voba_array_len(a);
     p[len] = v;
+    p[len + 1] = VOBA_BOX_END;
     assert(len < UINT32_MAX);
     VOBA_ARRAY(a)->len ++;
     return a;
@@ -118,6 +126,7 @@ INLINE voba_value_t voba_array_shift(voba_value_t a,voba_value_t v)
     uint32_t len = voba_array_len(a);
     memmove(&p[1], &p[0], len * sizeof(voba_value_t));
     p[0] = v;
+    p[len+1] = VOBA_BOX_END;
     assert(len < UINT32_MAX);
     VOBA_ARRAY(a)->len ++;
     return a;
@@ -133,6 +142,7 @@ INLINE voba_value_t voba_array_pop(voba_value_t a)
     }
     voba_value_t * p = voba_array_base(a);
     voba_value_t ret = p[len];
+    p[len] = VOBA_BOX_END;
     VOBA_ARRAY(a)->len --;
     return ret;
 }
@@ -148,6 +158,7 @@ INLINE voba_value_t voba_array_unshift(voba_value_t a)
     voba_value_t * p = voba_array_base(a);
     voba_value_t ret = p[0];
     memmove(&p[0], &p[1], len * sizeof(voba_value_t));
+    p[len] = VOBA_BOX_END;
     VOBA_ARRAY(a)->len --;
     return ret;
 }
@@ -158,7 +169,7 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
     voba_array__enlarge(a,len);
     memmove(voba_array_base(a) + voba_array_len(a),
             voba_array_base(b),
-            len * sizeof(voba_value_t));
+            (len+1) * sizeof(voba_value_t));
     VOBA_ARRAY(a)->len += len;
     return a;
 }
@@ -175,7 +186,8 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
             GC_MALLOC(sizeof(voba_value_t) * capacity);                 \
         if(!p){abort();}                                                \
         VOBA_FOR_EACH_N(n)(DEFINE_VOBA_MAKE_ARRAY_ASSIGN,SEMI_COMMA);   \
-        return voba_make_array(capacity,len,p);                         \
+        p[n] = VOBA_BOX_END;						\
+	return voba_make_array(capacity,len,p);				\
     }
 #define DEFINE_VOBA_MAKE_ARRAY_ASSIGN(n) p[n] = a##n
 VOBA_FOR_EACH(DEFINE_VOBA_MAKE_ARRAY_N,SPACE)
