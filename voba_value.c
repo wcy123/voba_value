@@ -143,7 +143,7 @@ VOBA_FUNC static  voba_value_t array_to_string(voba_value_t fun,voba_value_t vs,
         if(i!=0){
             ret = voba_strcat_char(ret,',');
         }
-        voba_value_t args[] = {1,voba_array_at(v,i)};
+        voba_value_t args[] = {1,voba_array_at(v,i),VOBA_BOX_END};
         ret = voba_strcat(ret,
                           voba_value_to_str(voba_apply(voba_gf_to_string,voba_make_tuple(args))));
     }
@@ -160,7 +160,7 @@ VOBA_FUNC static  voba_value_t tuple_to_string(voba_value_t fun,voba_value_t vs,
         if(i!=0){
             ret = voba_strcat_char(ret,',');
         }
-        voba_value_t args[] = {1,voba_tuple_at(v,i)};
+        voba_value_t args[] = {1,voba_tuple_at(v,i),VOBA_BOX_END};
         ret = voba_strcat(ret,
                           voba_value_to_str(voba_apply(voba_gf_to_string,voba_make_tuple(args))));
     }
@@ -196,7 +196,7 @@ VOBA_FUNC static voba_value_t closure_to_string(voba_value_t fun,voba_value_t ar
 }
 VOBA_FUNC static voba_value_t pair_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
-    voba_value_t tmp_args[] = {1, VOBA_NIL};
+    voba_value_t tmp_args[] = {1, VOBA_NIL,VOBA_BOX_END};
     voba_value_t v = voba_tuple_at(args,0);
     voba_str_t* ret = voba_str_empty();
     ret = voba_strcat_char(ret,'(');
@@ -228,7 +228,7 @@ VOBA_FUNC static voba_value_t pair_to_string(voba_value_t fun,voba_value_t args,
 }
 VOBA_FUNC static voba_value_t la_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
 {
-    voba_value_t tmp_args[] = {1, VOBA_NIL};
+    voba_value_t tmp_args[] = {1, VOBA_NIL,VOBA_BOX_END};
     voba_value_t v = voba_tuple_at(args,0);
     voba_str_t* ret = voba_str_empty();
     ret = voba_strcat_char(ret,'[');
