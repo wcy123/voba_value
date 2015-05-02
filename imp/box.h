@@ -10,7 +10,7 @@ box
 +-|------------------+------------------------+
   |                           voba_box_t
   |                           +----------------+------------+       
-  `------------------------>  |  voba_value_t* data         |       
+  `------------------------>  |  voba_value_t  data         |       
                               +----------------+------------+       
 
 \endverbatim
@@ -26,6 +26,9 @@ extern voba_value_t  voba_cls_box;
 INLINE voba_value_t  voba_box(voba_value_t value);
 /** @brief return the content of a box*/
 INLINE voba_value_t  voba_unbox(voba_value_t box);
-
+/** @brief convert a pointer to a box object */
+INLINE voba_value_t voba_pointer_to_box(voba_value_t * p);
+/** @brief convert a box object to a pointer */
+INLINE voba_value_t* voba_box_to_pointer(voba_value_t value);
 
 

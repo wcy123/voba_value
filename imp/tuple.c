@@ -28,18 +28,22 @@ INLINE voba_value_t voba_make_tuple_n(int64_t n,...)
 }
 INLINE int64_t voba_tuple_len(voba_value_t v)
 {
+    assert(voba_is_a(v,voba_cls_tuple));
     return voba_to_pointer(voba_value_t*, v)[0];
 }
 INLINE voba_value_t* voba_tuple_base(voba_value_t v)
 {
+    assert(voba_is_a(v,voba_cls_tuple));
     return voba_to_pointer(voba_value_t*, v) + 1;
 }
 INLINE voba_value_t voba_tuple_at(voba_value_t v,int64_t i)
 {
+    assert(voba_is_a(v,voba_cls_tuple));
     return voba_tuple_base(v)[i];
 }
 INLINE voba_value_t voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v)
 {
+    assert(voba_is_a(v,voba_cls_tuple));
     return voba_tuple_base(a)[i] = v;
 }
 
