@@ -43,7 +43,7 @@ INLINE voba_value_t voba_tuple_at(voba_value_t v,int64_t i)
 }
 INLINE voba_value_t voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v)
 {
-    assert(voba_is_a(v,voba_cls_tuple));
+    assert(voba_is_a(a,voba_cls_tuple));
     return voba_tuple_base(a)[i] = v;
 }
 
