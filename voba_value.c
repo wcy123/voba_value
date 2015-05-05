@@ -290,6 +290,16 @@ VOBA_FUNC static voba_value_t symbol_to_string(voba_value_t fun,voba_value_t arg
                                 VOBA_CONST_CHAR("@0x"),
                                 voba_str_fmt_uint64_t(s,16),NULL));
 }
+VOBA_FUNC static voba_value_t box_to_string(voba_value_t fun,voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[])
+{
+    voba_value_t box = voba_tuple_at(args,0);
+    voba_value_t tmp_args[] = {1, voba_unbox(box),VOBA_BOX_END};
+    return voba_make_string(voba_vstrcat(
+                                voba_str_from_cstr("#b["),
+				voba_value_to_str(
+				    voba_apply(voba_gf_to_string,voba_make_tuple(tmp_args))),
+				voba_str_from_cstr("]"),NULL));
+}
 EXEC_ONCE_PROGN{
     voba_gf_add_class(voba_gf_to_string,voba_cls_str,voba_make_func(string_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_array,voba_make_func(array_to_string));
@@ -309,6 +319,7 @@ EXEC_ONCE_PROGN{
     voba_gf_add_class(voba_gf_to_string,voba_cls_done,voba_make_func(done_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_bool,voba_make_func(boolean_to_string));
     voba_gf_add_class(voba_gf_to_string,voba_cls_symbol,voba_make_func(symbol_to_string));
+    voba_gf_add_class(voba_gf_to_string,voba_cls_box,voba_make_func(box_to_string));
 }
 static voba_value_t print1(voba_value_t x)
 {
