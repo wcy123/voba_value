@@ -42,7 +42,7 @@ INLINE voba_value_t  voba_make_tuple(voba_value_t* p);
 /** @brief create a tuple with varadic arguments */
 INLINE voba_value_t  voba_make_tuple_n(int64_t n,...);
 /** @brief the length of a tuple */
-INLINE int64_t       voba_tuple_len(voba_value_t v);
+INLINE int32_t       voba_tuple_len(voba_value_t v);
 /** @brief the base address of a tuple.*/
 INLINE voba_value_t* voba_tuple_base(voba_value_t v);
 /** @brief The element at `i` for a tuple*/
