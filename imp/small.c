@@ -42,14 +42,22 @@ INLINE int32_t voba_value_to_i32 (voba_value_t v)
 }
 INLINE voba_value_t voba_make_float (float v)
 {
-    voba_value_t xv = * ((voba_value_t*)&v); // byte conversion
-    return (VOBA_TYPE_SMALL + VOBA_TYPE_FLOAT * 8 + (xv<<8));
+    union {
+	float v;
+	voba_value_t x;
+    } vv;
+    vv.v = v;
+    return (VOBA_TYPE_SMALL + VOBA_TYPE_FLOAT * 8 + (vv.x<<8));
 }
 INLINE float voba_value_to_float (voba_value_t v)
 {
     assert(v % 256 == VOBA_TYPE_SMALL + VOBA_TYPE_FLOAT*8);
-    voba_value_t xv = (v/256);
-    return *((float*)&xv);
+    union {
+	float v;
+	voba_value_t x;
+    } vv;
+    vv.x = (v/256);
+    return vv.v;
 }
 
 
