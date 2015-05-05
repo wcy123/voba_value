@@ -26,10 +26,10 @@ A string object is a point to a ::voba_str_t object.
  */
 #define  voba_cls_str (VOBA_TYPE_SMALL + (VOBA_TYPE_CLASS*8) + (0 * 256))
 /** @brief create a string voba_str_t */
-INLINE voba_value_t  voba_make_string(voba_str_t* s);
+VOBA_VALUE_INLINE voba_value_t  voba_make_string(voba_str_t* s);
 /** @brief create a string from a const C string*/
-INLINE voba_value_t  voba_make_cstr(const char * s);
+VOBA_VALUE_INLINE voba_value_t  voba_make_cstr(const char * s);
 /** @brief convert a voba_value_t to a voba_str_t*/ 
-INLINE voba_str_t* voba_value_to_str(voba_value_t s);
+VOBA_VALUE_INLINE voba_str_t* voba_value_to_str(voba_value_t s);
 
 

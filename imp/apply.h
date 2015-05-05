@@ -31,10 +31,10 @@ where \a args is the argument tuple \a (a1 a2 ...)
    @param f The callable object
    @param args The tuple which represents arguments, `a0`, ... , `an`
  */
-INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args);
-INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[]);
-INLINE voba_value_t voba_apply_gf(voba_value_t gf, voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[]);
-INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_value_t* next_fun, voba_value_t next_args[]);
+VOBA_VALUE_INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args);
+VOBA_VALUE_INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[]);
+VOBA_VALUE_INLINE voba_value_t voba_apply_gf(voba_value_t gf, voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[]);
+VOBA_VALUE_INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_value_t* next_fun, voba_value_t next_args[]);
 #ifndef VOBA_MAX_NUM_OF_TAIL_CALL_ARGS
 #define VOBA_MAX_NUM_OF_TAIL_CALL_ARGS 20
 #endif
@@ -48,4 +48,4 @@ INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_
     r = voba_apply(f, voba_make_tuple(tmpargs));                \
     }                                                           
 
-INLINE voba_value_t apply_tuple(voba_value_t self, voba_value_t args);
+VOBA_VALUE_INLINE voba_value_t apply_tuple(voba_value_t self, voba_value_t args);

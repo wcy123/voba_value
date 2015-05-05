@@ -1,9 +1,9 @@
 #pragma once
-INLINE int voba_eq(voba_value_t a,voba_value_t b) 
+VOBA_VALUE_INLINE int voba_eq(voba_value_t a,voba_value_t b) 
 {
   return a == b;
 }
-INLINE int voba_eql(voba_value_t a,voba_value_t b)
+VOBA_VALUE_INLINE int voba_eql(voba_value_t a,voba_value_t b)
 {
     voba_value_t ret = 0;
     if(voba_eq(a,b)){
@@ -30,7 +30,7 @@ INLINE int voba_eql(voba_value_t a,voba_value_t b)
     }
     return ret;
 }
-INLINE int voba_is_nil(voba_value_t p) 
+VOBA_VALUE_INLINE int voba_is_nil(voba_value_t p) 
 { 
   return voba_eq(p,VOBA_NIL);
 }

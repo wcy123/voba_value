@@ -1,10 +1,10 @@
 #include "apply.h"
 
-INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[])
+VOBA_VALUE_INLINE voba_value_t voba_direct_apply(voba_func_t f,voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[])
 {
     return f(voba_make_func(f),args,next_fun,next_args);
 }
-INLINE voba_value_t voba_apply_gf(voba_value_t gf, voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[])
+VOBA_VALUE_INLINE voba_value_t voba_apply_gf(voba_value_t gf, voba_value_t args,voba_value_t* next_fun, voba_value_t next_args[])
 {
     assert(voba_is_a(gf,voba_cls_generic_function));
     VOBA_ASSERT_N_ARG(args,0);
@@ -27,7 +27,7 @@ INLINE voba_value_t voba_apply_gf(voba_value_t gf, voba_value_t args,voba_value_
     }
     return ret;
 }
-INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_value_t* next_fun, voba_value_t next_args[])
+VOBA_VALUE_INLINE voba_value_t voba_apply_user_object(voba_value_t f, voba_value_t a1,voba_value_t* next_fun, voba_value_t next_args[])
 {
     voba_value_t ret = VOBA_NIL;
     voba_value_t self  = f;
@@ -69,7 +69,7 @@ The callable objects are
 4. user defined class.
 
  */
-INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args)
+VOBA_VALUE_INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args)
 {
     voba_value_t ret = VOBA_TAIL_CALL;
     voba_value_t next_fun = VOBA_NIL;
@@ -104,7 +104,7 @@ INLINE voba_value_t voba_apply(voba_value_t f, voba_value_t args)
     return ret;
 }
 
-INLINE voba_value_t apply_tuple(voba_value_t fun, voba_value_t args)
+VOBA_VALUE_INLINE voba_value_t apply_tuple(voba_value_t fun, voba_value_t args)
 {
     voba_value_t ret = VOBA_NIL;
     VOBA_ASSERT_N_ARG(args,0);

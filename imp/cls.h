@@ -45,15 +45,15 @@ struct voba_cls_s {
 extern voba_cls_t * the_voba_class_table;
 extern int32_t      the_voba_class_table_length;
 /** @return a \a cls obejct which represents the class of the object \a v*/
-INLINE voba_value_t voba_get_class(voba_value_t v) __attribute__((always_inline));
+VOBA_VALUE_INLINE voba_value_t voba_get_class(voba_value_t v);
 /** @return the name of the class object */
-INLINE const char * voba_get_class_name(voba_value_t v);
+VOBA_VALUE_INLINE const char * voba_get_class_name(voba_value_t v);
 #define VOBA_DEF_CLS(xsize,xname)                                       \
     voba_value_t voba_cls_##xname = VOBA_UNDEF;                         \
     EXEC_ONCE_PROGN                                                     \
     {                                                                   \
         voba_cls_##xname = voba_make_cls(xsize,#xname);                 \
     }
-INLINE int32_t voba_class_id(voba_value_t cls) __attribute__((always_inline));
-INLINE const char* voba_cls_name(voba_value_t cls);
-INLINE size_t voba_cls_size(voba_value_t cls);
+VOBA_VALUE_INLINE int32_t voba_class_id(voba_value_t cls);
+VOBA_VALUE_INLINE const char* voba_cls_name(voba_value_t cls);
+VOBA_VALUE_INLINE size_t voba_cls_size(voba_value_t cls);

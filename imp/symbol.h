@@ -46,22 +46,22 @@ voba_value_t voba_make_symbol(
     voba_str_t * symbol_name,
     voba_value_t symbol_table);
 /** @brief create a symbol */
-INLINE voba_value_t voba_make_symbol_cstr(
+VOBA_VALUE_INLINE voba_value_t voba_make_symbol_cstr(
     const char * symbol_name,
     voba_value_t symbol_table);
 /** @brief create a symbol*/
-INLINE voba_value_t
+VOBA_VALUE_INLINE voba_value_t
 voba_make_symbol_cstr_with_value(
     const char * symbol_name,
     voba_value_t symbol_table,
     voba_value_t v);
 #define VOBA_SYMBOL(s,table) voba_make_symbol_data(#s,sizeof(#s) -1 , table)
 /** @brief access symbol name*/
-INLINE voba_value_t voba_symbol_name(voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_symbol_name(voba_value_t v);
 /** @brief access symbol value*/
-INLINE voba_value_t voba_symbol_value(voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_symbol_value(voba_value_t v);
 /** @brief set the symbol value */
-INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_symbol_set_value(voba_value_t s,voba_value_t v);
 
 
 /** 

@@ -1,6 +1,6 @@
 #include "usr.h"
 
-INLINE voba_value_t* voba_allocate_user_data(size_t s)
+VOBA_VALUE_INLINE voba_value_t* voba_allocate_user_data(size_t s)
 {
     size_t size = (s+sizeof(voba_value_t));
     if(size % 16 !=0){
@@ -11,7 +11,7 @@ INLINE voba_value_t* voba_allocate_user_data(size_t s)
     assert(p);
     return p;
 }
-INLINE voba_value_t voba_make_user_data(voba_value_t cls)
+VOBA_VALUE_INLINE voba_value_t voba_make_user_data(voba_value_t cls)
 {
     // size doesn't include the cls function, so allocate a room for it.
     assert(voba_cls_size(cls) > 0);
@@ -19,11 +19,11 @@ INLINE voba_value_t voba_make_user_data(voba_value_t cls)
     p[0] = cls;
     return voba_from_pointer(p,VOBA_TYPE_USER);
 }
-INLINE voba_value_t voba_user_data_class(voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t voba_user_data_class(voba_value_t v)
 {
   return (voba_to_pointer(voba_value_t*, v)[0]);
 }
-INLINE void*  voba_user_data_base(voba_value_t v)
+VOBA_VALUE_INLINE void*  voba_user_data_base(voba_value_t v)
 {
   return (void*)(&(voba_to_pointer(voba_value_t*, v)[1]));
 }

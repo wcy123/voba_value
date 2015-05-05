@@ -44,9 +44,9 @@ extern voba_value_t voba_cls_func;
 /** @brief the type of function pointer */
 typedef voba_value_t (*voba_func_t)(voba_value_t fun, voba_value_t args, voba_value_t* next_fun, voba_value_t next_args[]);
 /** @brief create a new function object from a function pointer */
-INLINE voba_value_t  voba_make_func(voba_func_t);
+VOBA_VALUE_INLINE voba_value_t  voba_make_func(voba_func_t);
 /** @brief convert a voba value to a function pointer */
-INLINE voba_func_t  voba_value_to_func(voba_value_t v);
+VOBA_VALUE_INLINE voba_func_t  voba_value_to_func(voba_value_t v);
 
 /** useful macros for a function */
 

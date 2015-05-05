@@ -38,11 +38,11 @@ extern struct voba_gf_s * the_voba_gf_table;
 extern int32_t the_voba_gf_table_length;
 extern voba_value_t voba_cls_generic_function;
 /** @brief create a generic function object */
-INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t default_imp);
+VOBA_VALUE_INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t default_imp);
 /** register a method for a class. 
  *  @return return value is not useful, return \a func anyway.
  */
-INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func);
+VOBA_VALUE_INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func);
 /** this is the key concept of generic function, given a generic
  * function object and a class object, we are able to find the registered implementation.
  * @code{.c}
@@ -52,10 +52,10 @@ INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_va
  *    voba_apply(gf_to_string, obj); // similiar to invoke func(gf_to_string,obj);
  * @endcode
  */
-INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls);
+VOBA_VALUE_INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls);
 
 /* @brief return the index to the global generic function table
  */
-INLINE int32_t voba_gf_id(voba_value_t gf) __attribute__((always_inline));
-INLINE const char * voba_gf_name(voba_value_t gf);
-INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls) __attribute__((always_inline));
+VOBA_VALUE_INLINE int32_t voba_gf_id(voba_value_t gf);
+VOBA_VALUE_INLINE const char * voba_gf_name(voba_value_t gf);
+VOBA_VALUE_INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls);

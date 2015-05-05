@@ -1,6 +1,6 @@
 #include "cls.h"
 
-INLINE voba_value_t voba_make_cls(size_t size, const char * name)
+VOBA_VALUE_INLINE voba_value_t voba_make_cls(size_t size, const char * name)
 {
     assert(the_voba_class_table != NULL);
     the_voba_class_table = (struct voba_cls_s*)
@@ -20,7 +20,7 @@ INLINE voba_value_t voba_make_cls(size_t size, const char * name)
 }
 // get_class
 #define VOBA_GET_CLASS_SMALL(tag,name,type) case tag:   return voba_cls_##name;
-static inline voba_value_t voba_get_class(voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t voba_get_class(voba_value_t v)
 {
     switch(v){
     case VOBA_UNDEF:
@@ -66,27 +66,27 @@ static inline voba_value_t voba_get_class(voba_value_t v)
     }
     return 0;
 }
-INLINE int voba_is_a(voba_value_t v, voba_value_t cls)
+VOBA_VALUE_INLINE int voba_is_a(voba_value_t v, voba_value_t cls)
 {
     return voba_get_class(v) == cls;
 }
-INLINE  const char * voba_get_class_name(voba_value_t v1)
+VOBA_VALUE_INLINE  const char * voba_get_class_name(voba_value_t v1)
 {
     voba_value_t cls = voba_get_class(v1);
     return voba_cls_name(cls);
 }
-INLINE int32_t voba_class_id(voba_value_t cls)
+VOBA_VALUE_INLINE int32_t voba_class_id(voba_value_t cls)
 {
     assert((cls%256) == VOBA_TYPE_SMALL + (VOBA_TYPE_CLASS*8));
     return cls / 256;
 }
-INLINE size_t voba_cls_size(voba_value_t cls)
+VOBA_VALUE_INLINE size_t voba_cls_size(voba_value_t cls)
 {
     int32_t index = voba_class_id(cls);
     assert(index < the_voba_class_table_length);
     return the_voba_class_table[index].size;
 }
-INLINE const char* voba_cls_name(voba_value_t cls)
+VOBA_VALUE_INLINE const char* voba_cls_name(voba_value_t cls)
 {
     int32_t index = voba_class_id(cls);
     assert(index < the_voba_class_table_length);

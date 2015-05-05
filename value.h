@@ -19,8 +19,12 @@ extern "C" {
 #define GC_strdup strdup
 #define GC
 #endif
-#ifndef INLINE
-#define INLINE static inline 
+#ifndef VOBA_VALUE_INLINE
+# if __GNUC__ && !__GNUC_STDC_INLINE__
+#  define VOBA_VALUE_INLINE extern inline
+# else
+#  define VOBA_VALUE_INLINE inline
+# endif
 #endif
 #include "imp/overview.h"
 /* FOR_EACH macro used by tuple and array */

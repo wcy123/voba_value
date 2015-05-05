@@ -25,7 +25,7 @@ when it is VOBA_TYPE_SMALL,
 #define    VOBA_TYPE_CLASS		6
 #define    VOBA_TYPE_SPECIAL_VALUES	100	// internal use, true, false, done, undef
 #define    VOBA_TYPE_SECRET		101	// internal use, I like secret, it is not used at all.
-INLINE int64_t  voba_get_type2(voba_value_t v);
+VOBA_VALUE_INLINE int64_t  voba_get_type2(voba_value_t v);
 /** @brief nil
 constant value nil
 ==================
@@ -50,7 +50,7 @@ VOBA_TYPE_FUNC.
 /** @brief the class object for ::VOBA_NIL*/
 extern voba_value_t voba_cls_nil;
 /** @brief return 0 if `p` is not ::VOBA_NIL*/
-INLINE int voba_is_nil(voba_value_t p);
+VOBA_VALUE_INLINE int voba_is_nil(voba_value_t p);
 /** @brief constant value undef
 
 It represents an unintialized value.
@@ -60,7 +60,7 @@ It represents an unintialized value.
 /** @brief the class object for ::VOBA_UNDEF */
 extern voba_value_t voba_cls_undef;
 /** @brief return 0 if `p` is not ::VOBA_UNDEF*/
-INLINE int voba_is_undef(voba_value_t v) { return v == VOBA_UNDEF; }
+VOBA_VALUE_INLINE int voba_is_undef(voba_value_t v) { return v == VOBA_UNDEF; }
 
 /** @brief constant VOBA_DONE
 
@@ -71,7 +71,7 @@ It repensent the end of iteration.
 /** @brief the class object for ::VOBA_DONE */
 extern voba_value_t voba_cls_done;
 /** @brief return 0 if `p` is not ::VOBA_DONE*/
-INLINE int voba_is_done(voba_value_t v) { return v == VOBA_DONE; }
+VOBA_VALUE_INLINE int voba_is_done(voba_value_t v) { return v == VOBA_DONE; }
 
 
 /** @brief constant VOBA_TAIL_CALL
@@ -81,7 +81,7 @@ It repensent the end of iteration.
 */
 #define VOBA_TAIL_CALL (VOBA_TYPE_SMALL + VOBA_TYPE_SPECIAL_VALUES * 8 +  3 * 256)
 /** @brief return 0 if `p` is not ::VOBA_TAIL_CALL*/
-INLINE int voba_is_tail_call(voba_value_t v) { return v == VOBA_TAIL_CALL; }
+VOBA_VALUE_INLINE int voba_is_tail_call(voba_value_t v) { return v == VOBA_TAIL_CALL; }
 /** @brief contant VOBA_BOX_END
     it is the end mark for a sequence of voba value, e.g. tuple or array.
  */
@@ -103,11 +103,11 @@ extern voba_value_t voba_cls_bool;
 /// @brief false value
 #define VOBA_FALSE                     (VOBA_TYPE_SMALL + VOBA_TYPE_BOOL * 8 +  0 * 256)
 /// @brief return 1 if true
-INLINE int voba_is_true(voba_value_t v);
+VOBA_VALUE_INLINE int voba_is_true(voba_value_t v);
 /// @brief return 1 if false
-INLINE int voba_is_false(voba_value_t v);
+VOBA_VALUE_INLINE int voba_is_false(voba_value_t v);
 /// @brief return ::VOBA_TRUE if ::VOBA_FALSE, otherwise return ::VOBA_FALSE.
-INLINE voba_value_t voba_not(voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_not(voba_value_t v);
 /** @brief class short symbol
 NOT IMPLEMENTED YET.
  */
@@ -125,8 +125,8 @@ extern voba_value_t voba_cls_short_symbol;
  */
 /** @brief class object for i32 */
 extern voba_value_t voba_cls_i32;
-INLINE voba_value_t voba_make_i32(int32_t a);
-INLINE int32_t voba_value_to_i32(voba_value_t a);
+VOBA_VALUE_INLINE voba_value_t voba_make_i32(int32_t a);
+VOBA_VALUE_INLINE int32_t voba_value_to_i32(voba_value_t a);
 /** @brief class float
 
 @verbatim
@@ -141,5 +141,5 @@ voba_make_float, voba_value_to_float, similar to `class integer`.
 
 */
 extern voba_value_t voba_cls_float;
-INLINE voba_value_t voba_make_float (float v);
-INLINE float voba_value_to_float (voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_make_float (float v);
+VOBA_VALUE_INLINE float voba_value_to_float (voba_value_t v);

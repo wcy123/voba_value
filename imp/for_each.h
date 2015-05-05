@@ -42,7 +42,7 @@
 #define VOBA_MACRO_ARG(n) voba_value_t a##n
 #define VOBA_MACRO_ARG2(n) ,voba_value_t a##n
 
-INLINE voba_value_t clz_long(uint32_t s) 
+VOBA_VALUE_INLINE voba_value_t clz_long(uint32_t s) 
 {
     int a = 0;
 #if ((__GNUC__ >= 4) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 4)))

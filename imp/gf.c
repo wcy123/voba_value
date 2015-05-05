@@ -1,5 +1,5 @@
 #include "gf.h"
-INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t default_imp)
+VOBA_VALUE_INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t default_imp)
 {
     if(the_voba_gf_table == NULL){
 	the_voba_gf_table = (struct voba_gf_s*)
@@ -18,12 +18,12 @@ INLINE voba_value_t voba_make_generic_function(const char * name, voba_func_t de
     the_voba_gf_table_length ++;
     return ret;
 }
-INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
+VOBA_VALUE_INLINE voba_value_t voba_gf_add_class(voba_value_t gf, voba_value_t cls, voba_value_t func)
 {
     the_voba_gf_table[voba_gf_id(gf)].cls[voba_class_id(cls)] = voba_value_to_func(func);
     return func;
 }
-INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
+VOBA_VALUE_INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
 {
     assert(voba_is_a(gf,voba_cls_generic_function));
     if(0){
@@ -35,18 +35,18 @@ INLINE voba_func_t voba_gf_lookup(voba_value_t gf, voba_value_t cls)
     }
     return voba_gf_cls_func_pointer(gf,cls);
 }
-INLINE int32_t voba_gf_id(voba_value_t gf)
+VOBA_VALUE_INLINE int32_t voba_gf_id(voba_value_t gf)
 {
     assert((gf%256) == VOBA_TYPE_SMALL + (VOBA_TYPE_GENERIC_FUNCTION*8));
     return gf / 256;
 }
-INLINE const char * voba_gf_name(voba_value_t gf)
+VOBA_VALUE_INLINE const char * voba_gf_name(voba_value_t gf)
 {
     int32_t index = voba_gf_id(gf);
     assert(index < the_voba_gf_table_length);
     return the_voba_gf_table[index].header.name;
 }
-INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls)
+VOBA_VALUE_INLINE voba_func_t voba_gf_cls_func_pointer(voba_value_t gf, voba_value_t cls)
 {
     int32_t gf_index = voba_gf_id(gf);
     int32_t cls_index = voba_class_id(cls);

@@ -29,19 +29,19 @@ A \a closure is a pointer which points to an array .
 
 extern voba_value_t voba_cls_closure;
 /** @brief return the `i` th captured variable.*/
-INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i);
+VOBA_VALUE_INLINE voba_value_t voba_closure_at(voba_value_t c,uint32_t i);
 /** @brief set `i` th captured variable.*/
-INLINE voba_value_t voba_closure_set_at(voba_value_t c,uint32_t i,voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_closure_set_at(voba_value_t c,uint32_t i,voba_value_t v);
 /** @brief the closure function*/
-INLINE voba_func_t  voba_closure_func(voba_value_t c);
+VOBA_VALUE_INLINE voba_func_t  voba_closure_func(voba_value_t c);
 /** @brief the tuple of all captured variables 
 
     @todo this function is redundent, or ::voba_closure_at,
     ::voba_closure_len are redundent.
  */
-INLINE voba_value_t voba_closure_tuple(voba_value_t c);
+VOBA_VALUE_INLINE voba_value_t voba_closure_tuple(voba_value_t c);
 /** @brief the number of captured closure variables*/
-INLINE uint64_t voba_closure_len(voba_value_t c);
+VOBA_VALUE_INLINE uint64_t voba_closure_len(voba_value_t c);
 
 
 #define VOBA_MACRO_ARG2(n) ,voba_value_t a##n
@@ -61,6 +61,6 @@ voba_value_t voba_make_closure_20(voba_value_t f, voba_value_t a0,voba_value_t a
 
  */
 #define DECLARE_VOBA_MAKE_CLOSURE_N(n)                                  \
-    INLINE voba_value_t voba_make_closure_##n                           \
+    VOBA_VALUE_INLINE voba_value_t voba_make_closure_##n                           \
     (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))
 VOBA_FOR_EACH(DECLARE_VOBA_MAKE_CLOSURE_N,SEMI_COMMA);

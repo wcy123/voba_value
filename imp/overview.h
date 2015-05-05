@@ -47,19 +47,19 @@ typedef int64_t voba_value_t;
 #define    VOBA_TYPE_MASK    7 /*!< 3 bits */
 /** @return the 3-bit type tag associated with the value @param v
  */
-INLINE int64_t  voba_get_type1(voba_value_t v);
+VOBA_VALUE_INLINE int64_t  voba_get_type1(voba_value_t v);
 /** strong comparison.
  * 
  * test equal or not by comparing the 64-bit value directly
  */
-INLINE int      voba_eq(voba_value_t a,voba_value_t b);
+VOBA_VALUE_INLINE int      voba_eq(voba_value_t a,voba_value_t b);
 /** eql comparison
  *
  * In addition to `voba_eq`, if two integer with difference types are
  * eql. 
  * Two strings with same string sequence are eql.
  */
-INLINE int      voba_eql(voba_value_t a,voba_value_t b);
+VOBA_VALUE_INLINE int      voba_eql(voba_value_t a,voba_value_t b);
 /// it is defined as a macro, because the return type is unknown.
 #define voba_to_pointer(type,p) ((type)((p) & (~VOBA_TYPE_MASK)))
 /** convert a pointer to a voba_value_t by attaching a tag type \a type
@@ -69,5 +69,5 @@ INLINE int      voba_eql(voba_value_t a,voba_value_t b);
  * @return a voba_value_t with least significant 3-bit as type tag.
  *
  */
-INLINE voba_value_t voba_from_pointer(void* p, int type);
+VOBA_VALUE_INLINE voba_value_t voba_from_pointer(void* p, int type);
 

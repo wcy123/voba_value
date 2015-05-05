@@ -38,17 +38,17 @@ extern voba_value_t  voba_cls_tuple; /*!< @brief the class object associated wit
    the array.
    
 */
-INLINE voba_value_t  voba_make_tuple(voba_value_t* p);
+VOBA_VALUE_INLINE voba_value_t  voba_make_tuple(voba_value_t* p);
 /** @brief create a tuple with varadic arguments */
-INLINE voba_value_t  voba_make_tuple_n(int64_t n,...);
+VOBA_VALUE_INLINE voba_value_t  voba_make_tuple_n(int64_t n,...);
 /** @brief the length of a tuple */
-INLINE int32_t       voba_tuple_len(voba_value_t v);
+VOBA_VALUE_INLINE int32_t       voba_tuple_len(voba_value_t v);
 /** @brief the base address of a tuple.*/
-INLINE voba_value_t* voba_tuple_base(voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t* voba_tuple_base(voba_value_t v);
 /** @brief The element at `i` for a tuple*/
-INLINE voba_value_t  voba_tuple_at(voba_value_t v,int64_t i);
+VOBA_VALUE_INLINE voba_value_t  voba_tuple_at(voba_value_t v,int64_t i);
 /** @brief set the element in a tuple*/
-INLINE voba_value_t  voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t  voba_tuple_set(voba_value_t a,int64_t i,voba_value_t v);
 /** @fn voba_make_tuple_0
     @brief a set of functions to create a tuple, voba_make_tuple_<N>, N = 0,1,2,...,20
 
@@ -62,15 +62,15 @@ voba_value_t voba_make_tuple_20(voba_value_t a0, voba_value_t a1,..., voba_value
 */
 
 /** @brief allocate a number of memory for voba_value */
-INLINE voba_value_t* voba_alloc(size_t n_of_elt);
+VOBA_VALUE_INLINE voba_value_t* voba_alloc(size_t n_of_elt);
 /** @brief copy a tuple */
-INLINE voba_value_t voba_tuple_copy(voba_value_t tuple);
+VOBA_VALUE_INLINE voba_value_t voba_tuple_copy(voba_value_t tuple);
 // I really hate to write these macros, but I hate more duplicate
 // code. I used to use python or M4 generate the following code, but
 // it isn't more readable and it is not so good to depend on tools
 // other than standard compilers.
 #define DEFINE_VOBA_MAKE_TUPLE_N(n)                                     \
-    INLINE voba_value_t                                                 \
+    VOBA_VALUE_INLINE voba_value_t                                                 \
     voba_make_tuple_##n (VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG, COMMA)) {   \
         voba_value_t * p = (voba_value_t*)                              \
             GC_MALLOC(sizeof(voba_value_t) * clz_long(n+1));            \

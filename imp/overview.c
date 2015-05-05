@@ -1,5 +1,5 @@
 
-INLINE voba_value_t voba_from_pointer(void* p, int type)
+VOBA_VALUE_INLINE voba_value_t voba_from_pointer(void* p, int type)
 {
   // it is good to apply &(~VOBA_TYPE_MASK), so that link time
   // optimizator is able to figure out the type automatically.  it
@@ -7,11 +7,11 @@ INLINE voba_value_t voba_from_pointer(void* p, int type)
   assert((((int64_t)p)&VOBA_TYPE_MASK) == 0);
   return (((voba_value_t)p) & (~VOBA_TYPE_MASK)) | type;
 }
-INLINE int voba_eq(voba_value_t a,voba_value_t b) 
+VOBA_VALUE_INLINE int voba_eq(voba_value_t a,voba_value_t b) 
 {
   return a == b;
 }
-INLINE int voba_eql(voba_value_t a,voba_value_t b)
+VOBA_VALUE_INLINE int voba_eql(voba_value_t a,voba_value_t b)
 {
     voba_value_t ret = 0;
     if(voba_eq(a,b)){

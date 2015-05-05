@@ -24,14 +24,14 @@ extern voba_value_t voba_cls_pair; /*!< the class object associated with \a pair
 #define voba_setcar voba_set_head
 #define voba_setcdr voba_setcdr
 /** @brief cons */
-INLINE voba_value_t  voba_make_pair(voba_value_t h,voba_value_t t);
+VOBA_VALUE_INLINE voba_value_t  voba_make_pair(voba_value_t h,voba_value_t t);
 /** @brief car */
-INLINE voba_value_t  voba_head     (voba_value_t p);
+VOBA_VALUE_INLINE voba_value_t  voba_head     (voba_value_t p);
 /** @brief cdr */
-INLINE voba_value_t  voba_tail     (voba_value_t p);
+VOBA_VALUE_INLINE voba_value_t  voba_tail     (voba_value_t p);
 /** @brief setcar */
-INLINE void          voba_set_head (voba_value_t p,voba_value_t v);
+VOBA_VALUE_INLINE void          voba_set_head (voba_value_t p,voba_value_t v);
 /** @brief setcdr */
-INLINE void          voba_set_tail (voba_value_t p,voba_value_t v);
+VOBA_VALUE_INLINE void          voba_set_tail (voba_value_t p,voba_value_t v);
 
 

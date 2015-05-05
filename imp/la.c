@@ -1,6 +1,6 @@
 #include "la.h"
 
-INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
+VOBA_VALUE_INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
 {
     voba_value_t r = voba_make_user_data(voba_cls_la);
     VOBA_LA(r)->cur = cur;
@@ -8,19 +8,19 @@ INLINE voba_value_t voba__make_la(uint32_t cur, uint32_t end,voba_value_t array)
     VOBA_LA(r)->array = array;
     return r;
 }
-INLINE voba_value_t voba_la_from_array0(voba_value_t array)
+VOBA_VALUE_INLINE voba_value_t voba_la_from_array0(voba_value_t array)
 {
     uint32_t a_len = ((uint32_t) voba_array_len(array));
     return voba__make_la(0,a_len,array);
 }
-INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur)
+VOBA_VALUE_INLINE voba_value_t voba_la_from_array1(voba_value_t array, uint32_t cur)
 {
     uint64_t a_len = ((uint64_t) voba_array_len(array));
     assert(cur <= a_len);
     uint32_t end = (uint32_t)a_len;
     return voba__make_la(cur,end,array);
 }
-INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_t len)
+VOBA_VALUE_INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_t len)
 {
 #ifndef NDEBUG
     uint64_t a_len = ((uint64_t) voba_array_len(array));
@@ -29,7 +29,7 @@ INLINE voba_value_t voba_la_from_array2(voba_value_t array, uint32_t cur,uint32_
     uint32_t end = (uint32_t) (cur + len);
     return voba__make_la(cur,end,array);
 }
-INLINE voba_value_t voba_la_car(voba_value_t la)
+VOBA_VALUE_INLINE voba_value_t voba_la_car(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     uint32_t cur = VOBA_LA(la)->cur;
@@ -41,7 +41,7 @@ INLINE voba_value_t voba_la_car(voba_value_t la)
     assert(cur <= a_len && cur <= end && end <= a_len);
     return voba_array_at(a,(int64_t)cur);
 }
-INLINE voba_value_t voba_la_cdr(voba_value_t la)
+VOBA_VALUE_INLINE voba_value_t voba_la_cdr(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     uint32_t cur = VOBA_LA(la)->cur;
@@ -57,7 +57,7 @@ INLINE voba_value_t voba_la_cdr(voba_value_t la)
     VOBA_LA(la)->cur = cur;
     return la;
 }
-INLINE voba_value_t voba_la_last(voba_value_t la)
+VOBA_VALUE_INLINE voba_value_t voba_la_last(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     uint32_t cur = VOBA_LA(la)->cur;
@@ -69,23 +69,23 @@ INLINE voba_value_t voba_la_last(voba_value_t la)
     assert(cur <= a_len && cur <= end && end <= a_len);
     return voba_array_at(a,(int64_t)(end-1));
 }
-INLINE voba_value_t voba_la_copy(voba_value_t la)
+VOBA_VALUE_INLINE voba_value_t voba_la_copy(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     return voba__make_la(VOBA_LA(la)->cur,VOBA_LA(la)->end,VOBA_LA(la)->array);
 }
-INLINE uint32_t voba_la_len(voba_value_t la)
+VOBA_VALUE_INLINE uint32_t voba_la_len(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     assert(VOBA_LA(la)->end >= VOBA_LA(la)->cur);
     return VOBA_LA(la)->end - VOBA_LA(la)->cur;
 }
-INLINE int voba_la_is_nil(voba_value_t la)
+VOBA_VALUE_INLINE int voba_la_is_nil(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     return voba_la_len(la) == 0;
 }
-INLINE voba_value_t voba_la_to_array(voba_value_t la)
+VOBA_VALUE_INLINE voba_value_t voba_la_to_array(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
     voba_value_t ret = voba_make_array_0();

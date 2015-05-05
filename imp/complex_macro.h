@@ -4,7 +4,7 @@
 VOBA_FOR_EACH(DEFINE_VOBA_MAKE_TUPLE_N,SPACE)
 
 #define DEFINE_VOBA_MAKE_CLOSURE_N(n)                                   \
-    INLINE voba_value_t voba_make_closure_##n                           \
+    VOBA_VALUE_INLINE voba_value_t voba_make_closure_##n                           \
     (voba_func_t f VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG2, SPACE))          \
     {                                                                   \
         voba_value_t * p = (voba_value_t*)                              \

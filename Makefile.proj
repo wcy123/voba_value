@@ -4,7 +4,7 @@ CXXFLAGS += -std=c++11
 CFLAGS += -fPIC
 ASFLAGS += -fPIC
 
-SRCS_C += voba_value.c imp/cg_utils.c #value2.c
+SRCS_C += voba_value.c voba_value_i.c imp/cg_utils.c #value2.c
 SRCS_CC += voba_value_cpp.cc
 
 libvoba_value.so: $(OBJS) imp/cg_linux_amd64.o

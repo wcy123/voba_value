@@ -22,4 +22,4 @@ cg_yield could be invoked to suspend the generator.
 @todo explain generator in details
 
 */
-INLINE voba_value_t voba_make_generator(voba_generator_t f, voba_value_t self, voba_value_t args);
+VOBA_VALUE_INLINE voba_value_t voba_make_generator(voba_generator_t f, voba_value_t self, voba_value_t args);

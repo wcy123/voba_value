@@ -33,15 +33,15 @@ see cls.h, which is itself a user defined object.
 
 */
 /** create a user defined object, whose class is \a cls*/
-INLINE voba_value_t voba_make_user_data(voba_value_t cls);
+VOBA_VALUE_INLINE voba_value_t voba_make_user_data(voba_value_t cls);
 /** @return the class object associated with the user defined object \a v*/
-INLINE voba_value_t voba_user_data_class(voba_value_t v);
+VOBA_VALUE_INLINE voba_value_t voba_user_data_class(voba_value_t v);
 /** @return the pointer to the user defined object \a v*/
-INLINE void*   voba_user_data_base(voba_value_t v);
+VOBA_VALUE_INLINE void*   voba_user_data_base(voba_value_t v);
 
 #define VOBA_USER_DATA_AS(type,v) ((type)(voba_user_data_base(v)))
 /** test whether a user defined object \a v is an instances of class \a cls*/
-INLINE int voba_is_a(voba_value_t v, voba_value_t cls);
+VOBA_VALUE_INLINE int voba_is_a(voba_value_t v, voba_value_t cls);
 
 
 

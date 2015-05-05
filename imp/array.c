@@ -1,9 +1,9 @@
 #include "array.h"
-INLINE uint32_t voba_array_len_to_capacity(uint32_t len)
+VOBA_VALUE_INLINE uint32_t voba_array_len_to_capacity(uint32_t len)
 {
     return (uint32_t)(clz_long(len + 2));
 }
-INLINE voba_value_t voba_make_array(uint32_t capacity, uint32_t len, voba_value_t* p)
+VOBA_VALUE_INLINE voba_value_t voba_make_array(uint32_t capacity, uint32_t len, voba_value_t* p)
 {
     voba_value_t ret = voba_make_user_data(voba_cls_array);
     voba_array_t * p1 = VOBA_ARRAY(ret);
@@ -13,7 +13,7 @@ INLINE voba_value_t voba_make_array(uint32_t capacity, uint32_t len, voba_value_
     assert(p[len] == VOBA_BOX_END);
     return ret;
 }
-INLINE voba_value_t voba_array_from_tuple(voba_value_t tuple)
+VOBA_VALUE_INLINE voba_value_t voba_array_from_tuple(voba_value_t tuple)
 {
     assert(voba_is_a(tuple,voba_cls_tuple));
     uint32_t len = (uint32_t)voba_tuple_len(tuple);
@@ -24,7 +24,7 @@ INLINE voba_value_t voba_array_from_tuple(voba_value_t tuple)
     memcpy(p,voba_tuple_base(tuple), sizeof(voba_value_t)*(len+1));
     return voba_make_array(capacity,len,p);
 }
-INLINE voba_value_t voba_make_array_nv(uint32_t n,va_list ap)
+VOBA_VALUE_INLINE voba_value_t voba_make_array_nv(uint32_t n,va_list ap)
 {
     uint32_t len = n;
     uint32_t capacity = len + 1; // include the space for VOBA_BOX_END
@@ -38,7 +38,7 @@ INLINE voba_value_t voba_make_array_nv(uint32_t n,va_list ap)
     p[n] = VOBA_BOX_END;
     return voba_make_array(n,n,p);
 }
-INLINE voba_value_t voba_make_array_n(uint32_t n,...) 
+VOBA_VALUE_INLINE voba_value_t voba_make_array_n(uint32_t n,...) 
 {
     voba_value_t ret = VOBA_NIL;
     va_list ap;
@@ -47,30 +47,30 @@ INLINE voba_value_t voba_make_array_n(uint32_t n,...)
     va_end(ap);
     return ret;
 }
-INLINE voba_value_t * voba_array_base(voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t * voba_array_base(voba_value_t v)
 {
     assert(voba_is_a(v,voba_cls_array));
     return VOBA_ARRAY(v)->data;
 }
-INLINE uint32_t voba_array_capacity(voba_value_t v)
+VOBA_VALUE_INLINE uint32_t voba_array_capacity(voba_value_t v)
 {
     assert(voba_is_a(v,voba_cls_array));
     return VOBA_ARRAY(v)->capacity;
 }
-INLINE uint32_t voba_array_len(voba_value_t v)
+VOBA_VALUE_INLINE uint32_t voba_array_len(voba_value_t v)
 {
     assert(voba_is_a(v,voba_cls_array));
     return VOBA_ARRAY(v)->len;
 }
-INLINE voba_value_t voba_array_at(voba_value_t v,uint32_t i)
+VOBA_VALUE_INLINE voba_value_t voba_array_at(voba_value_t v,uint32_t i)
 {
     return voba_array_base(v)[i];
 }
-INLINE voba_value_t  voba_array_set(voba_value_t a,uint32_t i,voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t  voba_array_set(voba_value_t a,uint32_t i,voba_value_t v)
 {
     return voba_array_base(a)[i] = v;
 }
-INLINE voba_value_t voba_array_copy(voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t voba_array_copy(voba_value_t v)
 {
     uint32_t capacity = voba_array_capacity(v);
     uint32_t len = voba_array_len(v);
@@ -82,7 +82,7 @@ INLINE voba_value_t voba_array_copy(voba_value_t v)
     memcpy((void*)p,voba_array_base(v),c1);
     return voba_make_array(capacity,len,p);
 }
-INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
+VOBA_VALUE_INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
 {
     uint32_t len = voba_array_len(a);
     uint32_t capacity = voba_array_capacity(a);
@@ -106,7 +106,7 @@ INLINE void voba_array__enlarge(voba_value_t a, uint32_t inc)
     }
     return;
 }
-INLINE voba_value_t voba_array_push(voba_value_t a,voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t voba_array_push(voba_value_t a,voba_value_t v)
 {
     assert(voba_is_a(a,voba_cls_array));
     voba_array__enlarge(a,1);
@@ -118,7 +118,7 @@ INLINE voba_value_t voba_array_push(voba_value_t a,voba_value_t v)
     VOBA_ARRAY(a)->len ++;
     return a;
 }
-INLINE voba_value_t voba_array_shift(voba_value_t a,voba_value_t v)
+VOBA_VALUE_INLINE voba_value_t voba_array_shift(voba_value_t a,voba_value_t v)
 {
     assert(voba_is_a(v,voba_cls_array));
     voba_array__enlarge(a,1);
@@ -131,7 +131,7 @@ INLINE voba_value_t voba_array_shift(voba_value_t a,voba_value_t v)
     VOBA_ARRAY(a)->len ++;
     return a;
 }
-INLINE voba_value_t voba_array_pop(voba_value_t a)
+VOBA_VALUE_INLINE voba_value_t voba_array_pop(voba_value_t a)
 {
     // no shrink?
     assert(voba_is_a(a,voba_cls_array));
@@ -146,7 +146,7 @@ INLINE voba_value_t voba_array_pop(voba_value_t a)
     VOBA_ARRAY(a)->len --;
     return ret;
 }
-INLINE voba_value_t voba_array_unshift(voba_value_t a)
+VOBA_VALUE_INLINE voba_value_t voba_array_unshift(voba_value_t a)
 {
     // no shrink?
     assert(voba_is_a(a,voba_cls_array));
@@ -162,7 +162,7 @@ INLINE voba_value_t voba_array_unshift(voba_value_t a)
     VOBA_ARRAY(a)->len --;
     return ret;
 }
-INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
+VOBA_VALUE_INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
 {
     assert(voba_is_a(b,voba_cls_array));
     uint32_t len = voba_array_len(b);
@@ -178,7 +178,7 @@ INLINE voba_value_t voba_array_concat(voba_value_t a, voba_value_t b)
 // it isn't more readable and it is not so good to depend on tools
 // other than standard compilers.
 #define DEFINE_VOBA_MAKE_ARRAY_N(n)                                     \
-    INLINE voba_value_t                                                 \
+    VOBA_VALUE_INLINE voba_value_t                                                 \
     voba_make_array_##n (VOBA_FOR_EACH_N(n)(VOBA_MACRO_ARG, COMMA)) {   \
         uint32_t len = n;                                               \
         uint32_t capacity = clz_long(len);                              \
