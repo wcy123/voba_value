@@ -60,7 +60,9 @@ VOBA_VALUE_INLINE voba_value_t voba_la_cdr(voba_value_t la)
 VOBA_VALUE_INLINE voba_value_t voba_la_last(voba_value_t la)
 {
     assert(voba_is_a(la,voba_cls_la));
+#ifndef NDEBUG    
     uint32_t cur = VOBA_LA(la)->cur;
+#endif	
     voba_value_t a = VOBA_LA(la)->array;
     uint32_t end = VOBA_LA(la)->end;
 #ifndef NDEBUG
