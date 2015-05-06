@@ -54,9 +54,6 @@ VOBA_VALUE_INLINE voba_func_t  voba_value_to_func(voba_value_t v);
  *  @param args the second argument of function object, a tuple
  *  @param n index of the tuple \a args
  */
-#ifdef NDEBUG
-#define VOBA_ASSERT_N_ARG(args,n)
-#else
 #define VOBA_ASSERT_N_ARG(args,n)                                       \
 if(voba_tuple_len(args) <= n) {                                         \
     VOBA_THROW(VOBA_CONST_CHAR("unexpected number of argument: "),      \
@@ -64,16 +61,13 @@ if(voba_tuple_len(args) <= n) {                                         \
                VOBA_CONST_CHAR(" expected, but given "),                \
                voba_str_fmt_uint32_t(voba_tuple_len(args),10));         \
 }                                                                       
-#endif
+
 
 /** assert \a n th argument is a class of \a cls
  * @param name a variable name
  * @param cls a class object
  * @param n index of the tuple, for error reporting. */
-#ifdef NDEBUG
-#define VOBA_ASSERT_ARG_ISA(name,cls,n)
-#else
-#define VOBA_ASSERT_ARG_ISA(name,cls,n)                                     \
+#define VOBA_ASSERT_ARG_ISA(name,cls,n)					\
     if(!voba_is_a(name,cls)){                                           \
         VOBA_THROW(VOBA_CONST_CHAR("wrong type of argument #") ,        \
                    voba_str_fmt_uint32_t(n,10),                         \
@@ -81,7 +75,7 @@ if(voba_tuple_len(args) <= n) {                                         \
                                    "but given value is 0x"),            \
                    voba_str_fmt_uint64_t(name,16));                     \
     }
-#endif
+
 
 /** assert applying \a f to \a n th argument returns true
  * @param name a variable name
